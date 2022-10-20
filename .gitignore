@@ -1,0 +1,6 @@
+.DS_STORE
+.venv*
+*.tar.gz
+__pycache__/
+.pytest*
+.vscode*
