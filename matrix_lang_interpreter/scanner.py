@@ -1,0 +1,79 @@
+from sly import Lexer
+
+
+class Scanner(Lexer):
+    tokens = {
+        DOTADD, DOTSUB, DOTMUL, DOTDIV,
+        ADDASSIGN, SUBASSIGN, MULASSIGN, DIVASSIGN,
+        LEQ, GEQ, NEQ, EQU,
+        IF, ELSE, FOR, WHILE, BREAK, CONTINUE,
+        RETURN, EYE, ZEROS, ONES, PRINT,
+        ID, INTNUM, FLOATNUM, STRING
+    }
+
+    literals = {
+        '=', '+', '-', '*', '/',
+        '(', ')', '[', ']', '{', '}',
+        ':', '\'', ',', ';', '<', '>'
+    }
+
+    DOTADD = r'\.\+'
+    DOTSUB = r'\.-'
+    DOTMUL = r'\.\*'
+    DOTDIV = r'\./'
+
+    ADDASSIGN = r'\+='
+    SUBASSIGN = r'-='
+    MULASSIGN = r'\*='
+    DIVASSIGN = r'/='
+
+    LEQ = r'<='
+    GEQ = r'>='
+    NEQ = r'!='
+    EQU = r'=='
+
+    ID = r'[a-zA-Z_]\w*'
+    ID['if'] = IF
+    ID['else'] = ELSE
+    ID['for'] = FOR
+    ID['while'] = WHILE
+    ID['break'] = BREAK
+    ID['continue'] = CONTINUE
+    ID['return'] = RETURN
+    ID['eye'] = EYE
+    ID['zeros'] = ZEROS
+    ID['ones'] = ONES
+    ID['print'] = PRINT
+
+    FLOATNUM = r'(\d*(\.\d+)?[Ee][+-]?\d+)|(\d+\.\d*)|(\d*\.\d+)'
+    INTNUM = r'\d+'
+    STRING = r'(\".*?\")|(\'.*?\')'
+
+    ignore = ' \t'
+    ignore_comment = r'\#.*'
+
+    @_(r'\n+')
+    def ignore_newline(self, t):
+        self.lineno += len(t.value)
+
+    def error(self, t):
+        print(f"Line {t.lineno}: Bad character '{t.value[0]}'")
+        self.index += 1
+
+
+if __name__ == "__main__":
+    import sys
+    import os
+
+    try:
+        filename = sys.argv[1] if len(sys.argv) > 1 else os.path.join("tests", "example.txt")
+        file = open(filename, "r")
+    except IOError:
+        print("Cannot open {0} file".format(filename))
+        sys.exit(0)
+
+    text = file.read()
+    lexer = Scanner()
+
+    for token in lexer.tokenize(text):
+        print(f"({token.lineno}): {token.type}({token.value})")
