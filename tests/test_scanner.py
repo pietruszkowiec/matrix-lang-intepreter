@@ -52,7 +52,7 @@ def test_floatnums():
     scanner = Scanner()
     text = '12. 12.3 0.1 .1 12E1 12e2 12E-1 2e-23 60.52e-2'
     expected_tokens = [
-        '12.', '12.3', '0.1', '.1', '12E1', '12e2', '12E-1', '2e-23', '60.52e-2'
+        12., 12.3, 0.1, .1, 12E1, 12e2, 12E-1, 2e-23, 60.52e-2
     ]
     for token, expected_token in zip(scanner.tokenize(text), expected_tokens):
         assert token.type == 'FLOATNUM'
@@ -61,7 +61,7 @@ def test_floatnums():
 def test_intnums():
     scanner = Scanner()
     text = '0 012 2 12 43'
-    expected_tokens = ['0', '012', '2', '12', '43']
+    expected_tokens = [0, 12, 2, 12, 43]
     for token, expected_token in zip(scanner.tokenize(text), expected_tokens):
         assert token.type == 'INTNUM'
         assert token.value == expected_token
@@ -69,7 +69,7 @@ def test_intnums():
 def test_strings():
     scanner = Scanner()
     text = "'foo bar'" + '"bar foo"'
-    expected_tokens = ["'foo bar'", '"bar foo"']
+    expected_tokens = ['foo bar', 'bar foo']
     for token, expected_token in zip(scanner.tokenize(text), expected_tokens):
         assert token.type == 'STRING'
         assert token.value == expected_token

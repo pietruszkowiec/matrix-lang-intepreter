@@ -45,9 +45,20 @@ class Scanner(Lexer):
     ID['ones'] = ONES
     ID['print'] = PRINT
 
-    FLOATNUM = r'(\d*(\.\d+)?[Ee][+-]?\d+)|(\d+\.\d*)|(\d*\.\d+)'
-    INTNUM = r'\d+'
-    STRING = r'(\".*?\")|(\'.*?\')'
+    @_(r'(\d*(\.\d+)?[Ee][+-]?\d+)|(\d+\.\d*)|(\d*\.\d+)')
+    def FLOATNUM(self, t):
+        t.value = float(t.value)
+        return t
+
+    @_(r'\d+')
+    def INTNUM(self, t):
+        t.value = int(t.value)
+        return t
+
+    @_(r'(\".*?\")|(\'.*?\')')
+    def STRING(self, t):
+        t.value = t.value[1:-1]
+        return t
 
     ignore = ' \t'
     ignore_comment = r'\#.*'
