@@ -1,23 +1,21 @@
 import pytest
 from matrix_lang_interpreter.scanner import Scanner
-from matrix_lang_interpreter.parser import Parser
+from matrix_lang_interpreter.parser import Parser, BinExpr, UnExpr
 
 
 def test_literals():
     scanner = Scanner()
     parser = Parser()
     assert parser.parse(scanner.tokenize(
-        '1 + 2')) == 3
+        '1 + 2')) == BinExpr('+', 1, 2)
     assert parser.parse(scanner.tokenize(
-        '1 - 2')) == -1
+        '1 - 2')) == BinExpr('-', 1, 2)
     assert parser.parse(scanner.tokenize(
-        '1 - 2')) == -1
+        '2 * 3')) == BinExpr('*', 2, 3)
     assert parser.parse(scanner.tokenize(
-        '2 * 3')) == 6
+        '3 / 2')) == BinExpr('/', 3, 2)
     assert parser.parse(scanner.tokenize(
-        '3 / 2')) == 1.5
-    assert parser.parse(scanner.tokenize(
-        '(3 + 1) * 2')) == 8
+        '(3 + 1) * 2')) == BinExpr('+', 1, 2)
     assert parser.parse(scanner.tokenize(
         '2 * (3 + 1)')) == 8
     assert parser.parse(scanner.tokenize(

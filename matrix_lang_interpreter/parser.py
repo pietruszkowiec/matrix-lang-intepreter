@@ -2,74 +2,48 @@ from sly import Parser as SlyParser
 from matrix_lang_interpreter.scanner import Scanner
 
 
+class BinExpr:
+    def __init__(self, op, left, right):
+        self.op = op
+        self.left = left
+        self.right = right
+    
+    def __eq__(self, other):
+        return self.op == other.op \
+            and self.left == other.left \
+            and self.right == other.right
+
+class UnExpr:
+    def __init__(self, op, child):
+        self.op = op
+        self.child = child
+    
+    def __eq__(self, other):
+        return self.op == other.op and self.child == other.child
+
 class Parser(SlyParser):
     tokens = Scanner.tokens
 
     precedence = (
         ('left', '+', DOTADD, '-' , DOTSUB),
-        ('left', '*',  DOTMUL, '/', DOTDIV),
+        ('left', '*', DOTMUL, '/', DOTDIV),
         ('right', UMINUS)
     )
 
-    @_('expr "+" expr')
+    @_('expr "+" expr',
+       'expr "-" expr',
+       'expr "*" expr',
+       'expr "/" expr',
+       'expr DOTADD expr',
+       'expr DOTSUB expr',
+       'expr DOTMUL expr',
+       'expr DOTDIV expr')
     def expr(self, p):
-        return p.expr0 + p.expr1
-
-    @_('expr "-" expr')
-    def expr(self, p):
-        return p.expr0 - p.expr1
-
-    @_('expr "*" expr')
-    def expr(self, p):
-        return p.expr0 * p.expr1
-
-    @_('expr "/" expr')
-    def expr(self, p):
-        return p.expr0 / p.expr1
+        return BinExpr(p[1], p.expr0, p.expr1)
 
     @_('"-" expr %prec UMINUS')
     def expr(self, p):
-        return -p.expr
-
-    @_('expr DOTADD expr')
-    def expr(self, p):
-        n = len(p.expr0)
-        m = len(p.expr0[0])
-        temp = [[0 for _ in range(m)] for _ in range(n)]
-        for i in range(n):
-            for j in range(m):
-                temp[i][j] = p.expr0[i][j] + p.expr1[i][j]
-        return temp
-
-    @_('expr DOTSUB expr')
-    def expr(self, p):
-        n = len(p.expr0)
-        m = len(p.expr0[0])
-        temp = [[0 for _ in range(m)] for _ in range(n)]
-        for i in range(n):
-            for j in range(m):
-                temp[i][j] = p.expr0[i][j] - p.expr1[i][j]
-        return temp
-
-    @_('expr DOTMUL expr')
-    def expr(self, p):
-        n = len(p.expr0)
-        m = len(p.expr0[0])
-        temp = [[0 for _ in range(m)] for _ in range(n)]
-        for i in range(n):
-            for j in range(m):
-                temp[i][j] = p.expr0[i][j] * p.expr1[i][j]
-        return temp
-
-    @_('expr DOTDIV expr')
-    def expr(self, p):
-        n = len(p.expr0)
-        m = len(p.expr0[0])
-        temp = [[0 for _ in range(m)] for _ in range(n)]
-        for i in range(n):
-            for j in range(m):
-                temp[i][j] = p.expr0[i][j] / p.expr1[i][j]
-        return temp
+        return UnExpr(p[0], p.expr)
 
     @_('"(" expr ")"')
     def expr(self, p):
