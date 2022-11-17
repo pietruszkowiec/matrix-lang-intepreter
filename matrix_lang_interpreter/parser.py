@@ -1,34 +1,41 @@
 from sly import Parser as SlyParser
+from matrix_lang_interpreter import *
 from matrix_lang_interpreter.scanner import Scanner
 
 
-class BinExpr:
-    def __init__(self, op, left, right):
-        self.op = op
-        self.left = left
-        self.right = right
-    
-    def __eq__(self, other):
-        return self.op == other.op \
-            and self.left == other.left \
-            and self.right == other.right
-
-class UnExpr:
-    def __init__(self, op, child):
-        self.op = op
-        self.child = child
-    
-    def __eq__(self, other):
-        return self.op == other.op and self.child == other.child
-
 class Parser(SlyParser):
+    debugfile = 'parser.out'
     tokens = Scanner.tokens
 
     precedence = (
+        ('left', '=', ADDASSIGN, SUBASSIGN, MULASSIGN, DIVASSIGN),
         ('left', '+', DOTADD, '-' , DOTSUB),
         ('left', '*', DOTMUL, '/', DOTDIV),
         ('right', UMINUS)
     )
+
+    @_('expr_set expr ";"',
+       'expr_set expr \n',)
+    def expr_set(self, p):
+        myset = p.expr_set
+        myset.append(p.expr)
+        return myset
+
+    @_('expr ";"',
+       'expr \n')
+    def expr_set(self, p):
+        return [p.expr]
+
+    @_('ID "=" expr')
+    def expr(self, p):
+        return AssignExpr(Id(p.ID), p.expr)
+
+    @_('ID ADDASSIGN expr',
+       'ID SUBASSIGN expr',
+       'ID MULASSIGN expr',
+       'ID DIVASSIGN expr')
+    def expr(self, p):
+        return AssignExpr(Id(p.ID), BinExpr(p[1][0], Id(p.ID), p.expr))
 
     @_('expr "+" expr',
        'expr "-" expr',
@@ -47,7 +54,11 @@ class Parser(SlyParser):
 
     @_('"(" expr ")"')
     def expr(self, p):
-        return (p.expr)
+        return p.expr
+
+    @_('ID')
+    def expr(self, p):
+        return Id(p.ID)
 
     @_('term')
     def expr(self, p):
@@ -59,11 +70,11 @@ class Parser(SlyParser):
 
     @_('outerlist "," "[" innerlist "]"')
     def outerlist(self, p):
-        return p.outerlist + [p.innerlist]
+        return p.outerlist.append(p.innerlist)
 
     @_('"[" innerlist "]"')
     def outerlist(self, p):
-        return [p.innerlist]
+        return Matrix().append(p.innerlist)
 
     @_('innerlist "," expr')
     def innerlist(self, p):
@@ -73,19 +84,17 @@ class Parser(SlyParser):
     def innerlist(self, p):
         return [p.expr]
 
-    @_('ZEROS "(" INTNUM ")"')
+    @_('ZEROS "(" expr ")"')
     def term(self, p):
-        return [[0 for _ in range(p.INTNUM)] for _ in range(p.INTNUM)]
+        return Zeros(p.expr)
 
-    @_('ONES "(" INTNUM ")"')
+    @_('ONES "(" expr ")"')
     def term(self, p):
-        return [[1 for _ in range(p.INTNUM)] for _ in range(p.INTNUM)]
+        return Ones(p.expr)
 
-    @_('EYE "(" INTNUM ")"')
+    @_('EYE "(" expr ")"')
     def term(self, p):
-        return [[1 if i == j else 0
-                 for j in range(p.INTNUM)]
-                for i in range(p.INTNUM)]
+        return Eye(p.expr)
 
     @_('FLOATNUM')
     def term(self, p):
