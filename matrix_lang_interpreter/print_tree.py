@@ -32,7 +32,7 @@ class TreePrinter:
 
         TreePrinter.printIndent(indent)
         print('THEN')
-        self.block.printTree(indent+1)
+        self.stmt.printTree(indent+1)
 
     @addToClass(AST.IfElseStmt)
     def printTree(self, indent):
@@ -42,11 +42,11 @@ class TreePrinter:
 
         TreePrinter.printIndent(indent)
         print('THEN')
-        self.block.printTree(indent+1)
+        self.stmt.printTree(indent+1)
 
         TreePrinter.printIndent(indent)
         print('ELSE')
-        self.elseBlock.printTree(indent+1)
+        self.elseStmt.printTree(indent+1)
 
     @addToClass(AST.WhileLoop)
     def printTree(self, indent):
@@ -54,7 +54,7 @@ class TreePrinter:
         print('WHILE')
         self.condition.printTree(indent+1)
 
-        self.block.printTree(indent+1)
+        self.stmt.printTree(indent+1)
 
     @addToClass(AST.ForLoop)
     def printTree(self, indent):
@@ -68,12 +68,17 @@ class TreePrinter:
         self.beg.printTree(indent+2)
         self.end.printTree(indent+2)
 
-        self.block.printTree(indent+1)
+        self.stmt.printTree(indent+1)
 
-    @addToClass(AST.LoopKeyword)
+    @addToClass(AST.Break)
     def printTree(self, indent):
         TreePrinter.printIndent(indent)
-        print(self.keyword.upper())
+        print('BREAK')
+
+    @addToClass(AST.Continue)
+    def printTree(self, indent):
+        TreePrinter.printIndent(indent)
+        print('CONTINUE')
 
     @addToClass(AST.Print)
     def printTree(self, indent):
@@ -109,7 +114,7 @@ class TreePrinter:
     @addToClass(AST.RelationExpr)
     def printTree(self, indent):
         TreePrinter.printIndent(indent)
-        print(self.type)
+        print(self.op)
 
         self.left.printTree(indent+1)
         self.right.printTree(indent+1)
@@ -122,18 +127,10 @@ class TreePrinter:
         for expr in self.expr_set:
             expr.printTree(indent+1)
 
-    @addToClass(AST.Matrix)
-    def printTree(self, indent):
-        TreePrinter.printIndent(indent)
-        print('MATRIX')
-
-        for vector in self.vectors:
-            vector.printTree(indent+1)
-
     @addToClass(AST.SpecialMatrix)
     def printTree(self, indent):
         TreePrinter.printIndent(indent)
-        print(self.type)
+        print(self.__class__.__name__.upper())
 
         self.size.printTree(indent+1)
 
@@ -142,9 +139,8 @@ class TreePrinter:
         TreePrinter.printIndent(indent)
         print('REF')
 
-        self.matrix.printTree(indent+1)
-        self.i.printTree(indent+1)
-        self.j.printTree(indent+1)
+        self.vector.printTree(indent+1)
+        self.idxs.printTree(indent+1)
 
     @addToClass(AST.Id)
     def printTree(self, indent):

@@ -18,35 +18,37 @@ class Stmt(Node):
 
 @dataclass
 class AssignStmt(Stmt):
-    id: str
+    id: 'Term'
     expr: 'Expr'
 
 @dataclass
 class IfStmt(Stmt):
     condition: 'Expr'
-    block: Block
+    stmt: Stmt
 
 @dataclass
-class IfElseStmt(Stmt):
-    condition: 'Expr'
-    block: Block
-    elseBlock: Block
+class IfElseStmt(IfStmt):
+    elseStmt: Stmt
 
 @dataclass
 class WhileLoop(Stmt):
     condition: 'Expr'
-    block: Block
+    stmt: Stmt
 
 @dataclass
 class ForLoop(Stmt):
     id: 'Id'
     beg: 'Expr'
     end: 'Expr'
-    block: Block
+    stmt: Stmt
 
 @dataclass
-class LoopKeyword(Stmt):
-    keyword: str
+class Break(Stmt):
+    pass
+
+@dataclass
+class Continue(Stmt):
+    pass
 
 @dataclass
 class Print:
@@ -73,7 +75,7 @@ class UnExpr(Expr):
 
 @dataclass
 class RelationExpr(Expr):
-    type: str
+    op: str
     left: Expr
     right: Expr
 
@@ -81,28 +83,30 @@ class RelationExpr(Expr):
 class Vector(Expr):
     expr_set: List[Expr] = field(default_factory=list)
 
-    def __add__(self, other):
-        self.expr_set += other.expr_set
-        return self
-
-@dataclass
-class Matrix(Expr):
-    vectors: List[Vector] = field(default_factory=list)
-
-    def __add__(self, other):
-        self.vectors += other.vectors
+    def append(self, element):
+        self.expr_set.append(element)
         return self
 
 @dataclass
 class SpecialMatrix(Expr):
-    type: str
     size: Expr
 
 @dataclass
+class Zeros(SpecialMatrix):
+    pass
+
+@dataclass
+class Ones(SpecialMatrix):
+    pass
+
+@dataclass
+class Eye(SpecialMatrix):
+    pass
+
+@dataclass
 class Ref(Expr):
-    matrix: Expr
-    i: Expr
-    j: Expr
+    vector: Expr
+    idxs: Expr
 
 @dataclass
 class Term(Expr):
@@ -112,12 +116,15 @@ class Term(Expr):
 class Id(Term):
     id: str
 
+class Num(Term):
+    pass
+
 @dataclass
-class IntNum(Term):
+class IntNum(Num):
     n: int
 
 @dataclass
-class FloatNum(Term):
+class FloatNum(Num):
     n: float
 
 @dataclass

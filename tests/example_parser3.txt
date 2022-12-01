@@ -17,7 +17,7 @@ else if(N>=0) {
 }
 
 if(N<10) {
-    print "N<10";
+    print "N<10", "Ala ma kota";
 }
 else if(N<=15)
     print "N<=15";

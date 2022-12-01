@@ -8,13 +8,14 @@ class Parser(SlyParser):
     tokens = Scanner.tokens
 
     precedence = (
-        ('left', '=', ADDASSIGN, SUBASSIGN, MULASSIGN, DIVASSIGN),
-        ('nonassoc', IF, WHILE, FOR),
+        ('nonassoc', IFX),
         ('nonassoc', ELSE),
-        ('nonassoc', '<', '>', EQU, NEQ, LEQ, GEQ),
+        ('right', '=', ADDASSIGN, SUBASSIGN, MULASSIGN, DIVASSIGN),
+        ('nonassoc', EQU, NEQ),
+        ('nonassoc', '<', '>', LEQ, GEQ),
         ('left', '+', DOTADD, '-' , DOTSUB),
         ('left', '*', DOTMUL, '/', DOTDIV),
-        ('right', UMINUS),
+        ('right', UPLUS, UMINUS),
         ('left', '\''),
     )
 
@@ -22,74 +23,62 @@ class Parser(SlyParser):
     def program(self, p):
         return AST.AST(p.stmt_set)
 
-    @_('stmt ";"',
-       'stmt \n',
-       'block ";"',
-       'block \n')
+    @_('stmt')
     def stmt_set(self, p):
-       return [p[0]]
+       return [p.stmt]
 
-    @_('expr')
-    def stmt(self, p):
-        return p.expr
-
-    @_('stmt_set stmt ";"',
-       'stmt_set stmt \n',
-       'stmt_set block ";"',
-       'stmt_set block \n')
+    @_('stmt_set stmt')
     def stmt_set(self, p):
         myset = p.stmt_set
-        myset.append(p[1])
+        myset.append(p.stmt)
         return myset
 
-    @_('IF "(" expr ")" block ELSE block')
-    def stmt(self, p):
-        return AST.IfElseStmt(p.expr, p.block0, p.block1)
-
-    @_('IF "(" expr ")" block')
-    def stmt(self, p):
-        return AST.IfStmt(p.expr, p.block)
-
-    @_('WHILE "(" expr ")" block')
-    def stmt(self, p):
-        return AST.WhileLoop(p.expr, p.block)
-
-    @_('FOR ID "=" expr ":" expr block')
-    def stmt(self, p):
-        return AST.ForLoop(AST.Id(p.ID), p.expr0, p.expr1, p.block)
-
-    @_('expr "=" expr')
-    def stmt(self, p):
-        return AST.AssignStmt(p.expr0, p.expr1)
-
-    @_('ID ADDASSIGN expr',
-       'ID SUBASSIGN expr',
-       'ID MULASSIGN expr',
-       'ID DIVASSIGN expr')
-    def stmt(self, p):
-        return AST.AssignStmt(AST.Id(p.ID), AST.BinExpr(p[1][0], AST.Id(p.ID), p.expr))
-
-    @_('BREAK',
-       'CONTINUE')
-    def stmt(self, p):
-        return AST.LoopKeyword(p[0])
-
-    @_('PRINT innerlist')
-    def stmt(self, p):
-        return AST.Print(p.innerlist.expr_set)
-
-    @_('RETURN innerlist')
-    def stmt(self, p):
-        return AST.Return(p.innerlist.expr_set)
-
     @_('"{" stmt_set "}"')
-    def block(self, p):
+    def stmt(self, p):
         return AST.Block(p.stmt_set)
 
-    @_('stmt \n',
-       'stmt ";"')
-    def block(self, p):
-        return AST.Block([p.stmt])
+    @_('IF "(" expr ")" stmt ELSE stmt')
+    def stmt(self, p):
+        return AST.IfElseStmt(p.expr, p.stmt0, p.stmt1)
+
+    @_('IF "(" expr ")" stmt %prec IFX')
+    def stmt(self, p):
+        return AST.IfStmt(p.expr, p.stmt)
+
+    @_('WHILE "(" expr ")" stmt')
+    def stmt(self, p):
+        return AST.WhileLoop(p.expr, p.stmt)
+
+    @_('FOR ID "=" expr ":" expr stmt')
+    def stmt(self, p):
+        return AST.ForLoop(AST.Id(p.ID), p.expr0, p.expr1, p.stmt)
+
+    @_('term "=" expr ";"')
+    def stmt(self, p):
+        return AST.AssignStmt(p.term, p.expr)
+
+    @_('term ADDASSIGN expr ";"',
+       'term SUBASSIGN expr ";"',
+       'term MULASSIGN expr ";"',
+       'term DIVASSIGN expr ";"')
+    def stmt(self, p):
+        return AST.AssignStmt(p.term, AST.BinExpr(p[1][0], p.term, p.expr))
+
+    @_('BREAK ";"')
+    def stmt(self, p):
+        return AST.Break()
+
+    @_('CONTINUE ";"')
+    def stmt(self, p):
+        return AST.Continue()
+
+    @_('PRINT vector ";"')
+    def stmt(self, p):
+        return AST.Print(p.vector.expr_set)
+
+    @_('RETURN vector ";"')
+    def stmt(self, p):
+        return AST.Return(p.vector.expr_set)
 
     @_('expr "+" expr',
        'expr "-" expr',
@@ -102,7 +91,8 @@ class Parser(SlyParser):
     def expr(self, p):
         return AST.BinExpr(p[1], p.expr0, p.expr1)
 
-    @_('"-" expr %prec UMINUS')
+    @_('"+" expr %prec UPLUS',
+       '"-" expr %prec UMINUS')
     def expr(self, p):
         return AST.UnExpr(p[0], p.expr)
 
@@ -127,35 +117,37 @@ class Parser(SlyParser):
     def expr(self, p):
         return p.term
 
-    @_('"[" outerlist "]"')
+    @_('"[" vector "]"')
     def expr(self, p):
-        return p.outerlist
+        return p.vector
 
-    @_('outerlist "," "[" innerlist "]"')
-    def outerlist(self, p):
-        return p.outerlist + AST.Matrix([p.innerlist])
-
-    @_('"[" innerlist "]"')
-    def outerlist(self, p):
-        return AST.Matrix([p.innerlist])
-
-    @_('innerlist "," expr')
-    def innerlist(self, p):
-        return p.innerlist + AST.Vector([p.expr])
+    @_('vector "," expr')
+    def vector(self, p):
+        return p.vector.append(p.expr)
 
     @_('expr')
-    def innerlist(self, p):
+    def vector(self, p):
         return AST.Vector([p.expr])
 
-    @_('expr "[" expr "," expr "]"')
-    def expr(self, p):
-        return AST.Ref(p.expr0, p.expr1, p.expr2)
+    @_('')
+    def vector(self, p):
+        return AST.Vector([])
 
-    @_('ZEROS "(" expr ")"',
-       'ONES "(" expr ")"',
-       'EYE "(" expr ")"')
+    @_('ID "[" vector "]"')
     def term(self, p):
-        return AST.SpecialMatrix(p[0], p.expr)
+        return AST.Ref(AST.Id(p.ID), p.vector)
+
+    @_('ZEROS "(" vector ")"')
+    def term(self, p):
+        return AST.Zeros(p.vector)
+
+    @_('ONES "(" vector ")"')
+    def term(self, p):
+        return AST.Ones(p.vector)
+
+    @_('EYE "(" expr ")"')
+    def term(self, p):
+        return AST.Eye(p.expr)
 
     @_('INTNUM')
     def term(self, p):
