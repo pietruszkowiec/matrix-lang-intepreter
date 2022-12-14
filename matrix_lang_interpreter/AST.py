@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List
 
-
+@dataclass
 class Node:
     pass
 
@@ -13,17 +13,18 @@ class AST(Node):
 class Block(Node):
     stmt_set: List['Stmt']
 
+@dataclass
 class Stmt(Node):
     pass
 
 @dataclass
 class AssignStmt(Stmt):
-    id: 'Term'
+    term: 'Term'
     expr: 'Expr'
 
 @dataclass
 class IfStmt(Stmt):
-    condition: 'Expr'
+    cond: 'Expr'
     stmt: Stmt
 
 @dataclass
@@ -32,30 +33,32 @@ class IfElseStmt(IfStmt):
 
 @dataclass
 class WhileLoop(Stmt):
-    condition: 'Expr'
+    cond: 'Expr'
     stmt: Stmt
 
 @dataclass
 class ForLoop(Stmt):
-    id: 'Id'
+    term: 'Term'
     beg: 'Expr'
     end: 'Expr'
     stmt: Stmt
 
 @dataclass
 class Break(Stmt):
-    pass
+    lineno: int = None
+    index: int = None
 
 @dataclass
 class Continue(Stmt):
-    pass
+    lineno: int = None
+    index: int = None
 
 @dataclass
-class Print:
+class Print(Stmt):
     expr_set: List['Expr']
 
 @dataclass
-class Return:
+class Return(Stmt):
     expr_set: List['Expr']
 
 @dataclass
@@ -105,8 +108,8 @@ class Eye(SpecialMatrix):
 
 @dataclass
 class Ref(Expr):
-    vector: Expr
-    idxs: Expr
+    term: 'Term'
+    idxs: Vector
 
 @dataclass
 class Term(Expr):
@@ -115,6 +118,8 @@ class Term(Expr):
 @dataclass
 class Id(Term):
     id: str
+    lineno: int = None
+    index: int = None
 
 class Num(Term):
     pass
@@ -122,11 +127,17 @@ class Num(Term):
 @dataclass
 class IntNum(Num):
     n: int
+    lineno: int = None
+    index: int = None
 
 @dataclass
 class FloatNum(Num):
     n: float
+    lineno: int = None
+    index: int = None
 
 @dataclass
 class String(Term):
     s: str
+    lineno: int = None
+    index: int = None

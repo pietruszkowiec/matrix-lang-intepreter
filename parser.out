@@ -13,7 +13,7 @@ Rule 9     stmt -> term MULASSIGN expr ;
 Rule 10    stmt -> term SUBASSIGN expr ;
 Rule 11    stmt -> term ADDASSIGN expr ;
 Rule 12    stmt -> term = expr ;
-Rule 13    stmt -> FOR ID = expr : expr stmt
+Rule 13    stmt -> FOR term = expr : expr stmt
 Rule 14    stmt -> WHILE ( expr ) stmt
 Rule 15    stmt -> IF ( expr ) stmt  [precedence=nonassoc, level=1]
 Rule 16    stmt -> IF ( expr ) stmt ELSE stmt  [precedence=nonassoc, level=2]
@@ -48,7 +48,7 @@ Rule 44    term -> INTNUM
 Rule 45    term -> EYE ( expr )
 Rule 46    term -> ONES ( vector )
 Rule 47    term -> ZEROS ( vector )
-Rule 48    term -> ID [ vector ]
+Rule 48    term -> term [ vector ]
 
 Terminals, with rules where they appear:
 
@@ -79,7 +79,7 @@ EYE                  : 45
 FLOATNUM             : 43
 FOR                  : 13
 GEQ                  : 22
-ID                   : 13 41 48
+ID                   : 41
 IF                   : 15 16
 INTNUM               : 44
 LEQ                  : 23
@@ -104,7 +104,7 @@ expr                 : 8 9 10 11 12 13 13 14 15 16 20 20 21 21 22 22 23 23 24 24
 program              : 0
 stmt                 : 2 3 13 14 15 16 16
 stmt_set             : 1 2 17
-term                 : 8 9 10 11 12 19
+term                 : 8 9 10 11 12 13 19 48
 vector               : 4 5 18 40 46 47 48
 
 
@@ -123,7 +123,7 @@ state 0
     (10) stmt -> . term SUBASSIGN expr ;
     (11) stmt -> . term ADDASSIGN expr ;
     (12) stmt -> . term = expr ;
-    (13) stmt -> . FOR ID = expr : expr stmt
+    (13) stmt -> . FOR term = expr : expr stmt
     (14) stmt -> . WHILE ( expr ) stmt
     (15) stmt -> . IF ( expr ) stmt
     (16) stmt -> . IF ( expr ) stmt ELSE stmt
@@ -135,16 +135,16 @@ state 0
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     RETURN          shift and go to state 4
     PRINT           shift and go to state 5
     CONTINUE        shift and go to state 6
     BREAK           shift and go to state 7
     FOR             shift and go to state 9
-    WHILE           shift and go to state 11
-    IF              shift and go to state 12
-    {               shift and go to state 13
-    ID              shift and go to state 10
+    WHILE           shift and go to state 10
+    IF              shift and go to state 11
+    {               shift and go to state 12
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -175,7 +175,7 @@ state 2
     (10) stmt -> . term SUBASSIGN expr ;
     (11) stmt -> . term ADDASSIGN expr ;
     (12) stmt -> . term = expr ;
-    (13) stmt -> . FOR ID = expr : expr stmt
+    (13) stmt -> . FOR term = expr : expr stmt
     (14) stmt -> . WHILE ( expr ) stmt
     (15) stmt -> . IF ( expr ) stmt
     (16) stmt -> . IF ( expr ) stmt ELSE stmt
@@ -187,17 +187,17 @@ state 2
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     $end            reduce using rule 1 (program -> stmt_set .)
     RETURN          shift and go to state 4
     PRINT           shift and go to state 5
     CONTINUE        shift and go to state 6
     BREAK           shift and go to state 7
     FOR             shift and go to state 9
-    WHILE           shift and go to state 11
-    IF              shift and go to state 12
-    {               shift and go to state 13
-    ID              shift and go to state 10
+    WHILE           shift and go to state 10
+    IF              shift and go to state 11
+    {               shift and go to state 12
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -263,14 +263,14 @@ state 4
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     ;               reduce using rule 38 (vector -> .)
     ,               reduce using rule 38 (vector -> .)
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -315,14 +315,14 @@ state 5
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     ;               reduce using rule 38 (vector -> .)
     ,               reduce using rule 38 (vector -> .)
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -353,28 +353,105 @@ state 8
     (10) stmt -> term . SUBASSIGN expr ;
     (11) stmt -> term . ADDASSIGN expr ;
     (12) stmt -> term . = expr ;
+    (48) term -> term . [ vector ]
     DIVASSIGN       shift and go to state 31
     MULASSIGN       shift and go to state 32
     SUBASSIGN       shift and go to state 33
     ADDASSIGN       shift and go to state 34
     =               shift and go to state 35
+    [               shift and go to state 36
 
 
 state 9
 
-    (13) stmt -> FOR . ID = expr : expr stmt
-    ID              shift and go to state 36
+    (13) stmt -> FOR . term = expr : expr stmt
+    (41) term -> . ID
+    (42) term -> . STRING
+    (43) term -> . FLOATNUM
+    (44) term -> . INTNUM
+    (45) term -> . EYE ( expr )
+    (46) term -> . ONES ( vector )
+    (47) term -> . ZEROS ( vector )
+    (48) term -> . term [ vector ]
+    ID              shift and go to state 13
+    STRING          shift and go to state 14
+    FLOATNUM        shift and go to state 15
+    INTNUM          shift and go to state 16
+    EYE             shift and go to state 17
+    ONES            shift and go to state 18
+    ZEROS           shift and go to state 19
 
+    term                           shift and go to state 37
 
 state 10
 
+    (14) stmt -> WHILE . ( expr ) stmt
+    (               shift and go to state 38
+
+
+state 11
+
+    (15) stmt -> IF . ( expr ) stmt
+    (16) stmt -> IF . ( expr ) stmt ELSE stmt
+    (               shift and go to state 39
+
+
+state 12
+
+    (17) stmt -> { . stmt_set }
+    (2) stmt_set -> . stmt_set stmt
+    (3) stmt_set -> . stmt
+    (4) stmt -> . RETURN vector ;
+    (5) stmt -> . PRINT vector ;
+    (6) stmt -> . CONTINUE ;
+    (7) stmt -> . BREAK ;
+    (8) stmt -> . term DIVASSIGN expr ;
+    (9) stmt -> . term MULASSIGN expr ;
+    (10) stmt -> . term SUBASSIGN expr ;
+    (11) stmt -> . term ADDASSIGN expr ;
+    (12) stmt -> . term = expr ;
+    (13) stmt -> . FOR term = expr : expr stmt
+    (14) stmt -> . WHILE ( expr ) stmt
+    (15) stmt -> . IF ( expr ) stmt
+    (16) stmt -> . IF ( expr ) stmt ELSE stmt
+    (17) stmt -> . { stmt_set }
+    (41) term -> . ID
+    (42) term -> . STRING
+    (43) term -> . FLOATNUM
+    (44) term -> . INTNUM
+    (45) term -> . EYE ( expr )
+    (46) term -> . ONES ( vector )
+    (47) term -> . ZEROS ( vector )
+    (48) term -> . term [ vector ]
+    RETURN          shift and go to state 4
+    PRINT           shift and go to state 5
+    CONTINUE        shift and go to state 6
+    BREAK           shift and go to state 7
+    FOR             shift and go to state 9
+    WHILE           shift and go to state 10
+    IF              shift and go to state 11
+    {               shift and go to state 12
+    ID              shift and go to state 13
+    STRING          shift and go to state 14
+    FLOATNUM        shift and go to state 15
+    INTNUM          shift and go to state 16
+    EYE             shift and go to state 17
+    ONES            shift and go to state 18
+    ZEROS           shift and go to state 19
+
+    stmt_set                       shift and go to state 40
+    stmt                           shift and go to state 3
+    term                           shift and go to state 8
+
+state 13
+
     (41) term -> ID .
-    (48) term -> ID . [ vector ]
     DIVASSIGN       reduce using rule 41 (term -> ID .)
     MULASSIGN       reduce using rule 41 (term -> ID .)
     SUBASSIGN       reduce using rule 41 (term -> ID .)
     ADDASSIGN       reduce using rule 41 (term -> ID .)
     =               reduce using rule 41 (term -> ID .)
+    [               reduce using rule 41 (term -> ID .)
     NEQ             reduce using rule 41 (term -> ID .)
     EQU             reduce using rule 41 (term -> ID .)
     GEQ             reduce using rule 41 (term -> ID .)
@@ -410,68 +487,7 @@ state 10
     EYE             reduce using rule 41 (term -> ID .)
     ONES            reduce using rule 41 (term -> ID .)
     ZEROS           reduce using rule 41 (term -> ID .)
-    [               shift and go to state 37
 
-
-state 11
-
-    (14) stmt -> WHILE . ( expr ) stmt
-    (               shift and go to state 38
-
-
-state 12
-
-    (15) stmt -> IF . ( expr ) stmt
-    (16) stmt -> IF . ( expr ) stmt ELSE stmt
-    (               shift and go to state 39
-
-
-state 13
-
-    (17) stmt -> { . stmt_set }
-    (2) stmt_set -> . stmt_set stmt
-    (3) stmt_set -> . stmt
-    (4) stmt -> . RETURN vector ;
-    (5) stmt -> . PRINT vector ;
-    (6) stmt -> . CONTINUE ;
-    (7) stmt -> . BREAK ;
-    (8) stmt -> . term DIVASSIGN expr ;
-    (9) stmt -> . term MULASSIGN expr ;
-    (10) stmt -> . term SUBASSIGN expr ;
-    (11) stmt -> . term ADDASSIGN expr ;
-    (12) stmt -> . term = expr ;
-    (13) stmt -> . FOR ID = expr : expr stmt
-    (14) stmt -> . WHILE ( expr ) stmt
-    (15) stmt -> . IF ( expr ) stmt
-    (16) stmt -> . IF ( expr ) stmt ELSE stmt
-    (17) stmt -> . { stmt_set }
-    (41) term -> . ID
-    (42) term -> . STRING
-    (43) term -> . FLOATNUM
-    (44) term -> . INTNUM
-    (45) term -> . EYE ( expr )
-    (46) term -> . ONES ( vector )
-    (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
-    RETURN          shift and go to state 4
-    PRINT           shift and go to state 5
-    CONTINUE        shift and go to state 6
-    BREAK           shift and go to state 7
-    FOR             shift and go to state 9
-    WHILE           shift and go to state 11
-    IF              shift and go to state 12
-    {               shift and go to state 13
-    ID              shift and go to state 10
-    STRING          shift and go to state 14
-    FLOATNUM        shift and go to state 15
-    INTNUM          shift and go to state 16
-    EYE             shift and go to state 17
-    ONES            shift and go to state 18
-    ZEROS           shift and go to state 19
-
-    stmt_set                       shift and go to state 40
-    stmt                           shift and go to state 3
-    term                           shift and go to state 8
 
 state 14
 
@@ -481,6 +497,7 @@ state 14
     SUBASSIGN       reduce using rule 42 (term -> STRING .)
     ADDASSIGN       reduce using rule 42 (term -> STRING .)
     =               reduce using rule 42 (term -> STRING .)
+    [               reduce using rule 42 (term -> STRING .)
     NEQ             reduce using rule 42 (term -> STRING .)
     EQU             reduce using rule 42 (term -> STRING .)
     GEQ             reduce using rule 42 (term -> STRING .)
@@ -526,6 +543,7 @@ state 15
     SUBASSIGN       reduce using rule 43 (term -> FLOATNUM .)
     ADDASSIGN       reduce using rule 43 (term -> FLOATNUM .)
     =               reduce using rule 43 (term -> FLOATNUM .)
+    [               reduce using rule 43 (term -> FLOATNUM .)
     NEQ             reduce using rule 43 (term -> FLOATNUM .)
     EQU             reduce using rule 43 (term -> FLOATNUM .)
     GEQ             reduce using rule 43 (term -> FLOATNUM .)
@@ -571,6 +589,7 @@ state 16
     SUBASSIGN       reduce using rule 44 (term -> INTNUM .)
     ADDASSIGN       reduce using rule 44 (term -> INTNUM .)
     =               reduce using rule 44 (term -> INTNUM .)
+    [               reduce using rule 44 (term -> INTNUM .)
     NEQ             reduce using rule 44 (term -> INTNUM .)
     EQU             reduce using rule 44 (term -> INTNUM .)
     GEQ             reduce using rule 44 (term -> INTNUM .)
@@ -728,14 +747,14 @@ state 23
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     ]               reduce using rule 38 (vector -> .)
     ,               reduce using rule 38 (vector -> .)
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -750,6 +769,7 @@ state 23
 state 24
 
     (19) expr -> term .
+    (48) term -> term . [ vector ]
     NEQ             reduce using rule 19 (expr -> term .)
     EQU             reduce using rule 19 (expr -> term .)
     GEQ             reduce using rule 19 (expr -> term .)
@@ -785,6 +805,7 @@ state 24
     EYE             reduce using rule 19 (expr -> term .)
     ONES            reduce using rule 19 (expr -> term .)
     ZEROS           reduce using rule 19 (expr -> term .)
+    [               shift and go to state 36
 
 
 state 25
@@ -817,12 +838,12 @@ state 25
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -863,12 +884,12 @@ state 26
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -909,12 +930,12 @@ state 27
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -1009,12 +1030,12 @@ state 31
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -1055,12 +1076,12 @@ state 32
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -1101,12 +1122,12 @@ state 33
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -1147,12 +1168,12 @@ state 34
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -1193,12 +1214,12 @@ state 35
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -1211,13 +1232,7 @@ state 35
 
 state 36
 
-    (13) stmt -> FOR ID . = expr : expr stmt
-    =               shift and go to state 71
-
-
-state 37
-
-    (48) term -> ID [ . vector ]
+    (48) term -> term [ . vector ]
     (38) vector -> .
     (39) vector -> . expr
     (40) vector -> . vector , expr
@@ -1248,14 +1263,14 @@ state 37
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     ]               reduce using rule 38 (vector -> .)
     ,               reduce using rule 38 (vector -> .)
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -1263,9 +1278,17 @@ state 37
     ONES            shift and go to state 18
     ZEROS           shift and go to state 19
 
-    vector                         shift and go to state 72
-    expr                           shift and go to state 22
     term                           shift and go to state 24
+    vector                         shift and go to state 71
+    expr                           shift and go to state 22
+
+state 37
+
+    (13) stmt -> FOR term . = expr : expr stmt
+    (48) term -> term . [ vector ]
+    =               shift and go to state 72
+    [               shift and go to state 36
+
 
 state 38
 
@@ -1297,12 +1320,12 @@ state 38
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -1344,12 +1367,12 @@ state 39
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -1373,7 +1396,7 @@ state 40
     (10) stmt -> . term SUBASSIGN expr ;
     (11) stmt -> . term ADDASSIGN expr ;
     (12) stmt -> . term = expr ;
-    (13) stmt -> . FOR ID = expr : expr stmt
+    (13) stmt -> . FOR term = expr : expr stmt
     (14) stmt -> . WHILE ( expr ) stmt
     (15) stmt -> . IF ( expr ) stmt
     (16) stmt -> . IF ( expr ) stmt ELSE stmt
@@ -1385,17 +1408,17 @@ state 40
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     }               shift and go to state 75
     RETURN          shift and go to state 4
     PRINT           shift and go to state 5
     CONTINUE        shift and go to state 6
     BREAK           shift and go to state 7
     FOR             shift and go to state 9
-    WHILE           shift and go to state 11
-    IF              shift and go to state 12
-    {               shift and go to state 13
-    ID              shift and go to state 10
+    WHILE           shift and go to state 10
+    IF              shift and go to state 11
+    {               shift and go to state 12
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -1436,12 +1459,12 @@ state 41
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -1485,14 +1508,14 @@ state 42
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     )               reduce using rule 38 (vector -> .)
     ,               reduce using rule 38 (vector -> .)
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -1537,14 +1560,14 @@ state 43
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     )               reduce using rule 38 (vector -> .)
     ,               reduce using rule 38 (vector -> .)
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -1609,12 +1632,12 @@ state 45
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -1655,12 +1678,12 @@ state 46
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -1701,12 +1724,12 @@ state 47
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -1747,12 +1770,12 @@ state 48
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -1793,12 +1816,12 @@ state 49
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -1839,12 +1862,12 @@ state 50
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -1885,12 +1908,12 @@ state 51
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -1971,12 +1994,12 @@ state 53
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -2017,12 +2040,12 @@ state 54
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -2063,12 +2086,12 @@ state 55
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -2109,12 +2132,12 @@ state 56
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -2155,12 +2178,12 @@ state 57
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -2201,12 +2224,12 @@ state 58
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -2247,12 +2270,12 @@ state 59
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -2293,12 +2316,12 @@ state 60
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -2668,7 +2691,15 @@ state 70
 
 state 71
 
-    (13) stmt -> FOR ID = . expr : expr stmt
+    (48) term -> term [ vector . ]
+    (40) vector -> vector . , expr
+    ]               shift and go to state 101
+    ,               shift and go to state 45
+
+
+state 72
+
+    (13) stmt -> FOR term = . expr : expr stmt
     (18) expr -> . [ vector ]
     (19) expr -> . term
     (20) expr -> . expr NEQ expr
@@ -2696,12 +2727,12 @@ state 71
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -2709,16 +2740,8 @@ state 71
     ONES            shift and go to state 18
     ZEROS           shift and go to state 19
 
-    expr                           shift and go to state 101
     term                           shift and go to state 24
-
-state 72
-
-    (48) term -> ID [ vector . ]
-    (40) vector -> vector . , expr
-    ]               shift and go to state 102
-    ,               shift and go to state 45
-
+    expr                           shift and go to state 102
 
 state 73
 
@@ -3874,7 +3897,53 @@ state 100
 
 state 101
 
-    (13) stmt -> FOR ID = expr . : expr stmt
+    (48) term -> term [ vector ] .
+    DIVASSIGN       reduce using rule 48 (term -> term [ vector ] .)
+    MULASSIGN       reduce using rule 48 (term -> term [ vector ] .)
+    SUBASSIGN       reduce using rule 48 (term -> term [ vector ] .)
+    ADDASSIGN       reduce using rule 48 (term -> term [ vector ] .)
+    =               reduce using rule 48 (term -> term [ vector ] .)
+    [               reduce using rule 48 (term -> term [ vector ] .)
+    NEQ             reduce using rule 48 (term -> term [ vector ] .)
+    EQU             reduce using rule 48 (term -> term [ vector ] .)
+    GEQ             reduce using rule 48 (term -> term [ vector ] .)
+    LEQ             reduce using rule 48 (term -> term [ vector ] .)
+    >               reduce using rule 48 (term -> term [ vector ] .)
+    <               reduce using rule 48 (term -> term [ vector ] .)
+    '               reduce using rule 48 (term -> term [ vector ] .)
+    DOTDIV          reduce using rule 48 (term -> term [ vector ] .)
+    DOTMUL          reduce using rule 48 (term -> term [ vector ] .)
+    DOTSUB          reduce using rule 48 (term -> term [ vector ] .)
+    DOTADD          reduce using rule 48 (term -> term [ vector ] .)
+    /               reduce using rule 48 (term -> term [ vector ] .)
+    *               reduce using rule 48 (term -> term [ vector ] .)
+    -               reduce using rule 48 (term -> term [ vector ] .)
+    +               reduce using rule 48 (term -> term [ vector ] .)
+    ;               reduce using rule 48 (term -> term [ vector ] .)
+    ,               reduce using rule 48 (term -> term [ vector ] .)
+    ]               reduce using rule 48 (term -> term [ vector ] .)
+    )               reduce using rule 48 (term -> term [ vector ] .)
+    :               reduce using rule 48 (term -> term [ vector ] .)
+    RETURN          reduce using rule 48 (term -> term [ vector ] .)
+    PRINT           reduce using rule 48 (term -> term [ vector ] .)
+    CONTINUE        reduce using rule 48 (term -> term [ vector ] .)
+    BREAK           reduce using rule 48 (term -> term [ vector ] .)
+    FOR             reduce using rule 48 (term -> term [ vector ] .)
+    WHILE           reduce using rule 48 (term -> term [ vector ] .)
+    IF              reduce using rule 48 (term -> term [ vector ] .)
+    {               reduce using rule 48 (term -> term [ vector ] .)
+    ID              reduce using rule 48 (term -> term [ vector ] .)
+    STRING          reduce using rule 48 (term -> term [ vector ] .)
+    FLOATNUM        reduce using rule 48 (term -> term [ vector ] .)
+    INTNUM          reduce using rule 48 (term -> term [ vector ] .)
+    EYE             reduce using rule 48 (term -> term [ vector ] .)
+    ONES            reduce using rule 48 (term -> term [ vector ] .)
+    ZEROS           reduce using rule 48 (term -> term [ vector ] .)
+
+
+state 102
+
+    (13) stmt -> FOR term = expr . : expr stmt
     (20) expr -> expr . NEQ expr
     (21) expr -> expr . EQU expr
     (22) expr -> expr . GEQ expr
@@ -3908,51 +3977,6 @@ state 101
     +               shift and go to state 60
 
 
-state 102
-
-    (48) term -> ID [ vector ] .
-    DIVASSIGN       reduce using rule 48 (term -> ID [ vector ] .)
-    MULASSIGN       reduce using rule 48 (term -> ID [ vector ] .)
-    SUBASSIGN       reduce using rule 48 (term -> ID [ vector ] .)
-    ADDASSIGN       reduce using rule 48 (term -> ID [ vector ] .)
-    =               reduce using rule 48 (term -> ID [ vector ] .)
-    NEQ             reduce using rule 48 (term -> ID [ vector ] .)
-    EQU             reduce using rule 48 (term -> ID [ vector ] .)
-    GEQ             reduce using rule 48 (term -> ID [ vector ] .)
-    LEQ             reduce using rule 48 (term -> ID [ vector ] .)
-    >               reduce using rule 48 (term -> ID [ vector ] .)
-    <               reduce using rule 48 (term -> ID [ vector ] .)
-    '               reduce using rule 48 (term -> ID [ vector ] .)
-    DOTDIV          reduce using rule 48 (term -> ID [ vector ] .)
-    DOTMUL          reduce using rule 48 (term -> ID [ vector ] .)
-    DOTSUB          reduce using rule 48 (term -> ID [ vector ] .)
-    DOTADD          reduce using rule 48 (term -> ID [ vector ] .)
-    /               reduce using rule 48 (term -> ID [ vector ] .)
-    *               reduce using rule 48 (term -> ID [ vector ] .)
-    -               reduce using rule 48 (term -> ID [ vector ] .)
-    +               reduce using rule 48 (term -> ID [ vector ] .)
-    ;               reduce using rule 48 (term -> ID [ vector ] .)
-    ,               reduce using rule 48 (term -> ID [ vector ] .)
-    ]               reduce using rule 48 (term -> ID [ vector ] .)
-    )               reduce using rule 48 (term -> ID [ vector ] .)
-    :               reduce using rule 48 (term -> ID [ vector ] .)
-    RETURN          reduce using rule 48 (term -> ID [ vector ] .)
-    PRINT           reduce using rule 48 (term -> ID [ vector ] .)
-    CONTINUE        reduce using rule 48 (term -> ID [ vector ] .)
-    BREAK           reduce using rule 48 (term -> ID [ vector ] .)
-    FOR             reduce using rule 48 (term -> ID [ vector ] .)
-    WHILE           reduce using rule 48 (term -> ID [ vector ] .)
-    IF              reduce using rule 48 (term -> ID [ vector ] .)
-    {               reduce using rule 48 (term -> ID [ vector ] .)
-    ID              reduce using rule 48 (term -> ID [ vector ] .)
-    STRING          reduce using rule 48 (term -> ID [ vector ] .)
-    FLOATNUM        reduce using rule 48 (term -> ID [ vector ] .)
-    INTNUM          reduce using rule 48 (term -> ID [ vector ] .)
-    EYE             reduce using rule 48 (term -> ID [ vector ] .)
-    ONES            reduce using rule 48 (term -> ID [ vector ] .)
-    ZEROS           reduce using rule 48 (term -> ID [ vector ] .)
-
-
 state 103
 
     (14) stmt -> WHILE ( expr ) . stmt
@@ -3965,7 +3989,7 @@ state 103
     (10) stmt -> . term SUBASSIGN expr ;
     (11) stmt -> . term ADDASSIGN expr ;
     (12) stmt -> . term = expr ;
-    (13) stmt -> . FOR ID = expr : expr stmt
+    (13) stmt -> . FOR term = expr : expr stmt
     (14) stmt -> . WHILE ( expr ) stmt
     (15) stmt -> . IF ( expr ) stmt
     (16) stmt -> . IF ( expr ) stmt ELSE stmt
@@ -3977,16 +4001,16 @@ state 103
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     RETURN          shift and go to state 4
     PRINT           shift and go to state 5
     CONTINUE        shift and go to state 6
     BREAK           shift and go to state 7
     FOR             shift and go to state 9
-    WHILE           shift and go to state 11
-    IF              shift and go to state 12
-    {               shift and go to state 13
-    ID              shift and go to state 10
+    WHILE           shift and go to state 10
+    IF              shift and go to state 11
+    {               shift and go to state 12
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -4010,7 +4034,7 @@ state 104
     (10) stmt -> . term SUBASSIGN expr ;
     (11) stmt -> . term ADDASSIGN expr ;
     (12) stmt -> . term = expr ;
-    (13) stmt -> . FOR ID = expr : expr stmt
+    (13) stmt -> . FOR term = expr : expr stmt
     (14) stmt -> . WHILE ( expr ) stmt
     (15) stmt -> . IF ( expr ) stmt
     (16) stmt -> . IF ( expr ) stmt ELSE stmt
@@ -4022,16 +4046,16 @@ state 104
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     RETURN          shift and go to state 4
     PRINT           shift and go to state 5
     CONTINUE        shift and go to state 6
     BREAK           shift and go to state 7
     FOR             shift and go to state 9
-    WHILE           shift and go to state 11
-    IF              shift and go to state 12
-    {               shift and go to state 13
-    ID              shift and go to state 10
+    WHILE           shift and go to state 10
+    IF              shift and go to state 11
+    {               shift and go to state 12
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -4050,6 +4074,7 @@ state 105
     SUBASSIGN       reduce using rule 45 (term -> EYE ( expr ) .)
     ADDASSIGN       reduce using rule 45 (term -> EYE ( expr ) .)
     =               reduce using rule 45 (term -> EYE ( expr ) .)
+    [               reduce using rule 45 (term -> EYE ( expr ) .)
     NEQ             reduce using rule 45 (term -> EYE ( expr ) .)
     EQU             reduce using rule 45 (term -> EYE ( expr ) .)
     GEQ             reduce using rule 45 (term -> EYE ( expr ) .)
@@ -4095,6 +4120,7 @@ state 106
     SUBASSIGN       reduce using rule 46 (term -> ONES ( vector ) .)
     ADDASSIGN       reduce using rule 46 (term -> ONES ( vector ) .)
     =               reduce using rule 46 (term -> ONES ( vector ) .)
+    [               reduce using rule 46 (term -> ONES ( vector ) .)
     NEQ             reduce using rule 46 (term -> ONES ( vector ) .)
     EQU             reduce using rule 46 (term -> ONES ( vector ) .)
     GEQ             reduce using rule 46 (term -> ONES ( vector ) .)
@@ -4140,6 +4166,7 @@ state 107
     SUBASSIGN       reduce using rule 47 (term -> ZEROS ( vector ) .)
     ADDASSIGN       reduce using rule 47 (term -> ZEROS ( vector ) .)
     =               reduce using rule 47 (term -> ZEROS ( vector ) .)
+    [               reduce using rule 47 (term -> ZEROS ( vector ) .)
     NEQ             reduce using rule 47 (term -> ZEROS ( vector ) .)
     EQU             reduce using rule 47 (term -> ZEROS ( vector ) .)
     GEQ             reduce using rule 47 (term -> ZEROS ( vector ) .)
@@ -4179,7 +4206,7 @@ state 107
 
 state 108
 
-    (13) stmt -> FOR ID = expr : . expr stmt
+    (13) stmt -> FOR term = expr : . expr stmt
     (18) expr -> . [ vector ]
     (19) expr -> . term
     (20) expr -> . expr NEQ expr
@@ -4207,12 +4234,12 @@ state 108
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     [               shift and go to state 23
     (               shift and go to state 25
     -               shift and go to state 26
     +               shift and go to state 27
-    ID              shift and go to state 10
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -4220,8 +4247,8 @@ state 108
     ONES            shift and go to state 18
     ZEROS           shift and go to state 19
 
-    expr                           shift and go to state 111
     term                           shift and go to state 24
+    expr                           shift and go to state 111
 
 state 109
 
@@ -4272,7 +4299,7 @@ state 110
 
 state 111
 
-    (13) stmt -> FOR ID = expr : expr . stmt
+    (13) stmt -> FOR term = expr : expr . stmt
     (20) expr -> expr . NEQ expr
     (21) expr -> expr . EQU expr
     (22) expr -> expr . GEQ expr
@@ -4297,7 +4324,7 @@ state 111
     (10) stmt -> . term SUBASSIGN expr ;
     (11) stmt -> . term ADDASSIGN expr ;
     (12) stmt -> . term = expr ;
-    (13) stmt -> . FOR ID = expr : expr stmt
+    (13) stmt -> . FOR term = expr : expr stmt
     (14) stmt -> . WHILE ( expr ) stmt
     (15) stmt -> . IF ( expr ) stmt
     (16) stmt -> . IF ( expr ) stmt ELSE stmt
@@ -4309,7 +4336,7 @@ state 111
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     NEQ             shift and go to state 46
     EQU             shift and go to state 47
     GEQ             shift and go to state 48
@@ -4330,10 +4357,10 @@ state 111
     CONTINUE        shift and go to state 6
     BREAK           shift and go to state 7
     FOR             shift and go to state 9
-    WHILE           shift and go to state 11
-    IF              shift and go to state 12
-    {               shift and go to state 13
-    ID              shift and go to state 10
+    WHILE           shift and go to state 10
+    IF              shift and go to state 11
+    {               shift and go to state 12
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -4341,8 +4368,8 @@ state 111
     ONES            shift and go to state 18
     ZEROS           shift and go to state 19
 
-    stmt                           shift and go to state 113
     term                           shift and go to state 8
+    stmt                           shift and go to state 113
 
 state 112
 
@@ -4356,7 +4383,7 @@ state 112
     (10) stmt -> . term SUBASSIGN expr ;
     (11) stmt -> . term ADDASSIGN expr ;
     (12) stmt -> . term = expr ;
-    (13) stmt -> . FOR ID = expr : expr stmt
+    (13) stmt -> . FOR term = expr : expr stmt
     (14) stmt -> . WHILE ( expr ) stmt
     (15) stmt -> . IF ( expr ) stmt
     (16) stmt -> . IF ( expr ) stmt ELSE stmt
@@ -4368,16 +4395,16 @@ state 112
     (45) term -> . EYE ( expr )
     (46) term -> . ONES ( vector )
     (47) term -> . ZEROS ( vector )
-    (48) term -> . ID [ vector ]
+    (48) term -> . term [ vector ]
     RETURN          shift and go to state 4
     PRINT           shift and go to state 5
     CONTINUE        shift and go to state 6
     BREAK           shift and go to state 7
     FOR             shift and go to state 9
-    WHILE           shift and go to state 11
-    IF              shift and go to state 12
-    {               shift and go to state 13
-    ID              shift and go to state 10
+    WHILE           shift and go to state 10
+    IF              shift and go to state 11
+    {               shift and go to state 12
+    ID              shift and go to state 13
     STRING          shift and go to state 14
     FLOATNUM        shift and go to state 15
     INTNUM          shift and go to state 16
@@ -4390,25 +4417,25 @@ state 112
 
 state 113
 
-    (13) stmt -> FOR ID = expr : expr stmt .
-    RETURN          reduce using rule 13 (stmt -> FOR ID = expr : expr stmt .)
-    PRINT           reduce using rule 13 (stmt -> FOR ID = expr : expr stmt .)
-    CONTINUE        reduce using rule 13 (stmt -> FOR ID = expr : expr stmt .)
-    BREAK           reduce using rule 13 (stmt -> FOR ID = expr : expr stmt .)
-    FOR             reduce using rule 13 (stmt -> FOR ID = expr : expr stmt .)
-    WHILE           reduce using rule 13 (stmt -> FOR ID = expr : expr stmt .)
-    IF              reduce using rule 13 (stmt -> FOR ID = expr : expr stmt .)
-    {               reduce using rule 13 (stmt -> FOR ID = expr : expr stmt .)
-    ID              reduce using rule 13 (stmt -> FOR ID = expr : expr stmt .)
-    STRING          reduce using rule 13 (stmt -> FOR ID = expr : expr stmt .)
-    FLOATNUM        reduce using rule 13 (stmt -> FOR ID = expr : expr stmt .)
-    INTNUM          reduce using rule 13 (stmt -> FOR ID = expr : expr stmt .)
-    EYE             reduce using rule 13 (stmt -> FOR ID = expr : expr stmt .)
-    ONES            reduce using rule 13 (stmt -> FOR ID = expr : expr stmt .)
-    ZEROS           reduce using rule 13 (stmt -> FOR ID = expr : expr stmt .)
-    $end            reduce using rule 13 (stmt -> FOR ID = expr : expr stmt .)
-    }               reduce using rule 13 (stmt -> FOR ID = expr : expr stmt .)
-    ELSE            reduce using rule 13 (stmt -> FOR ID = expr : expr stmt .)
+    (13) stmt -> FOR term = expr : expr stmt .
+    RETURN          reduce using rule 13 (stmt -> FOR term = expr : expr stmt .)
+    PRINT           reduce using rule 13 (stmt -> FOR term = expr : expr stmt .)
+    CONTINUE        reduce using rule 13 (stmt -> FOR term = expr : expr stmt .)
+    BREAK           reduce using rule 13 (stmt -> FOR term = expr : expr stmt .)
+    FOR             reduce using rule 13 (stmt -> FOR term = expr : expr stmt .)
+    WHILE           reduce using rule 13 (stmt -> FOR term = expr : expr stmt .)
+    IF              reduce using rule 13 (stmt -> FOR term = expr : expr stmt .)
+    {               reduce using rule 13 (stmt -> FOR term = expr : expr stmt .)
+    ID              reduce using rule 13 (stmt -> FOR term = expr : expr stmt .)
+    STRING          reduce using rule 13 (stmt -> FOR term = expr : expr stmt .)
+    FLOATNUM        reduce using rule 13 (stmt -> FOR term = expr : expr stmt .)
+    INTNUM          reduce using rule 13 (stmt -> FOR term = expr : expr stmt .)
+    EYE             reduce using rule 13 (stmt -> FOR term = expr : expr stmt .)
+    ONES            reduce using rule 13 (stmt -> FOR term = expr : expr stmt .)
+    ZEROS           reduce using rule 13 (stmt -> FOR term = expr : expr stmt .)
+    $end            reduce using rule 13 (stmt -> FOR term = expr : expr stmt .)
+    }               reduce using rule 13 (stmt -> FOR term = expr : expr stmt .)
+    ELSE            reduce using rule 13 (stmt -> FOR term = expr : expr stmt .)
 
 
 state 114

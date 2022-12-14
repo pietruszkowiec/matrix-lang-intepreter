@@ -21,14 +21,14 @@ class TreePrinter:
     def printTree(self, indent):
         TreePrinter.printIndent(indent)
         print('=')
-        self.id.printTree(indent+1)
+        self.term.printTree(indent+1)
         self.expr.printTree(indent+1)
 
     @addToClass(AST.IfStmt)
     def printTree(self, indent):
         TreePrinter.printIndent(indent)
         print('IF')
-        self.condition.printTree(indent+1)
+        self.cond.printTree(indent+1)
 
         TreePrinter.printIndent(indent)
         print('THEN')
@@ -38,7 +38,7 @@ class TreePrinter:
     def printTree(self, indent):
         TreePrinter.printIndent(indent)
         print('IF')
-        self.condition.printTree(indent+1)
+        self.cond.printTree(indent+1)
 
         TreePrinter.printIndent(indent)
         print('THEN')
@@ -52,7 +52,7 @@ class TreePrinter:
     def printTree(self, indent):
         TreePrinter.printIndent(indent)
         print('WHILE')
-        self.condition.printTree(indent+1)
+        self.cond.printTree(indent+1)
 
         self.stmt.printTree(indent+1)
 
@@ -60,7 +60,7 @@ class TreePrinter:
     def printTree(self, indent):
         TreePrinter.printIndent(indent)
         print('FOR')
-        self.id.printTree(indent+1)
+        self.term.printTree(indent+1)
 
         TreePrinter.printIndent(indent+1)
         print('RANGE')
@@ -139,7 +139,7 @@ class TreePrinter:
         TreePrinter.printIndent(indent)
         print('REF')
 
-        self.vector.printTree(indent+1)
+        self.term.printTree(indent+1)
         self.idxs.printTree(indent+1)
 
     @addToClass(AST.Id)

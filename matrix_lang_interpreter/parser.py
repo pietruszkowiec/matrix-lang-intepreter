@@ -49,9 +49,9 @@ class Parser(SlyParser):
     def stmt(self, p):
         return AST.WhileLoop(p.expr, p.stmt)
 
-    @_('FOR ID "=" expr ":" expr stmt')
+    @_('FOR term "=" expr ":" expr stmt')
     def stmt(self, p):
-        return AST.ForLoop(AST.Id(p.ID), p.expr0, p.expr1, p.stmt)
+        return AST.ForLoop(p.term, p.expr0, p.expr1, p.stmt)
 
     @_('term "=" expr ";"')
     def stmt(self, p):
@@ -66,11 +66,11 @@ class Parser(SlyParser):
 
     @_('BREAK ";"')
     def stmt(self, p):
-        return AST.Break()
+        return AST.Break(p.lineno, p.index)
 
     @_('CONTINUE ";"')
     def stmt(self, p):
-        return AST.Continue()
+        return AST.Continue(p.lineno,p.index)
 
     @_('PRINT vector ";"')
     def stmt(self, p):
@@ -133,9 +133,9 @@ class Parser(SlyParser):
     def vector(self, p):
         return AST.Vector([])
 
-    @_('ID "[" vector "]"')
+    @_('term "[" vector "]"')
     def term(self, p):
-        return AST.Ref(AST.Id(p.ID), p.vector)
+        return AST.Ref(p.term, p.vector)
 
     @_('ZEROS "(" vector ")"')
     def term(self, p):
@@ -151,16 +151,16 @@ class Parser(SlyParser):
 
     @_('INTNUM')
     def term(self, p):
-        return AST.IntNum(p.INTNUM)
+        return AST.IntNum(p.INTNUM, p.lineno, p.index)
 
     @_('FLOATNUM')
     def term(self, p):
-        return AST.FloatNum(p.FLOATNUM)
+        return AST.FloatNum(p.FLOATNUM, p.lineno, p.index)
 
     @_('STRING')
     def term(self, p):
-        return AST.String(p.STRING)
+        return AST.String(p.STRING, p.lineno, p.index)
 
     @_('ID')
     def term(self, p):
-        return AST.Id(p.ID)
+        return AST.Id(p.ID, p.lineno, p.index)

@@ -7,16 +7,29 @@ from matrix_lang_interpreter.add_to_class import addToClass
 
 @addToClass(IntNum)
 def __eq__(self, other):
-    if type(other) == int:
+    if isinstance(other, int):
         return self.n == other
     return self.n == other.n
 
 @addToClass(FloatNum)
 def __eq__(self, other):
-    if type(other) == float:
+    if isinstance(other, float):
         return self.n == other
     return self.n == other.n
 
+@addToClass(Id)
+def __eq__(self, other):
+    if isinstance(other, Id):
+        return self.id == other.id
+    return False
+
+@addToClass(Break)
+def __eq__(self, other):
+    return isinstance(other, Break)
+
+@addToClass(Continue)
+def __eq__(self, other):
+    return isinstance(other, Continue)
 
 @pytest.mark.parametrize('test_input, expected', [
     ('x = 1 + 2;', BinExpr('+', 1, 2)),
