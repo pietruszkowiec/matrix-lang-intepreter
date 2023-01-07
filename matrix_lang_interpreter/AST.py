@@ -19,7 +19,7 @@ class Stmt(Node):
 
 @dataclass
 class AssignStmt(Stmt):
-    term: 'Term'
+    lvalue: 'LValue'
     expr: 'Expr'
 
 @dataclass
@@ -38,7 +38,7 @@ class WhileLoop(Stmt):
 
 @dataclass
 class ForLoop(Stmt):
-    term: 'Term'
+    id: 'Id'
     beg: 'Expr'
     end: 'Expr'
     stmt: Stmt
@@ -46,12 +46,10 @@ class ForLoop(Stmt):
 @dataclass
 class Break(Stmt):
     lineno: int = None
-    index: int = None
 
 @dataclass
 class Continue(Stmt):
     lineno: int = None
-    index: int = None
 
 @dataclass
 class Print(Stmt):
@@ -107,19 +105,22 @@ class Eye(SpecialMatrix):
     pass
 
 @dataclass
-class Ref(Expr):
-    term: 'Term'
-    idxs: Vector
-
-@dataclass
 class Term(Expr):
     pass
 
 @dataclass
-class Id(Term):
+class LValue(Term):
+    pass
+
+@dataclass
+class Ref(LValue):
+    term: 'Term'
+    idxs: Vector
+
+@dataclass
+class Id(LValue):
     id: str
     lineno: int = None
-    index: int = None
 
 class Num(Term):
     pass
@@ -128,16 +129,13 @@ class Num(Term):
 class IntNum(Num):
     n: int
     lineno: int = None
-    index: int = None
 
 @dataclass
 class FloatNum(Num):
     n: float
     lineno: int = None
-    index: int = None
 
 @dataclass
 class String(Term):
     s: str
     lineno: int = None
-    index: int = None

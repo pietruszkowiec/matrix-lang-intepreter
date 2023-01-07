@@ -21,7 +21,7 @@ class TreePrinter:
     def printTree(self, indent):
         TreePrinter.printIndent(indent)
         print('=')
-        self.term.printTree(indent+1)
+        self.lvalue.printTree(indent+1)
         self.expr.printTree(indent+1)
 
     @addToClass(AST.IfStmt)
@@ -60,7 +60,7 @@ class TreePrinter:
     def printTree(self, indent):
         TreePrinter.printIndent(indent)
         print('FOR')
-        self.term.printTree(indent+1)
+        self.id.printTree(indent+1)
 
         TreePrinter.printIndent(indent+1)
         print('RANGE')

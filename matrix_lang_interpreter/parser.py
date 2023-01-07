@@ -13,8 +13,8 @@ class Parser(SlyParser):
         ('right', '=', ADDASSIGN, SUBASSIGN, MULASSIGN, DIVASSIGN),
         ('nonassoc', EQU, NEQ),
         ('nonassoc', '<', '>', LEQ, GEQ),
-        ('left', '+', DOTADD, '-' , DOTSUB),
-        ('left', '*', DOTMUL, '/', DOTDIV),
+        ('left', '+', '-'),
+        ('left', '*', '/'),
         ('right', UPLUS, UMINUS),
         ('left', '\''),
     )
@@ -49,28 +49,28 @@ class Parser(SlyParser):
     def stmt(self, p):
         return AST.WhileLoop(p.expr, p.stmt)
 
-    @_('FOR term "=" expr ":" expr stmt')
+    @_('FOR ID "=" expr ":" expr stmt')
     def stmt(self, p):
-        return AST.ForLoop(p.term, p.expr0, p.expr1, p.stmt)
+        return AST.ForLoop(AST.Id(p.ID, p.lineno), p.expr0, p.expr1, p.stmt)
 
-    @_('term "=" expr ";"')
+    @_('lvalue "=" expr ";"')
     def stmt(self, p):
-        return AST.AssignStmt(p.term, p.expr)
+        return AST.AssignStmt(p.lvalue, p.expr)
 
-    @_('term ADDASSIGN expr ";"',
-       'term SUBASSIGN expr ";"',
-       'term MULASSIGN expr ";"',
-       'term DIVASSIGN expr ";"')
+    @_('lvalue ADDASSIGN expr ";"',
+       'lvalue SUBASSIGN expr ";"',
+       'lvalue MULASSIGN expr ";"',
+       'lvalue DIVASSIGN expr ";"')
     def stmt(self, p):
-        return AST.AssignStmt(p.term, AST.BinExpr(p[1][0], p.term, p.expr))
+        return AST.AssignStmt(p.lvalue, AST.BinExpr(p[1][0], p.lvalue, p.expr))
 
     @_('BREAK ";"')
     def stmt(self, p):
-        return AST.Break(p.lineno, p.index)
+        return AST.Break(p.lineno)
 
     @_('CONTINUE ";"')
     def stmt(self, p):
-        return AST.Continue(p.lineno,p.index)
+        return AST.Continue(p.lineno)
 
     @_('PRINT vector ";"')
     def stmt(self, p):
@@ -83,11 +83,7 @@ class Parser(SlyParser):
     @_('expr "+" expr',
        'expr "-" expr',
        'expr "*" expr',
-       'expr "/" expr',
-       'expr DOTADD expr',
-       'expr DOTSUB expr',
-       'expr DOTMUL expr',
-       'expr DOTDIV expr')
+       'expr "/" expr')
     def expr(self, p):
         return AST.BinExpr(p[1], p.expr0, p.expr1)
 
@@ -133,9 +129,17 @@ class Parser(SlyParser):
     def vector(self, p):
         return AST.Vector([])
 
-    @_('term "[" vector "]"')
+    @_('lvalue')
     def term(self, p):
+        return p.lvalue
+
+    @_('term "[" vector "]"')
+    def lvalue(self, p):
         return AST.Ref(p.term, p.vector)
+
+    @_('ID')
+    def lvalue(self, p):
+        return AST.Id(p.ID, p.lineno)
 
     @_('ZEROS "(" vector ")"')
     def term(self, p):
@@ -151,16 +155,12 @@ class Parser(SlyParser):
 
     @_('INTNUM')
     def term(self, p):
-        return AST.IntNum(p.INTNUM, p.lineno, p.index)
+        return AST.IntNum(p.INTNUM, p.lineno)
 
     @_('FLOATNUM')
     def term(self, p):
-        return AST.FloatNum(p.FLOATNUM, p.lineno, p.index)
+        return AST.FloatNum(p.FLOATNUM, p.lineno)
 
     @_('STRING')
     def term(self, p):
-        return AST.String(p.STRING, p.lineno, p.index)
-
-    @_('ID')
-    def term(self, p):
-        return AST.Id(p.ID, p.lineno, p.index)
+        return AST.String(p.STRING, p.lineno)
