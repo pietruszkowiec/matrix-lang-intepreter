@@ -15,9 +15,8 @@ def test_literals():
 
 def test_operators():
     scanner = Scanner()
-    text = ".+ .- .* ./ += -= *= /= <= >= != =="
+    text = "+= -= *= /= <= >= != =="
     expected_tokens = [
-        ('DOTADD', '.+'), ('DOTSUB', '.-'), ('DOTMUL', '.*'), ('DOTDIV', './'),
         ('ADDASSIGN', '+='), ('SUBASSIGN', '-='), ('MULASSIGN', '*='),
         ('DIVASSIGN', '/='), ('LEQ', '<='), ('GEQ', '>='),
         ('NEQ', '!='), ('EQU', '==')

@@ -3,7 +3,6 @@ from sly import Lexer
 
 class Scanner(Lexer):
     tokens = {
-        DOTADD, DOTSUB, DOTMUL, DOTDIV,
         ADDASSIGN, SUBASSIGN, MULASSIGN, DIVASSIGN,
         LEQ, GEQ, NEQ, EQU,
         IF, ELSE, FOR, WHILE, BREAK, CONTINUE,
@@ -16,11 +15,6 @@ class Scanner(Lexer):
         '(', ')', '[', ']', '{', '}',
         ':', '\'', ',', ';', '<', '>'
     }
-
-    DOTADD = r'\.\+'
-    DOTSUB = r'\.-'
-    DOTMUL = r'\.\*'
-    DOTDIV = r'\./'
 
     ADDASSIGN = r'\+='
     SUBASSIGN = r'-='
