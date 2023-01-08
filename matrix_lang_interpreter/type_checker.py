@@ -64,15 +64,16 @@ class TypeChecker(NodeVisitor):
 
     def visit_AssignStmt(self, node: AST.AssignStmt) -> WriterMaybe[Symbol]:
         def check_assignment(expr: Symbol, lvalue: VariableSymbol) -> WriterMaybe[Symbol]:
+            lineno = expr.lineno or lvalue.lineno
             if not isinstance(lvalue, VariableSymbol):
-                return WriterNothing(f'{expr.lineno}: Assignment: lvalue is not VariableSymbol - not implemented')
+                return WriterNothing(f'{lineno}: Assignment: lvalue is not VariableSymbol - not implemented')
             if (lvalue.type and lvalue.type != expr.type) or (lvalue.size and lvalue.size != expr.size):
-                return WriterNothing(f'{expr.lineno}: Assignment: can\'t assign {(expr.type, expr.size)} to {(lvalue.type, lvalue.size)} variable')
+                return WriterNothing(f'{lineno}: Assignment: can\'t assign {(expr.type, expr.size)} to {(lvalue.type, lvalue.size)} variable')
             lvalue.type = expr.type
             lvalue.size = expr.size
             return WriterJust(
-                Symbol(None, None, expr.lineno or lvalue.lineno),
-                f'{expr.lineno}: check_assignment({lvalue}, {expr})' if self.debug else ''
+                Symbol(None, None, lineno),
+                f'{lineno}: check_assignment({lvalue}, {expr})' if self.debug else ''
             )
 
         m_expr = self.visit(node.expr)
@@ -82,18 +83,20 @@ class TypeChecker(NodeVisitor):
         return bind2(m_expr, m_lvalue, check_assignment)
 
     def check_cond(self, cond: Symbol) -> WriterMaybe[Symbol]:
+        lineno = cond.lineno
         if cond.type != 'bool':
-            return WriterNothing(f'{cond.lineno}: condition is not bool')
+            return WriterNothing(f'{lineno}: condition is not bool')
         return WriterJust(
             cond,
-            f'{cond.lineno}: check_cond({cond})' if self.debug else ''
+            f'{lineno}: check_cond({cond})' if self.debug else ''
         )
 
     def visit_IfStmt(self, node: AST.IfStmt) -> WriterMaybe[Symbol]:
         def check_ifStmt(cond: Symbol, stmt: Symbol) -> WriterMaybe[Symbol]:
+            lineno = cond.lineno or stmt.lineno
             return WriterJust(
-                Symbol(None, None, cond.lineno or stmt.lineno),
-                f'{cond.lineno}: check_ifStmt({cond}, {stmt})' if self.debug else ''
+                Symbol(None, None, lineno),
+                f'{lineno}: check_ifStmt({cond}, {stmt})' if self.debug else ''
             )
 
         m_cond = self.visit(node.cond)
@@ -107,9 +110,10 @@ class TypeChecker(NodeVisitor):
 
     def visit_IfElseStmt(self, node: AST.IfElseStmt) -> WriterMaybe[Symbol]:
         def check_ifElseStmt(cond: Symbol, stmt: Symbol, elseStmt: Symbol) -> WriterMaybe[Symbol]:
+            lineno = cond.lineno or stmt.lineno or elseStmt.lineno
             return WriterJust(
-                Symbol(None, None, cond.lineno or stmt.lineno or elseStmt.lineno),
-                f'{cond.lineno}: check_ifElseStmt({cond}, {stmt}, {elseStmt})' if self.debug else ''
+                Symbol(None, None, lineno),
+                f'{lineno}: check_ifElseStmt({cond}, {stmt}, {elseStmt})' if self.debug else ''
             )
 
         m_cond = self.visit(node.cond)
@@ -127,9 +131,10 @@ class TypeChecker(NodeVisitor):
 
     def visit_WhileLoop(self, node: AST.WhileLoop) -> WriterMaybe[Symbol]:
         def check_whileLoop(cond: Symbol, stmt: Symbol) -> WriterMaybe[Symbol]:
+            lineno = cond.lineno or stmt.lineno
             return WriterJust(
-                Symbol(None, None, cond.lineno or stmt.lineno),
-                f'{cond.lineno}: check_whileLoop({cond}, {stmt})' if self.debug else ''
+                Symbol(None, None, lineno),
+                f'{lineno}: check_whileLoop({cond}, {stmt})' if self.debug else ''
             )
 
         m_cond = self.visit(node.cond)
@@ -148,35 +153,39 @@ class TypeChecker(NodeVisitor):
 
     def visit_ForLoop(self, node: AST.ForLoop) -> WriterMaybe[Symbol]:
         def check_forLoopId(id: Symbol) -> WriterMaybe[Symbol]:
+            lineno = id.lineno
             if not isinstance(id, VariableSymbol):
-                return WriterNothing(f'{id.lineno}: ForLoop: problem with variable')
+                return WriterNothing(f'{lineno}: ForLoop: problem with variable')
             id.type = 'int'
             id.size = ()
             return WriterJust(
                 id,
-                f'{id.lineno}: check_forLoopId({id})' if self.debug else ''
+                f'{lineno}: check_forLoopId({id})' if self.debug else ''
             )
 
         def check_forLoopRangeBeg(beg: Symbol) -> WriterMaybe[Symbol]:
+            lineno = beg.lineno
             if beg.type != 'int' or beg.size != ():
-                return WriterNothing(f'{beg.lineno}: ForLoop: beg variable is not int')
+                return WriterNothing(f'{lineno}: ForLoop: beg variable is not int')
             return WriterJust(
                 beg,
-                f'{beg.lineno}: check_forLoopRangeBeg({beg})' if self.debug else ''
+                f'{lineno}: check_forLoopRangeBeg({beg})' if self.debug else ''
             )
 
         def check_forLoopRangeEnd(end: Symbol) -> WriterMaybe[Symbol]:
+            lineno = end.lineno
             if end.type != 'int' or end.size != ():
-                return WriterNothing(f'{end.lineno}: ForLoop: end variable is not int')
+                return WriterNothing(f'{lineno}: ForLoop: end variable is not int')
             return WriterJust(
                 end,
-                f'{end.lineno}: check_forLoopRangeEnd({end})' if self.debug else ''
+                f'{lineno}: check_forLoopRangeEnd({end})' if self.debug else ''
             )
 
         def check_forLoop(id: Symbol, beg: Symbol, end: Symbol, stmt: Symbol) -> WriterMaybe[Symbol]:
+            lineno = beg.lineno or end.lineno or id.lineno or stmt.lineno
             return WriterJust(
-                Symbol(None, None, beg.lineno or end.lineno or id.lineno or stmt.lineno),
-                f'{beg.lineno}: check_forLoop({id}, {beg}, {end}, {stmt})' if self.debug else ''
+                Symbol(None, None, lineno),
+                f'{lineno}: check_forLoop({id}, {beg}, {end}, {stmt})' if self.debug else ''
             )
 
         self.symbolTable.pushScope()
@@ -198,14 +207,16 @@ class TypeChecker(NodeVisitor):
         return bind4(m_id, m_beg, m_end, m_stmt, check_forLoop)
 
     def visit_Break(self, node: AST.Break) -> WriterMaybe[Symbol]:
+        lineno = node.lineno
         if self.loopState:
-            return WriterJust(Symbol(None, None), f'{node.lineno}: visit_Break({node})' if self.debug else '')
-        return WriterNothing(f'{node.lineno}: break outside of a loop')
+            return WriterJust(Symbol(None, None), f'{lineno}: visit_Break({node})' if self.debug else '')
+        return WriterNothing(f'{lineno}: break outside of a loop')
 
     def visit_Continue(self, node: AST.Continue) -> WriterMaybe[Symbol]:
+        lineno = node.lineno
         if self.loopState:
-            return WriterJust(Symbol(None, None), f'{node.lineno}: visit_Continue({node})' if self.debug else '')
-        return WriterNothing(f'{node.lineno}: continue outside of a loop')
+            return WriterJust(Symbol(None, None), f'{lineno}: visit_Continue({node})' if self.debug else '')
+        return WriterNothing(f'{lineno}: continue outside of a loop')
 
     def visit_Print(self, node: AST.Print) -> WriterMaybe[Symbol]:
         return concat(
@@ -221,15 +232,16 @@ class TypeChecker(NodeVisitor):
 
     def visit_BinExpr(self, node: AST.BinExpr) -> WriterMaybe[Symbol]:
         def check_two_symbols_op(op, s1: Symbol, s2: Symbol) -> WriterMaybe[Symbol]:
+            lineno = s1.lineno or s2.lineno
             if op not in Types.ttype:
-                return WriterNothing(f'{s1.lineno}: BinExpr: no such operator as {op}')
+                return WriterNothing(f'{lineno}: BinExpr: no such operator as {op}')
             if s1.type not in Types.ttype[op] or s2.type not in Types.ttype[op][s1.type]:
-                return WriterNothing(f'{s1.lineno}: BinExpr: wrong operator {op} for {s1.type} and {s2.type}')
+                return WriterNothing(f'{lineno}: BinExpr: wrong operator {op} for {s1.type} and {s2.type}')
             if s1.size != s2.size:
-                return WriterNothing(f'{s1.lineno}: BinExpr: incompatible sizes: {s1.size} and {s2.size}')
+                return WriterNothing(f'{lineno}: BinExpr: incompatible sizes: {s1.size} and {s2.size}')
             return WriterJust(
-                Symbol(Types.ttype[op][s1.type][s2.type], s1.size, s1.lineno or s2.lineno),
-                f'{s1.lineno}: check_two_symbol_op({op}, {s1}, {s2})' if self.debug else ''
+                Symbol(Types.ttype[op][s1.type][s2.type], s1.size, lineno),
+                f'{lineno}: check_two_symbol_op({op}, {s1}, {s2})' if self.debug else ''
             )
         op = node.op
         m_left = self.visit(node.left)
@@ -240,13 +252,14 @@ class TypeChecker(NodeVisitor):
 
     def visit_RelationExpr(self, node: AST.RelationExpr) -> WriterMaybe[Symbol]:
         def check_two_symbols_op(op, s1: Symbol, s2: Symbol) -> WriterMaybe[Symbol]:
+            lineno = s1.lineno or s2.lineno
             if s1.type not in Types.ttype[op] or s2.type not in Types.ttype[op][s1.type]:
-                return WriterNothing(f'{s1.lineno}: RelationExpr: wrong operator {op} for {s1.type} and {s2.type}')
+                return WriterNothing(f'{lineno}: RelationExpr: wrong operator {op} for {s1.type} and {s2.type}')
             if s1.size != s2.size:
-                return WriterNothing(f'{s1.lineno}: RelationExpr: incompatible sizes: {s1.size} and {s2.size}')
+                return WriterNothing(f'{lineno}: RelationExpr: incompatible sizes: {s1.size} and {s2.size}')
             return WriterJust(
-                Symbol('bool', (), s1.lineno or s2.lineno),
-                f'{s1.lineno}: check_two_symbol_op({op}, {s1}, {s2})' if self.debug else ''
+                Symbol('bool', (), lineno),
+                f'{lineno}: check_two_symbol_op({op}, {s1}, {s2})' if self.debug else ''
             )
         op = node.op
         m_left = self.visit(node.left)
@@ -257,13 +270,14 @@ class TypeChecker(NodeVisitor):
 
     def visit_UnExpr(self, node: AST.UnExpr) -> WriterMaybe[Symbol]:
         def check_symbol_op(op, symbol: Symbol) -> WriterMaybe[Symbol]:
+            lineno = symbol.lineno
             if op not in Types.ttype:
-                return WriterNothing(f'{symbol.lineno}: UnExpr: no such operator as {op}')
+                return WriterNothing(f'{lineno}: UnExpr: no such operator as {op}')
             if symbol.type not in Types.ttype[op]:
-                return WriterNothing(f'{symbol.lineno}: UnExpr: wrong operator {op} for {symbol.type}')
+                return WriterNothing(f'{lineno}: UnExpr: wrong operator {op} for {symbol.type}')
             return WriterJust(
                 symbol,
-                f'{symbol.lineno}: check_symbol_op({op}, {symbol})' if self.debug else ''
+                f'{lineno}: check_symbol_op({op}, {symbol})' if self.debug else ''
             )
 
         op = node.op
@@ -273,19 +287,21 @@ class TypeChecker(NodeVisitor):
 
     def visit_Vector(self, node: AST.Vector) -> WriterMaybe[Symbol]:
         def check_vectorElems(expr1: Symbol, expr2: Symbol) -> WriterMaybe[Symbol]:
+            lineno = expr1.lineno or expr2.lineno
             if expr1.type != expr2.type:
-                return WriterNothing(f'{expr1.lineno}: Vector: wrong type of elems: {expr1.type}, {expr2.type}')
+                return WriterNothing(f'{lineno}: Vector: wrong type of elems: {expr1.type}, {expr2.type}')
             if expr1.size != expr2.size:
-                return WriterNothing(f'{expr1.lineno}: Vector: wrong size of elems: {expr1.size}, {expr2.size}')
+                return WriterNothing(f'{lineno}: Vector: wrong size of elems: {expr1.size}, {expr2.size}')
             return WriterJust(
-                Symbol(expr1.type, expr1.size, expr1.lineno or expr2.lineno),
-                f'{expr1.lineno}: check_vectorElems({expr1}, {expr2})' if self.debug else ''
+                Symbol(expr1.type, expr1.size, lineno),
+                f'{lineno}: check_vectorElems({expr1}, {expr2})' if self.debug else ''
             )
 
         def check_vector(size: int, expr: Symbol) -> WriterMaybe[Symbol]:
+            lineno = expr.lineno
             return WriterJust(
-                Symbol(expr.type, (size, *expr.size), expr.lineno),
-                f'{expr.lineno}: check_vector({size}, {expr})' if self.debug else ''
+                Symbol(expr.type, (size, *expr.size), lineno),
+                f'{lineno}: check_vector({size}, {expr})' if self.debug else ''
             )
 
         m_expr = concat(
@@ -297,11 +313,12 @@ class TypeChecker(NodeVisitor):
 
     def visit_Zeros(self, node: AST.Zeros) -> WriterMaybe[Symbol]:
         def check_sizeType(size: Symbol) -> WriterMaybe[Symbol]:
+            lineno = size.lineno
             if len(size.size) != 1 or size.size[0] == 0 or size.type != 'int':
-                return WriterNothing(f'{size.lineno}: Zeros: wrong type of shape parameter: ({size.type}, {size.size})')
+                return WriterNothing(f'{lineno}: Zeros: wrong type of shape parameter: ({size.type}, {size.size})')
             return WriterJust(
-                Symbol('int', tuple([expr.n for expr in node.size.expr_set]), size.lineno),
-                f'{size.lineno}: check_sizeType({size})' if self.debug else ''
+                Symbol('int', tuple([expr.n for expr in node.size.expr_set]), lineno),
+                f'{lineno}: check_sizeType({size})' if self.debug else ''
             )
 
         m_size = self.visit(node.size)
@@ -309,11 +326,12 @@ class TypeChecker(NodeVisitor):
 
     def visit_Ones(self, node: AST.Ones) -> WriterMaybe[Symbol]:
         def check_sizeType(size: Symbol) -> WriterMaybe[Symbol]:
+            lineno = size.lineno
             if len(size.size) != 1 or size.size[0] == 0 or size.type != 'int':
-                return WriterNothing(f'{size.lineno}: ones: wrong type of shape parameter: ({size.type}, {size.size})')
+                return WriterNothing(f'{lineno}: ones: wrong type of shape parameter: ({size.type}, {size.size})')
             return WriterJust(
-                Symbol('int', tuple([expr.n for expr in node.size.expr_set]), size.lineno),
-                f'{size.lineno}: check_sizeType({size})' if self.debug else ''
+                Symbol('int', tuple([expr.n for expr in node.size.expr_set]), lineno),
+                f'{lineno}: check_sizeType({size})' if self.debug else ''
             )
 
         m_size = self.visit(node.size)
@@ -321,11 +339,12 @@ class TypeChecker(NodeVisitor):
 
     def visit_Eye(self, node: AST.Eye) -> WriterMaybe[Symbol]:
         def check_sizeType(size: Symbol) -> WriterMaybe[Symbol]:
+            lineno = size.lineno
             if len(size.size) != 0 or size.type != 'int':
-                return WriterNothing(f'{size.lineno}: eye: wrong type of shape parameter: ({size.type}, {size.size})')
+                return WriterNothing(f'{lineno}: eye: wrong type of shape parameter: ({size.type}, {size.size})')
             return WriterJust(
-                Symbol('int', (node.size.n, node.size.n), size.lineno),
-                f'{size.lineno}: check_sizeType({size})' if self.debug else ''
+                Symbol('int', (node.size.n, node.size.n), lineno),
+                f'{lineno}: check_sizeType({size})' if self.debug else ''
             )
 
         m_size = self.visit(node.size)
@@ -333,25 +352,27 @@ class TypeChecker(NodeVisitor):
 
     def visit_Ref(self, node: AST.Ref) -> WriterMaybe[Symbol]:
         def check_idxs(idxs: Symbol) -> WriterMaybe[Symbol]:
+            lineno = idxs.lineno
             if len(idxs.size) != 1 or idxs.type != 'int':
-                return WriterNothing(f'{idxs.lineno}: ref: wrong type of ref parameter: ({idxs.type}, {idxs.size})')
+                return WriterNothing(f'{lineno}: ref: wrong type of ref parameter: ({idxs.type}, {idxs.size})')
             return WriterJust(
                 idxs,
-                f'{idxs.lineno}: check_idxs({idxs})' if self.debug else ''
+                f'{lineno}: check_idxs({idxs})' if self.debug else ''
             )
 
         def check_ref(idxs_symbol: Symbol, term: Symbol) -> WriterMaybe[Symbol]:
+            lineno = idxs_symbol.lineno or term.lineno
             idxs = tuple([expr.n for expr in node.idxs.expr_set])
             if len(idxs) == 0:
-                return WriterNothing(f'{term.lineno}: ref: no index given')
+                return WriterNothing(f'{lineno}: ref: no index given')
             if len(idxs) > len(term.size):
-                return WriterNothing(f'{term.lineno}: ref: accessing dim {len(idxs)} larger than dim {len(term.size)}')
+                return WriterNothing(f'{lineno}: ref: accessing dim {len(idxs)} larger than dim {len(term.size)}')
             for i in range(len(idxs)):
                 if idxs[i] >= term.size[i]:
-                    return WriterNothing(f'{term.lineno}: ref: accessing element outside of the vector: {idxs[i]} >= {term.size[i]}')
+                    return WriterNothing(f'{lineno}: ref: accessing element outside of the vector: {idxs[i]} >= {term.size[i]}')
             return WriterJust(
-                VariableSymbol(term.type, (*term.size[len(idxs):],), term.lineno),
-                f'{term.lineno}: check_ref({term})' if self.debug else ''
+                VariableSymbol(term.type, (*term.size[len(idxs):],), lineno),
+                f'{lineno}: check_ref({term})' if self.debug else ''
             )
 
         m_idxs = self.visit(node.idxs)
@@ -361,20 +382,31 @@ class TypeChecker(NodeVisitor):
         return bind2(m_idxs, m_term, check_ref)
 
     def visit_Id(self, node: AST.Id) -> WriterMaybe[VariableSymbol]:
+        lineno = node.lineno
         symbol = self.symbolTable.get(node.id)
         if symbol is not None:
-            return WriterJust(symbol, f'{node.lineno}: symbolTable.get({node})' if self.debug else '')
+            symbol.lineno = lineno
+            return WriterJust(
+                symbol,
+                f'{lineno}: symbolTable.get({node})' if self.debug else ''
+            )
         if self.assignmentState:
-            symbol = VariableSymbol(None, None, node.lineno, node.id)
+            symbol = VariableSymbol(None, None, lineno, node.id)
             self.symbolTable.put(node.id, symbol)
-            return WriterJust(symbol, f'{node.lineno}: symbolTable.put({node})' if self.debug else '')
-        return WriterNothing(f'{node.lineno}: no such symbol as {node.id}')
+            return WriterJust(
+                symbol,
+                f'{lineno}: symbolTable.put({node})' if self.debug else ''
+            )
+        return WriterNothing(f'{lineno}: no such symbol as {node.id}')
 
     def visit_IntNum(self, node: AST.IntNum) -> WriterMaybe[Symbol]:
-        return WriterJust(Symbol('int', (), node.lineno), f'{node.lineno}: visit_IntNum({node})' if self.debug else '')
+        lineno = node.lineno
+        return WriterJust(Symbol('int', (), lineno), f'{lineno}: visit_IntNum({node})' if self.debug else '')
 
     def visit_FloatNum(self, node: AST.FloatNum) -> WriterMaybe[Symbol]:
-        return WriterJust(Symbol('float', (), node.lineno), f'{node.lineno}: visit_FloatNum({node})' if self.debug else '')
+        lineno = node.lineno
+        return WriterJust(Symbol('float', (), lineno), f'{lineno}: visit_FloatNum({node})' if self.debug else '')
 
     def visit_String(self, node: AST.String) -> WriterMaybe[Symbol]:
-        return WriterJust(Symbol('string', (), node.lineno), f'{node.lineno}: visit_String({node})' if self.debug else '')
+        lineno = node.lineno
+        return WriterJust(Symbol('string', (), lineno), f'{lineno}: visit_String({node})' if self.debug else '')
