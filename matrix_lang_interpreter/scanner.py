@@ -62,7 +62,7 @@ class Scanner(Lexer):
         self.lineno += len(t.value)
 
     def error(self, t):
-        print(f"Line {t.lineno:3}: Bad character: {t.value[0]}")
+        print(f"Line {t.lineno:3}: Scanner: Bad character: {t.value[0]}")
         self.index += 1
 
 
