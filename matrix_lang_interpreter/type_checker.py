@@ -67,8 +67,6 @@ class TypeChecker(NodeVisitor):
             lineno = expr.lineno or lvalue.lineno
             if not isinstance(lvalue, VariableSymbol):
                 return WriterNothing(f'{lineno}: Assignment: lvalue is not VariableSymbol - not implemented')
-            if (lvalue.type and lvalue.type != expr.type) or (lvalue.size and lvalue.size != expr.size):
-                return WriterNothing(f'{lineno}: Assignment: can\'t assign {(expr.type, expr.size)} to {(lvalue.type, lvalue.size)} variable')
             lvalue.type = expr.type
             lvalue.size = expr.size
             return WriterJust(
