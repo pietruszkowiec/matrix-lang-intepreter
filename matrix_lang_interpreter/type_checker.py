@@ -238,6 +238,23 @@ class TypeChecker(NodeVisitor):
         m_right = bind2(m_left, m_right, partial(check_two_symbols_op, op))
         return m_right
 
+    def visit_RelationExpr(self, node: AST.RelationExpr) -> WriterMaybe[Symbol]:
+        def check_two_symbols_op(op, s1: Symbol, s2: Symbol) -> WriterMaybe[Symbol]:
+            if s1.type not in Types.ttype[op] or s2.type not in Types.ttype[op][s1.type]:
+                return WriterNothing(f'{s1.lineno}: RelationExpr: wrong operator {op} for {s1.type} and {s2.type}')
+            if s1.size != s2.size:
+                return WriterNothing(f'{s1.lineno}: RelationExpr: incompatible sizes: {s1.size} and {s2.size}')
+            return WriterJust(
+                Symbol('bool', (), s1.lineno or s2.lineno),
+                f'{s1.lineno}: check_two_symbol_op({op}, {s1}, {s2})' if self.debug else ''
+            )
+        op = node.op
+        m_left = self.visit(node.left)
+        m_right = self.visit(node.right)
+
+        m_right = bind2(m_left, m_right, partial(check_two_symbols_op, op))
+        return m_right
+
     def visit_UnExpr(self, node: AST.UnExpr) -> WriterMaybe[Symbol]:
         def check_symbol_op(op, symbol: Symbol) -> WriterMaybe[Symbol]:
             if op not in Types.ttype:
@@ -253,8 +270,6 @@ class TypeChecker(NodeVisitor):
         m_child = self.visit(node.child)
         m_child = bind(m_child, partial(check_symbol_op, op))
         return m_child
-
-    visit_RelationExpr = visit_BinExpr
 
     def visit_Vector(self, node: AST.Vector) -> WriterMaybe[Symbol]:
         def check_vectorElems(expr1: Symbol, expr2: Symbol) -> WriterMaybe[Symbol]:
