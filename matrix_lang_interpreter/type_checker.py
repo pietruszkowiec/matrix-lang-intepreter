@@ -280,7 +280,7 @@ class TypeChecker(NodeVisitor):
         )
         return bind(m_expr, partial(check_vector, len(node.expr_set)))
 
-    def visit_Zeros(self, node: AST.SpecialMatrix) -> WriterMaybe[Symbol]:
+    def visit_Zeros(self, node: AST.Zeros) -> WriterMaybe[Symbol]:
         def check_sizeType(size: Symbol) -> WriterMaybe[Symbol]:
             if len(size.size) != 1 or size.type != 'int':
                 return WriterNothing(f'{size.lineno}: Zeros: wrong type of shape parameter: ({size.type}, {size.size})')
@@ -292,7 +292,7 @@ class TypeChecker(NodeVisitor):
         m_size = self.visit(node.size)
         return bind(m_size, check_sizeType)
 
-    def visit_Ones(self, node: AST.SpecialMatrix) -> WriterMaybe[Symbol]:
+    def visit_Ones(self, node: AST.Ones) -> WriterMaybe[Symbol]:
         def check_sizeType(size: Symbol) -> WriterMaybe[Symbol]:
             if len(size.size) != 1 or size.type != 'int':
                 return WriterNothing(f'{size.lineno}: ones: wrong type of shape parameter: ({size.type}, {size.size})')
@@ -304,7 +304,7 @@ class TypeChecker(NodeVisitor):
         m_size = self.visit(node.size)
         return bind(m_size, check_sizeType)
 
-    def visit_Eye(self, node: AST.SpecialMatrix) -> WriterMaybe[Symbol]:
+    def visit_Eye(self, node: AST.Eye) -> WriterMaybe[Symbol]:
         def check_sizeType(size: Symbol) -> WriterMaybe[Symbol]:
             if len(size.size) != 0 or size.type != 'int':
                 return WriterNothing(f'{size.lineno}: eye: wrong type of shape parameter: ({size.type}, {size.size})')
