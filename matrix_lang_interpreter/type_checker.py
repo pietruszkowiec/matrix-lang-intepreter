@@ -77,9 +77,12 @@ class TypeChecker(NodeVisitor):
             )
 
         m_expr = self.visit(node.expr)
-        self.assignmentState = m_expr.is_just()
-        m_lvalue = self.visit(node.lvalue)
-        self.assignmentState = False
+        if m_expr.is_just():
+            self.assignmentState = True
+            m_lvalue = self.visit(node.lvalue)
+            self.assignmentState = False
+        else:
+            m_lvalue = WriterNothing()
         return bind2(m_expr, m_lvalue, check_assignment)
 
     def check_cond(self, cond: Symbol) -> WriterMaybe[Symbol]:
