@@ -50,14 +50,14 @@ class TypeChecker(NodeVisitor):
     def visit_AST(self, node: AST.AST) -> bool:
         return concat(
             [self.visit(stmt) for stmt in node.stmt_set],
-            default0=WriterJust(None)
+            default0=WriterJust(Symbol(None, None))
         )
 
     def visit_Block(self, node: AST.Block) -> WriterMaybe[Symbol]:
         self.symbolTable.pushScope()
         s = concat(
             [self.visit(stmt) for stmt in node.stmt_set],
-            default0=WriterJust(None)
+            default0=WriterJust(Symbol(None, None))
         )
         self.symbolTable.popScope()
         return s
@@ -199,24 +199,24 @@ class TypeChecker(NodeVisitor):
 
     def visit_Break(self, node: AST.Break) -> WriterMaybe[Symbol]:
         if self.loopState:
-            return WriterJust(None, f'{node.lineno}: visit_Break({node})' if self.debug else '')
+            return WriterJust(Symbol(None, None), f'{node.lineno}: visit_Break({node})' if self.debug else '')
         return WriterNothing(f'{node.lineno}: break outside of a loop')
 
     def visit_Continue(self, node: AST.Continue) -> WriterMaybe[Symbol]:
         if self.loopState:
-            return WriterJust(None, f'{node.lineno}: visit_Continue({node})' if self.debug else '')
+            return WriterJust(Symbol(None, None), f'{node.lineno}: visit_Continue({node})' if self.debug else '')
         return WriterNothing(f'{node.lineno}: continue outside of a loop')
 
     def visit_Print(self, node: AST.Print) -> WriterMaybe[Symbol]:
         return concat(
             [self.visit(expr) for expr in node.expr_set],
-            default0=WriterJust(None)
+            default0=WriterJust(Symbol(None, None))
         )
 
     def visit_Return(self, node: AST.Return) -> WriterMaybe[Symbol]:
         return concat(
             [self.visit(expr) for expr in node.expr_set],
-            default0=WriterJust(None)
+            default0=WriterJust(Symbol(None, None))
         )
 
     def visit_BinExpr(self, node: AST.BinExpr) -> WriterMaybe[Symbol]:
