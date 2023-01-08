@@ -4,13 +4,13 @@ from typing import Tuple
 
 @dataclass
 class Symbol:
-    lineno: int
     type: str
     size: Tuple[int]
+    lineno: int = None
 
 @dataclass
 class VariableSymbol(Symbol):
-    name: str
+    name: str = None
 
 class SymbolTable:
     def __init__(self, parent):
