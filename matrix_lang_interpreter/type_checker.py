@@ -282,7 +282,7 @@ class TypeChecker(NodeVisitor):
 
     def visit_Zeros(self, node: AST.Zeros) -> WriterMaybe[Symbol]:
         def check_sizeType(size: Symbol) -> WriterMaybe[Symbol]:
-            if len(size.size) != 1 or size.type != 'int':
+            if len(size.size) != 1 or size.size[0] == 0 or size.type != 'int':
                 return WriterNothing(f'{size.lineno}: Zeros: wrong type of shape parameter: ({size.type}, {size.size})')
             return WriterJust(
                 Symbol('int', tuple([expr.n for expr in node.size.expr_set]), size.lineno),
@@ -294,7 +294,7 @@ class TypeChecker(NodeVisitor):
 
     def visit_Ones(self, node: AST.Ones) -> WriterMaybe[Symbol]:
         def check_sizeType(size: Symbol) -> WriterMaybe[Symbol]:
-            if len(size.size) != 1 or size.type != 'int':
+            if len(size.size) != 1 or size.size[0] == 0 or size.type != 'int':
                 return WriterNothing(f'{size.lineno}: ones: wrong type of shape parameter: ({size.type}, {size.size})')
             return WriterJust(
                 Symbol('int', tuple([expr.n for expr in node.size.expr_set]), size.lineno),
