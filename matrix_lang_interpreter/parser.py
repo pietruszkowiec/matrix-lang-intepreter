@@ -164,3 +164,12 @@ class Parser(SlyParser):
     @_('STRING')
     def term(self, p):
         return AST.String(p.STRING, p.lineno)
+
+    def error(self, tok):
+        print(f'Line {tok.lineno:3}: Syntax error: "{tok.type}": {tok.value}')
+        while True:
+            tok = next(self.tokens, None)
+            if not tok or tok.type == ';':
+                break
+            self.errok()
+        return tok
