@@ -150,13 +150,15 @@ class TypeChecker(NodeVisitor):
         def check_forLoopId(id: Symbol) -> WriterMaybe[Symbol]:
             if not isinstance(id, VariableSymbol):
                 return WriterNothing(f'{id.lineno}: ForLoop: problem with variable')
+            id.type = 'int'
+            id.size = ()
             return WriterJust(
                 id,
                 f'{id.lineno}: check_forLoopId({id})' if self.debug else ''
             )
 
         def check_forLoopRangeBeg(beg: Symbol) -> WriterMaybe[Symbol]:
-            if beg.type != 'int':
+            if beg.type != 'int' or beg.size != ():
                 return WriterNothing(f'{beg.lineno}: ForLoop: beg variable is not int')
             return WriterJust(
                 beg,
@@ -164,7 +166,7 @@ class TypeChecker(NodeVisitor):
             )
 
         def check_forLoopRangeEnd(end: Symbol) -> WriterMaybe[Symbol]:
-            if end.type != 'int':
+            if end.type != 'int' or end.size != ():
                 return WriterNothing(f'{end.lineno}: ForLoop: end variable is not int')
             return WriterJust(
                 end,
