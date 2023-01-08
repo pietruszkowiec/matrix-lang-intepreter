@@ -325,7 +325,7 @@ class TypeChecker(NodeVisitor):
                 f'{idxs.lineno}: check_idxs({idxs})' if self.debug else ''
             )
 
-        def check_ref(term: Symbol) -> WriterMaybe[Symbol]:
+        def check_ref(idxs_symbol: Symbol, term: Symbol) -> WriterMaybe[Symbol]:
             idxs = tuple([expr.n for expr in node.idxs.expr_set])
             if len(idxs) == 0:
                 return WriterNothing(f'{term.lineno}: ref: no index given')
@@ -338,11 +338,12 @@ class TypeChecker(NodeVisitor):
                 VariableSymbol(term.type, (*term.size[len(idxs):],), term.lineno),
                 f'{term.lineno}: check_ref({term})' if self.debug else ''
             )
+
         m_idxs = self.visit(node.idxs)
         m_idxs = bind(m_idxs, check_idxs)
 
         m_term = self.visit(node.term)
-        return bind(m_term, check_ref)
+        return bind2(m_idxs, m_term, check_ref)
 
     def visit_Id(self, node: AST.Id) -> WriterMaybe[VariableSymbol]:
         symbol = self.symbolTable.get(node.id)
