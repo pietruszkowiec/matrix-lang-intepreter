@@ -216,7 +216,7 @@ class TypeChecker(NodeVisitor):
         lineno = node.lineno
         if self.loopState:
             return WriterJust(
-                Symbol(None, None),
+                Symbol(None, None, lineno),
                 f'Line {lineno:3}: TypeChecker: visit_Break({node})' if self.debug else ''
             )
         return WriterNothing(f'Line {lineno:3}: TypeChecker: break outside of a loop')
@@ -225,7 +225,7 @@ class TypeChecker(NodeVisitor):
         lineno = node.lineno
         if self.loopState:
             return WriterJust(
-                Symbol(None, None),
+                Symbol(None, None, lineno),
                 f'Line {lineno:3}: TypeChecker: visit_Continue({node})' if self.debug else ''
             )
         return WriterNothing(f'Line {lineno:3}: TypeChecker: continue outside of a loop')
