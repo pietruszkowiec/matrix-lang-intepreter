@@ -333,6 +333,32 @@ class TypeChecker(NodeVisitor):
         m_right = bind2(m_left, m_right, partial(check_two_symbols_op, op))
         return m_right
 
+    def visit_MatTransExpr(self, node: AST.MatTransExpr) -> WriterMaybe[Symbol]:
+        def check_symbol(symbol: Symbol) -> WriterMaybe[Symbol]:
+            lineno = symbol.lineno
+            if len(symbol.size) == 0:
+                return WriterNothing(
+                    f'Line {lineno:3}: TypeChecker: MatTransExpr: can\'t transpose a scalar'
+                )
+            if len(symbol.size) > 2:
+                return WriterNothing(
+                    f'Line {lineno:3}: TypeChecker: MatTransExpr: can\'t transpose not a matrix'
+                )
+
+            if len(symbol.size) == 1:
+                size = symbol.size
+            else:
+                size = (symbol.size[1], symbol.size[0])
+
+            return WriterJust(
+                Symbol(symbol.type, size, lineno),
+                f'Line {lineno:3}: TypeChecker: check_symbol({symbol})' if self.debug else ''
+            )
+
+        m_child = self.visit(node.child)
+        m_child = bind(m_child, check_symbol)
+        return m_child
+
     def visit_UnExpr(self, node: AST.UnExpr) -> WriterMaybe[Symbol]:
         def check_symbol_op(op, symbol: Symbol) -> WriterMaybe[Symbol]:
             lineno = symbol.lineno

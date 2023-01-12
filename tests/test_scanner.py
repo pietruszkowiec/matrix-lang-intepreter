@@ -4,10 +4,10 @@ from matrix_lang_interpreter.scanner import Scanner
 
 def test_literals():
     scanner = Scanner()
-    text = "= + - * / @ ( ) [ ] { } : ' , ; < >"
+    text = "= + - * / @ ( ) [ ] { } : , ; < >"
     expected_tokens = [
         '=', '+', '-', '*', '/', '@', '(', ')', '[', ']',
-        '{', '}', ':', '\'', ',', ';', '<', '>'
+        '{', '}', ':', ',', ';', '<', '>'
     ]
     for token, expected_token in zip(scanner.tokenize(text), expected_tokens):
         assert token.type == expected_token
@@ -20,6 +20,16 @@ def test_operators():
         ('ADDASSIGN', '+='), ('SUBASSIGN', '-='), ('MULASSIGN', '*='),
         ('DIVASSIGN', '/='), ('LEQ', '<='), ('GEQ', '>='),
         ('NEQ', '!='), ('EQU', '==')
+    ]
+    for token, expected_token in zip(scanner.tokenize(text), expected_tokens):
+        assert token.type == expected_token[0]
+        assert token.value == expected_token[1]
+
+def test_transpose():
+    scanner = Scanner()
+    text = 'A.T'
+    expected_tokens = [
+        ('ID', 'A'), ('TRANSPOSE', '.T')
     ]
     for token, expected_token in zip(scanner.tokenize(text), expected_tokens):
         assert token.type == expected_token[0]

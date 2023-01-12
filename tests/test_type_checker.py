@@ -644,6 +644,60 @@ def test_visit_MatMulBinExpr(node, expected):
 
 @pytest.mark.parametrize('node, expected', [
     (
+        AST.MatTransExpr(AST.IntNum(5)),
+        WriterNothing()
+    ),
+    (
+        AST.MatTransExpr(AST.FloatNum(5)),
+        WriterNothing()
+    ),
+    (
+        AST.MatTransExpr(
+            AST.Vector([AST.IntNum(1), AST.IntNum(2)])
+        ),
+        WriterJust(Symbol('int', (2,)))
+    ),
+    (
+        AST.MatTransExpr(
+            AST.Vector([
+                AST.Vector([
+                    AST.IntNum(1)
+                ]),
+                AST.Vector([
+                    AST.IntNum(2)
+                ])
+            ])
+        ),
+        WriterJust(Symbol('int', (1, 2)))
+    ),
+    (
+        AST.MatTransExpr(
+            AST.Vector([
+                AST.Vector([
+                    AST.IntNum(1),
+                    AST.IntNum(2)
+                ])
+            ])
+        ),
+        WriterJust(Symbol('int', (2, 1)))
+    ),
+    (
+        AST.MatTransExpr(
+            AST.Vector([
+                AST.Vector([
+                    AST.Vector([])
+                ])
+            ])
+        ),
+        WriterNothing()
+    ),
+])
+def test_visit_MatTransExpr(node, expected):
+    typeChecker = TypeChecker()
+    assert typeChecker.visit(node) == expected
+
+@pytest.mark.parametrize('node, expected', [
+    (
         AST.RelationExpr('==', AST.IntNum(5), AST.IntNum(4)),
         WriterJust(Symbol('bool', ()))
     ),

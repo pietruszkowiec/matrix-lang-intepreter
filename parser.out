@@ -27,7 +27,7 @@ Rule 23    expr -> expr LEQ expr  [precedence=nonassoc, level=5]
 Rule 24    expr -> expr > expr  [precedence=nonassoc, level=5]
 Rule 25    expr -> expr < expr  [precedence=nonassoc, level=5]
 Rule 26    expr -> ( expr )
-Rule 27    expr -> expr '  [precedence=left, level=9]
+Rule 27    expr -> expr TRANSPOSE  [precedence=left, level=9]
 Rule 28    expr -> - expr  [precedence=right, level=8]
 Rule 29    expr -> + expr  [precedence=right, level=8]
 Rule 30    expr -> expr @ expr  [precedence=left, level=7]
@@ -50,7 +50,6 @@ Rule 46    lvalue -> term [ vector ]
 
 Terminals, with rules where they appear:
 
-'                    : 27
 (                    : 14 15 16 26 41 42 43
 )                    : 14 15 16 26 41 42 43
 *                    : 32
@@ -85,6 +84,7 @@ PRINT                : 5
 RETURN               : 4
 STRING               : 38
 SUBASSIGN            : 10
+TRANSPOSE            : 27
 WHILE                : 14
 ZEROS                : 43
 [                    : 18 46
@@ -245,7 +245,7 @@ state 4
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -296,7 +296,7 @@ state 5
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -381,7 +381,7 @@ state 10
     LEQ             reduce using rule 45 (lvalue -> ID .)
     >               reduce using rule 45 (lvalue -> ID .)
     <               reduce using rule 45 (lvalue -> ID .)
-    '               reduce using rule 45 (lvalue -> ID .)
+    TRANSPOSE       reduce using rule 45 (lvalue -> ID .)
     @               reduce using rule 45 (lvalue -> ID .)
     /               reduce using rule 45 (lvalue -> ID .)
     *               reduce using rule 45 (lvalue -> ID .)
@@ -487,7 +487,7 @@ state 15
     LEQ             reduce using rule 38 (term -> STRING .)
     >               reduce using rule 38 (term -> STRING .)
     <               reduce using rule 38 (term -> STRING .)
-    '               reduce using rule 38 (term -> STRING .)
+    TRANSPOSE       reduce using rule 38 (term -> STRING .)
     @               reduce using rule 38 (term -> STRING .)
     /               reduce using rule 38 (term -> STRING .)
     *               reduce using rule 38 (term -> STRING .)
@@ -525,7 +525,7 @@ state 16
     LEQ             reduce using rule 39 (term -> FLOATNUM .)
     >               reduce using rule 39 (term -> FLOATNUM .)
     <               reduce using rule 39 (term -> FLOATNUM .)
-    '               reduce using rule 39 (term -> FLOATNUM .)
+    TRANSPOSE       reduce using rule 39 (term -> FLOATNUM .)
     @               reduce using rule 39 (term -> FLOATNUM .)
     /               reduce using rule 39 (term -> FLOATNUM .)
     *               reduce using rule 39 (term -> FLOATNUM .)
@@ -563,7 +563,7 @@ state 17
     LEQ             reduce using rule 40 (term -> INTNUM .)
     >               reduce using rule 40 (term -> INTNUM .)
     <               reduce using rule 40 (term -> INTNUM .)
-    '               reduce using rule 40 (term -> INTNUM .)
+    TRANSPOSE       reduce using rule 40 (term -> INTNUM .)
     @               reduce using rule 40 (term -> INTNUM .)
     /               reduce using rule 40 (term -> INTNUM .)
     *               reduce using rule 40 (term -> INTNUM .)
@@ -648,7 +648,7 @@ state 23
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -664,7 +664,7 @@ state 23
     LEQ             shift and go to state 51
     >               shift and go to state 52
     <               shift and go to state 53
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
     @               shift and go to state 55
     /               shift and go to state 56
     *               shift and go to state 57
@@ -687,7 +687,7 @@ state 24
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -733,7 +733,7 @@ state 25
     LEQ             reduce using rule 19 (expr -> term .)
     >               reduce using rule 19 (expr -> term .)
     <               reduce using rule 19 (expr -> term .)
-    '               reduce using rule 19 (expr -> term .)
+    TRANSPOSE       reduce using rule 19 (expr -> term .)
     @               reduce using rule 19 (expr -> term .)
     /               reduce using rule 19 (expr -> term .)
     *               reduce using rule 19 (expr -> term .)
@@ -774,7 +774,7 @@ state 26
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -819,7 +819,7 @@ state 27
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -864,7 +864,7 @@ state 28
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -907,7 +907,7 @@ state 29
     LEQ             reduce using rule 44 (term -> lvalue .)
     >               reduce using rule 44 (term -> lvalue .)
     <               reduce using rule 44 (term -> lvalue .)
-    '               reduce using rule 44 (term -> lvalue .)
+    TRANSPOSE       reduce using rule 44 (term -> lvalue .)
     @               reduce using rule 44 (term -> lvalue .)
     /               reduce using rule 44 (term -> lvalue .)
     *               reduce using rule 44 (term -> lvalue .)
@@ -1001,7 +1001,7 @@ state 33
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -1046,7 +1046,7 @@ state 34
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -1091,7 +1091,7 @@ state 35
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -1136,7 +1136,7 @@ state 36
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -1181,7 +1181,7 @@ state 37
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -1232,7 +1232,7 @@ state 39
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -1278,7 +1278,7 @@ state 40
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -1374,7 +1374,7 @@ state 42
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -1422,7 +1422,7 @@ state 43
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -1470,7 +1470,7 @@ state 44
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -1521,7 +1521,7 @@ state 45
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -1592,7 +1592,7 @@ state 47
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -1637,7 +1637,7 @@ state 48
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -1682,7 +1682,7 @@ state 49
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -1727,7 +1727,7 @@ state 50
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -1772,7 +1772,7 @@ state 51
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -1817,7 +1817,7 @@ state 52
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -1862,7 +1862,7 @@ state 53
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -1897,39 +1897,39 @@ state 53
 
 state 54
 
-    (27) expr -> expr ' .
-    NEQ             reduce using rule 27 (expr -> expr ' .)
-    EQU             reduce using rule 27 (expr -> expr ' .)
-    GEQ             reduce using rule 27 (expr -> expr ' .)
-    LEQ             reduce using rule 27 (expr -> expr ' .)
-    >               reduce using rule 27 (expr -> expr ' .)
-    <               reduce using rule 27 (expr -> expr ' .)
-    '               reduce using rule 27 (expr -> expr ' .)
-    @               reduce using rule 27 (expr -> expr ' .)
-    /               reduce using rule 27 (expr -> expr ' .)
-    *               reduce using rule 27 (expr -> expr ' .)
-    -               reduce using rule 27 (expr -> expr ' .)
-    +               reduce using rule 27 (expr -> expr ' .)
-    ;               reduce using rule 27 (expr -> expr ' .)
-    ,               reduce using rule 27 (expr -> expr ' .)
-    ]               reduce using rule 27 (expr -> expr ' .)
-    )               reduce using rule 27 (expr -> expr ' .)
-    :               reduce using rule 27 (expr -> expr ' .)
-    RETURN          reduce using rule 27 (expr -> expr ' .)
-    PRINT           reduce using rule 27 (expr -> expr ' .)
-    CONTINUE        reduce using rule 27 (expr -> expr ' .)
-    BREAK           reduce using rule 27 (expr -> expr ' .)
-    FOR             reduce using rule 27 (expr -> expr ' .)
-    WHILE           reduce using rule 27 (expr -> expr ' .)
-    IF              reduce using rule 27 (expr -> expr ' .)
-    {               reduce using rule 27 (expr -> expr ' .)
-    ID              reduce using rule 27 (expr -> expr ' .)
-    STRING          reduce using rule 27 (expr -> expr ' .)
-    FLOATNUM        reduce using rule 27 (expr -> expr ' .)
-    INTNUM          reduce using rule 27 (expr -> expr ' .)
-    EYE             reduce using rule 27 (expr -> expr ' .)
-    ONES            reduce using rule 27 (expr -> expr ' .)
-    ZEROS           reduce using rule 27 (expr -> expr ' .)
+    (27) expr -> expr TRANSPOSE .
+    NEQ             reduce using rule 27 (expr -> expr TRANSPOSE .)
+    EQU             reduce using rule 27 (expr -> expr TRANSPOSE .)
+    GEQ             reduce using rule 27 (expr -> expr TRANSPOSE .)
+    LEQ             reduce using rule 27 (expr -> expr TRANSPOSE .)
+    >               reduce using rule 27 (expr -> expr TRANSPOSE .)
+    <               reduce using rule 27 (expr -> expr TRANSPOSE .)
+    TRANSPOSE       reduce using rule 27 (expr -> expr TRANSPOSE .)
+    @               reduce using rule 27 (expr -> expr TRANSPOSE .)
+    /               reduce using rule 27 (expr -> expr TRANSPOSE .)
+    *               reduce using rule 27 (expr -> expr TRANSPOSE .)
+    -               reduce using rule 27 (expr -> expr TRANSPOSE .)
+    +               reduce using rule 27 (expr -> expr TRANSPOSE .)
+    ;               reduce using rule 27 (expr -> expr TRANSPOSE .)
+    ,               reduce using rule 27 (expr -> expr TRANSPOSE .)
+    ]               reduce using rule 27 (expr -> expr TRANSPOSE .)
+    )               reduce using rule 27 (expr -> expr TRANSPOSE .)
+    :               reduce using rule 27 (expr -> expr TRANSPOSE .)
+    RETURN          reduce using rule 27 (expr -> expr TRANSPOSE .)
+    PRINT           reduce using rule 27 (expr -> expr TRANSPOSE .)
+    CONTINUE        reduce using rule 27 (expr -> expr TRANSPOSE .)
+    BREAK           reduce using rule 27 (expr -> expr TRANSPOSE .)
+    FOR             reduce using rule 27 (expr -> expr TRANSPOSE .)
+    WHILE           reduce using rule 27 (expr -> expr TRANSPOSE .)
+    IF              reduce using rule 27 (expr -> expr TRANSPOSE .)
+    {               reduce using rule 27 (expr -> expr TRANSPOSE .)
+    ID              reduce using rule 27 (expr -> expr TRANSPOSE .)
+    STRING          reduce using rule 27 (expr -> expr TRANSPOSE .)
+    FLOATNUM        reduce using rule 27 (expr -> expr TRANSPOSE .)
+    INTNUM          reduce using rule 27 (expr -> expr TRANSPOSE .)
+    EYE             reduce using rule 27 (expr -> expr TRANSPOSE .)
+    ONES            reduce using rule 27 (expr -> expr TRANSPOSE .)
+    ZEROS           reduce using rule 27 (expr -> expr TRANSPOSE .)
 
 
 state 55
@@ -1944,7 +1944,7 @@ state 55
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -1989,7 +1989,7 @@ state 56
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -2034,7 +2034,7 @@ state 57
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -2079,7 +2079,7 @@ state 58
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -2124,7 +2124,7 @@ state 59
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -2174,7 +2174,7 @@ state 61
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -2187,7 +2187,7 @@ state 61
     LEQ             shift and go to state 51
     >               shift and go to state 52
     <               shift and go to state 53
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
     @               shift and go to state 55
     /               shift and go to state 56
     *               shift and go to state 57
@@ -2204,7 +2204,7 @@ state 62
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -2241,7 +2241,7 @@ state 62
     EYE             reduce using rule 28 (expr -> - expr .)
     ONES            reduce using rule 28 (expr -> - expr .)
     ZEROS           reduce using rule 28 (expr -> - expr .)
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
 
 
 state 63
@@ -2253,7 +2253,7 @@ state 63
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -2290,7 +2290,7 @@ state 63
     EYE             reduce using rule 29 (expr -> + expr .)
     ONES            reduce using rule 29 (expr -> + expr .)
     ZEROS           reduce using rule 29 (expr -> + expr .)
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
 
 
 state 64
@@ -2325,7 +2325,7 @@ state 65
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -2338,7 +2338,7 @@ state 65
     LEQ             shift and go to state 51
     >               shift and go to state 52
     <               shift and go to state 53
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
     @               shift and go to state 55
     /               shift and go to state 56
     *               shift and go to state 57
@@ -2355,7 +2355,7 @@ state 66
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -2368,7 +2368,7 @@ state 66
     LEQ             shift and go to state 51
     >               shift and go to state 52
     <               shift and go to state 53
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
     @               shift and go to state 55
     /               shift and go to state 56
     *               shift and go to state 57
@@ -2385,7 +2385,7 @@ state 67
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -2398,7 +2398,7 @@ state 67
     LEQ             shift and go to state 51
     >               shift and go to state 52
     <               shift and go to state 53
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
     @               shift and go to state 55
     /               shift and go to state 56
     *               shift and go to state 57
@@ -2415,7 +2415,7 @@ state 68
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -2428,7 +2428,7 @@ state 68
     LEQ             shift and go to state 51
     >               shift and go to state 52
     <               shift and go to state 53
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
     @               shift and go to state 55
     /               shift and go to state 56
     *               shift and go to state 57
@@ -2445,7 +2445,7 @@ state 69
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -2458,7 +2458,7 @@ state 69
     LEQ             shift and go to state 51
     >               shift and go to state 52
     <               shift and go to state 53
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
     @               shift and go to state 55
     /               shift and go to state 56
     *               shift and go to state 57
@@ -2478,7 +2478,7 @@ state 70
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -2520,7 +2520,7 @@ state 71
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -2533,7 +2533,7 @@ state 71
     LEQ             shift and go to state 51
     >               shift and go to state 52
     <               shift and go to state 53
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
     @               shift and go to state 55
     /               shift and go to state 56
     *               shift and go to state 57
@@ -2551,7 +2551,7 @@ state 72
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -2564,7 +2564,7 @@ state 72
     LEQ             shift and go to state 51
     >               shift and go to state 52
     <               shift and go to state 53
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
     @               shift and go to state 55
     /               shift and go to state 56
     *               shift and go to state 57
@@ -2612,7 +2612,7 @@ state 75
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -2625,7 +2625,7 @@ state 75
     LEQ             shift and go to state 51
     >               shift and go to state 52
     <               shift and go to state 53
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
     @               shift and go to state 55
     /               shift and go to state 56
     *               shift and go to state 57
@@ -2658,7 +2658,7 @@ state 78
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -2674,7 +2674,7 @@ state 78
     LEQ             shift and go to state 51
     >               shift and go to state 52
     <               shift and go to state 53
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
     @               shift and go to state 55
     /               shift and go to state 56
     *               shift and go to state 57
@@ -2691,7 +2691,7 @@ state 79
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -2723,7 +2723,7 @@ state 79
     LEQ             shift and go to state 51
     >               shift and go to state 52
     <               shift and go to state 53
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
     @               shift and go to state 55
     /               shift and go to state 56
     *               shift and go to state 57
@@ -2740,7 +2740,7 @@ state 80
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -2772,7 +2772,7 @@ state 80
     LEQ             shift and go to state 51
     >               shift and go to state 52
     <               shift and go to state 53
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
     @               shift and go to state 55
     /               shift and go to state 56
     *               shift and go to state 57
@@ -2789,7 +2789,7 @@ state 81
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -2821,7 +2821,7 @@ state 81
     EYE             reduce using rule 22 (expr -> expr GEQ expr .)
     ONES            reduce using rule 22 (expr -> expr GEQ expr .)
     ZEROS           reduce using rule 22 (expr -> expr GEQ expr .)
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
     @               shift and go to state 55
     /               shift and go to state 56
     *               shift and go to state 57
@@ -2838,7 +2838,7 @@ state 82
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -2870,7 +2870,7 @@ state 82
     EYE             reduce using rule 23 (expr -> expr LEQ expr .)
     ONES            reduce using rule 23 (expr -> expr LEQ expr .)
     ZEROS           reduce using rule 23 (expr -> expr LEQ expr .)
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
     @               shift and go to state 55
     /               shift and go to state 56
     *               shift and go to state 57
@@ -2887,7 +2887,7 @@ state 83
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -2919,7 +2919,7 @@ state 83
     EYE             reduce using rule 24 (expr -> expr > expr .)
     ONES            reduce using rule 24 (expr -> expr > expr .)
     ZEROS           reduce using rule 24 (expr -> expr > expr .)
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
     @               shift and go to state 55
     /               shift and go to state 56
     *               shift and go to state 57
@@ -2936,7 +2936,7 @@ state 84
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -2968,7 +2968,7 @@ state 84
     EYE             reduce using rule 25 (expr -> expr < expr .)
     ONES            reduce using rule 25 (expr -> expr < expr .)
     ZEROS           reduce using rule 25 (expr -> expr < expr .)
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
     @               shift and go to state 55
     /               shift and go to state 56
     *               shift and go to state 57
@@ -2985,7 +2985,7 @@ state 85
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -3022,7 +3022,7 @@ state 85
     EYE             reduce using rule 30 (expr -> expr @ expr .)
     ONES            reduce using rule 30 (expr -> expr @ expr .)
     ZEROS           reduce using rule 30 (expr -> expr @ expr .)
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
 
 
 state 86
@@ -3034,7 +3034,7 @@ state 86
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -3071,7 +3071,7 @@ state 86
     EYE             reduce using rule 31 (expr -> expr / expr .)
     ONES            reduce using rule 31 (expr -> expr / expr .)
     ZEROS           reduce using rule 31 (expr -> expr / expr .)
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
 
 
 state 87
@@ -3083,7 +3083,7 @@ state 87
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -3120,7 +3120,7 @@ state 87
     EYE             reduce using rule 32 (expr -> expr * expr .)
     ONES            reduce using rule 32 (expr -> expr * expr .)
     ZEROS           reduce using rule 32 (expr -> expr * expr .)
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
 
 
 state 88
@@ -3132,7 +3132,7 @@ state 88
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -3166,7 +3166,7 @@ state 88
     EYE             reduce using rule 33 (expr -> expr - expr .)
     ONES            reduce using rule 33 (expr -> expr - expr .)
     ZEROS           reduce using rule 33 (expr -> expr - expr .)
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
     @               shift and go to state 55
     /               shift and go to state 56
     *               shift and go to state 57
@@ -3181,7 +3181,7 @@ state 89
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -3215,7 +3215,7 @@ state 89
     EYE             reduce using rule 34 (expr -> expr + expr .)
     ONES            reduce using rule 34 (expr -> expr + expr .)
     ZEROS           reduce using rule 34 (expr -> expr + expr .)
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
     @               shift and go to state 55
     /               shift and go to state 56
     *               shift and go to state 57
@@ -3230,7 +3230,7 @@ state 90
     LEQ             reduce using rule 18 (expr -> [ vector ] .)
     >               reduce using rule 18 (expr -> [ vector ] .)
     <               reduce using rule 18 (expr -> [ vector ] .)
-    '               reduce using rule 18 (expr -> [ vector ] .)
+    TRANSPOSE       reduce using rule 18 (expr -> [ vector ] .)
     @               reduce using rule 18 (expr -> [ vector ] .)
     /               reduce using rule 18 (expr -> [ vector ] .)
     *               reduce using rule 18 (expr -> [ vector ] .)
@@ -3267,7 +3267,7 @@ state 91
     LEQ             reduce using rule 26 (expr -> ( expr ) .)
     >               reduce using rule 26 (expr -> ( expr ) .)
     <               reduce using rule 26 (expr -> ( expr ) .)
-    '               reduce using rule 26 (expr -> ( expr ) .)
+    TRANSPOSE       reduce using rule 26 (expr -> ( expr ) .)
     @               reduce using rule 26 (expr -> ( expr ) .)
     /               reduce using rule 26 (expr -> ( expr ) .)
     *               reduce using rule 26 (expr -> ( expr ) .)
@@ -3419,7 +3419,7 @@ state 97
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -3432,7 +3432,7 @@ state 97
     LEQ             shift and go to state 51
     >               shift and go to state 52
     <               shift and go to state 53
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
     @               shift and go to state 55
     /               shift and go to state 56
     *               shift and go to state 57
@@ -3548,7 +3548,7 @@ state 100
     LEQ             reduce using rule 46 (lvalue -> term [ vector ] .)
     >               reduce using rule 46 (lvalue -> term [ vector ] .)
     <               reduce using rule 46 (lvalue -> term [ vector ] .)
-    '               reduce using rule 46 (lvalue -> term [ vector ] .)
+    TRANSPOSE       reduce using rule 46 (lvalue -> term [ vector ] .)
     @               reduce using rule 46 (lvalue -> term [ vector ] .)
     /               reduce using rule 46 (lvalue -> term [ vector ] .)
     *               reduce using rule 46 (lvalue -> term [ vector ] .)
@@ -3586,7 +3586,7 @@ state 101
     LEQ             reduce using rule 41 (term -> EYE ( expr ) .)
     >               reduce using rule 41 (term -> EYE ( expr ) .)
     <               reduce using rule 41 (term -> EYE ( expr ) .)
-    '               reduce using rule 41 (term -> EYE ( expr ) .)
+    TRANSPOSE       reduce using rule 41 (term -> EYE ( expr ) .)
     @               reduce using rule 41 (term -> EYE ( expr ) .)
     /               reduce using rule 41 (term -> EYE ( expr ) .)
     *               reduce using rule 41 (term -> EYE ( expr ) .)
@@ -3624,7 +3624,7 @@ state 102
     LEQ             reduce using rule 42 (term -> ONES ( vector ) .)
     >               reduce using rule 42 (term -> ONES ( vector ) .)
     <               reduce using rule 42 (term -> ONES ( vector ) .)
-    '               reduce using rule 42 (term -> ONES ( vector ) .)
+    TRANSPOSE       reduce using rule 42 (term -> ONES ( vector ) .)
     @               reduce using rule 42 (term -> ONES ( vector ) .)
     /               reduce using rule 42 (term -> ONES ( vector ) .)
     *               reduce using rule 42 (term -> ONES ( vector ) .)
@@ -3662,7 +3662,7 @@ state 103
     LEQ             reduce using rule 43 (term -> ZEROS ( vector ) .)
     >               reduce using rule 43 (term -> ZEROS ( vector ) .)
     <               reduce using rule 43 (term -> ZEROS ( vector ) .)
-    '               reduce using rule 43 (term -> ZEROS ( vector ) .)
+    TRANSPOSE       reduce using rule 43 (term -> ZEROS ( vector ) .)
     @               reduce using rule 43 (term -> ZEROS ( vector ) .)
     /               reduce using rule 43 (term -> ZEROS ( vector ) .)
     *               reduce using rule 43 (term -> ZEROS ( vector ) .)
@@ -3702,7 +3702,7 @@ state 104
     (24) expr -> . expr > expr
     (25) expr -> . expr < expr
     (26) expr -> . ( expr )
-    (27) expr -> . expr '
+    (27) expr -> . expr TRANSPOSE
     (28) expr -> . - expr
     (29) expr -> . + expr
     (30) expr -> . expr @ expr
@@ -3791,7 +3791,7 @@ state 107
     (23) expr -> expr . LEQ expr
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
-    (27) expr -> expr . '
+    (27) expr -> expr . TRANSPOSE
     (30) expr -> expr . @ expr
     (31) expr -> expr . / expr
     (32) expr -> expr . * expr
@@ -3826,7 +3826,7 @@ state 107
     LEQ             shift and go to state 51
     >               shift and go to state 52
     <               shift and go to state 53
-    '               shift and go to state 54
+    TRANSPOSE       shift and go to state 54
     @               shift and go to state 55
     /               shift and go to state 56
     *               shift and go to state 57

@@ -55,11 +55,21 @@ def test_MatMulBinExpr(test_input, expected):
     parser = Parser()
     assert parser.parse(scanner.tokenize(test_input)).stmt_set[0].expr == expected
 
+@pytest.mark.parametrize('test_input, expected', [
+    ('x = A.T;', MatTransExpr(Id('A'))),
+    ('x = A + B.T;', BinExpr('+', Id('A'), MatTransExpr(Id('B')))),
+    ('x = A.T + B;', BinExpr('+', MatTransExpr(Id('A')), Id('B'))),
+    ('x = A.T + B.T;', BinExpr('+', MatTransExpr(Id('A')), MatTransExpr(Id('B')))),
+    ('x = (A + B).T;', MatTransExpr(BinExpr('+', Id('A'), Id('B'))))
+])
+def test_MatTransExpr(test_input, expected):
+    scanner = Scanner()
+    parser = Parser()
+    assert parser.parse(scanner.tokenize(test_input)).stmt_set[0].expr == expected
 
 @pytest.mark.parametrize('test_input, expected', [
     ('x = -1;', UnExpr('-', 1)),
-    ('x = +(3 + -1);', UnExpr('+', BinExpr('+', 3, UnExpr('-', 1)))),
-    ("x = a';", UnExpr("'", Id('a'))),
+    ('x = +(3 + -1);', UnExpr('+', BinExpr('+', 3, UnExpr('-', 1))))
 ])
 def test_UnExpr(test_input, expected):
     scanner = Scanner()

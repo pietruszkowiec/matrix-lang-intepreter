@@ -4,7 +4,7 @@ from sly import Lexer
 class Scanner(Lexer):
     tokens = {
         ADDASSIGN, SUBASSIGN, MULASSIGN, DIVASSIGN,
-        LEQ, GEQ, NEQ, EQU,
+        LEQ, GEQ, NEQ, EQU, TRANSPOSE,
         IF, ELSE, FOR, WHILE, BREAK, CONTINUE,
         RETURN, EYE, ZEROS, ONES, PRINT,
         ID, INTNUM, FLOATNUM, STRING
@@ -13,13 +13,15 @@ class Scanner(Lexer):
     literals = {
         '=', '+', '-', '*', '/', '@',
         '(', ')', '[', ']', '{', '}',
-        ':', '\'', ',', ';', '<', '>'
+        ':', ',', ';', '<', '>'
     }
 
     ADDASSIGN = r'\+='
     SUBASSIGN = r'-='
     MULASSIGN = r'\*='
     DIVASSIGN = r'/='
+
+    TRANSPOSE = r'.T'
 
     LEQ = r'<='
     GEQ = r'>='

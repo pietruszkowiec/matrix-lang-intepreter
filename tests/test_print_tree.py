@@ -96,7 +96,7 @@ def test_Operators(capture_stdout):
 # transposition
 
 C = -A;     # assignemnt with unary expression
-C = B' ;    # assignemnt with matrix transpose
+C = B.T ;   # assignemnt with matrix transpose
 C = A+B ;   # assignemnt with binary addition
 C = A-B ;   # assignemnt with binary substraction
 C = A*B ;   # assignemnt with binary multiplication
@@ -114,7 +114,7 @@ C /= A ;  # divide A by C
  |  | A
 =
  | C
- | '
+ | .T
  |  | B
 =
  | C

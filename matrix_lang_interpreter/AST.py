@@ -79,6 +79,11 @@ class UnExpr(Expr):
     child: Expr
 
 @dataclass
+class MatTransExpr(Expr):
+    child: Expr
+    op: str = '.T'
+
+@dataclass
 class RelationExpr(Expr):
     op: str
     left: Expr

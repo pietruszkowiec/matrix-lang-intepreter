@@ -104,6 +104,13 @@ class TreePrinter:
         self.left.printTree(indent+1)
         self.right.printTree(indent+1)
 
+    @addToClass(AST.MatTransExpr)
+    def printTree(self, indent):
+        TreePrinter.printIndent(indent)
+        print(self.op)
+
+        self.child.printTree(indent+1)
+
     @addToClass(AST.UnExpr)
     def printTree(self, indent):
         TreePrinter.printIndent(indent)

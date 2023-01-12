@@ -16,7 +16,7 @@ class Parser(SlyParser):
         ('left', '+', '-'),
         ('left', '*', '/', '@'),
         ('right', UPLUS, UMINUS),
-        ('left', '\''),
+        ('left', TRANSPOSE),
     )
 
     @_('stmt_set')
@@ -96,9 +96,9 @@ class Parser(SlyParser):
     def expr(self, p):
         return AST.UnExpr(p[0], p.expr)
 
-    @_('expr "\'"')
+    @_('expr TRANSPOSE')
     def expr(self, p):
-        return AST.UnExpr(p[1], p.expr)
+        return AST.MatTransExpr(p.expr)
 
     @_('"(" expr ")"')
     def expr(self, p):
