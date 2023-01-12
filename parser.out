@@ -30,76 +30,78 @@ Rule 26    expr -> ( expr )
 Rule 27    expr -> expr '  [precedence=left, level=9]
 Rule 28    expr -> - expr  [precedence=right, level=8]
 Rule 29    expr -> + expr  [precedence=right, level=8]
-Rule 30    expr -> expr / expr  [precedence=left, level=7]
-Rule 31    expr -> expr * expr  [precedence=left, level=7]
-Rule 32    expr -> expr - expr  [precedence=left, level=6]
-Rule 33    expr -> expr + expr  [precedence=left, level=6]
-Rule 34    vector -> <empty>
-Rule 35    vector -> expr
-Rule 36    vector -> vector , expr
-Rule 37    term -> STRING
-Rule 38    term -> FLOATNUM
-Rule 39    term -> INTNUM
-Rule 40    term -> EYE ( expr )
-Rule 41    term -> ONES ( vector )
-Rule 42    term -> ZEROS ( vector )
-Rule 43    term -> lvalue
-Rule 44    lvalue -> ID
-Rule 45    lvalue -> term [ vector ]
+Rule 30    expr -> expr @ expr  [precedence=left, level=7]
+Rule 31    expr -> expr / expr  [precedence=left, level=7]
+Rule 32    expr -> expr * expr  [precedence=left, level=7]
+Rule 33    expr -> expr - expr  [precedence=left, level=6]
+Rule 34    expr -> expr + expr  [precedence=left, level=6]
+Rule 35    vector -> <empty>
+Rule 36    vector -> expr
+Rule 37    vector -> vector , expr
+Rule 38    term -> STRING
+Rule 39    term -> FLOATNUM
+Rule 40    term -> INTNUM
+Rule 41    term -> EYE ( expr )
+Rule 42    term -> ONES ( vector )
+Rule 43    term -> ZEROS ( vector )
+Rule 44    term -> lvalue
+Rule 45    lvalue -> ID
+Rule 46    lvalue -> term [ vector ]
 
 Terminals, with rules where they appear:
 
 '                    : 27
-(                    : 14 15 16 26 40 41 42
-)                    : 14 15 16 26 40 41 42
-*                    : 31
-+                    : 29 33
-,                    : 36
--                    : 28 32
-/                    : 30
+(                    : 14 15 16 26 41 42 43
+)                    : 14 15 16 26 41 42 43
+*                    : 32
++                    : 29 34
+,                    : 37
+-                    : 28 33
+/                    : 31
 :                    : 13
 ;                    : 4 5 6 7 8 9 10 11 12
 <                    : 25
 =                    : 12 13
 >                    : 24
+@                    : 30
 ADDASSIGN            : 11
 BREAK                : 7
 CONTINUE             : 6
 DIVASSIGN            : 8
 ELSE                 : 16
 EQU                  : 21
-EYE                  : 40
-FLOATNUM             : 38
+EYE                  : 41
+FLOATNUM             : 39
 FOR                  : 13
 GEQ                  : 22
-ID                   : 13 44
+ID                   : 13 45
 IF                   : 15 16
-INTNUM               : 39
+INTNUM               : 40
 LEQ                  : 23
 MULASSIGN            : 9
 NEQ                  : 20
-ONES                 : 41
+ONES                 : 42
 PRINT                : 5
 RETURN               : 4
-STRING               : 37
+STRING               : 38
 SUBASSIGN            : 10
 WHILE                : 14
-ZEROS                : 42
-[                    : 18 45
-]                    : 18 45
+ZEROS                : 43
+[                    : 18 46
+]                    : 18 46
 error                : 
 {                    : 17
 }                    : 17
 
 Nonterminals, with rules where they appear:
 
-expr                 : 8 9 10 11 12 13 13 14 15 16 20 20 21 21 22 22 23 23 24 24 25 25 26 27 28 29 30 30 31 31 32 32 33 33 35 36 40
-lvalue               : 8 9 10 11 12 43
+expr                 : 8 9 10 11 12 13 13 14 15 16 20 20 21 21 22 22 23 23 24 24 25 25 26 27 28 29 30 30 31 31 32 32 33 33 34 34 36 37 41
+lvalue               : 8 9 10 11 12 44
 program              : 0
 stmt                 : 2 3 13 14 15 16 16
 stmt_set             : 1 2 17
-term                 : 19 45
-vector               : 4 5 18 36 41 42 45
+term                 : 19 46
+vector               : 4 5 18 37 42 43 46
 
 
 state 0
@@ -122,15 +124,15 @@ state 0
     (15) stmt -> . IF ( expr ) stmt
     (16) stmt -> . IF ( expr ) stmt ELSE stmt
     (17) stmt -> . { stmt_set }
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
     RETURN          shift and go to state 4
     PRINT           shift and go to state 5
     CONTINUE        shift and go to state 6
@@ -176,15 +178,15 @@ state 2
     (15) stmt -> . IF ( expr ) stmt
     (16) stmt -> . IF ( expr ) stmt ELSE stmt
     (17) stmt -> . { stmt_set }
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
     $end            reduce using rule 1 (program -> stmt_set .)
     RETURN          shift and go to state 4
     PRINT           shift and go to state 5
@@ -231,9 +233,9 @@ state 3
 state 4
 
     (4) stmt -> RETURN . vector ;
-    (34) vector -> .
-    (35) vector -> . expr
-    (36) vector -> . vector , expr
+    (35) vector -> .
+    (36) vector -> . expr
+    (37) vector -> . vector , expr
     (18) expr -> . [ vector ]
     (19) expr -> . term
     (20) expr -> . expr NEQ expr
@@ -246,21 +248,22 @@ state 4
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
-    ;               reduce using rule 34 (vector -> .)
-    ,               reduce using rule 34 (vector -> .)
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
+    ;               reduce using rule 35 (vector -> .)
+    ,               reduce using rule 35 (vector -> .)
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -281,9 +284,9 @@ state 4
 state 5
 
     (5) stmt -> PRINT . vector ;
-    (34) vector -> .
-    (35) vector -> . expr
-    (36) vector -> . vector , expr
+    (35) vector -> .
+    (36) vector -> . expr
+    (37) vector -> . vector , expr
     (18) expr -> . [ vector ]
     (19) expr -> . term
     (20) expr -> . expr NEQ expr
@@ -296,21 +299,22 @@ state 5
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
-    ;               reduce using rule 34 (vector -> .)
-    ,               reduce using rule 34 (vector -> .)
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
+    ;               reduce using rule 35 (vector -> .)
+    ,               reduce using rule 35 (vector -> .)
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -347,13 +351,13 @@ state 8
     (10) stmt -> lvalue . SUBASSIGN expr ;
     (11) stmt -> lvalue . ADDASSIGN expr ;
     (12) stmt -> lvalue . = expr ;
-    (43) term -> lvalue .
+    (44) term -> lvalue .
     DIVASSIGN       shift and go to state 33
     MULASSIGN       shift and go to state 34
     SUBASSIGN       shift and go to state 35
     ADDASSIGN       shift and go to state 36
     =               shift and go to state 37
-    [               reduce using rule 43 (term -> lvalue .)
+    [               reduce using rule 44 (term -> lvalue .)
 
 
 state 9
@@ -364,44 +368,45 @@ state 9
 
 state 10
 
-    (44) lvalue -> ID .
-    DIVASSIGN       reduce using rule 44 (lvalue -> ID .)
-    MULASSIGN       reduce using rule 44 (lvalue -> ID .)
-    SUBASSIGN       reduce using rule 44 (lvalue -> ID .)
-    ADDASSIGN       reduce using rule 44 (lvalue -> ID .)
-    =               reduce using rule 44 (lvalue -> ID .)
-    [               reduce using rule 44 (lvalue -> ID .)
-    NEQ             reduce using rule 44 (lvalue -> ID .)
-    EQU             reduce using rule 44 (lvalue -> ID .)
-    GEQ             reduce using rule 44 (lvalue -> ID .)
-    LEQ             reduce using rule 44 (lvalue -> ID .)
-    >               reduce using rule 44 (lvalue -> ID .)
-    <               reduce using rule 44 (lvalue -> ID .)
-    '               reduce using rule 44 (lvalue -> ID .)
-    /               reduce using rule 44 (lvalue -> ID .)
-    *               reduce using rule 44 (lvalue -> ID .)
-    -               reduce using rule 44 (lvalue -> ID .)
-    +               reduce using rule 44 (lvalue -> ID .)
-    ;               reduce using rule 44 (lvalue -> ID .)
-    ,               reduce using rule 44 (lvalue -> ID .)
-    ]               reduce using rule 44 (lvalue -> ID .)
-    )               reduce using rule 44 (lvalue -> ID .)
-    :               reduce using rule 44 (lvalue -> ID .)
-    RETURN          reduce using rule 44 (lvalue -> ID .)
-    PRINT           reduce using rule 44 (lvalue -> ID .)
-    CONTINUE        reduce using rule 44 (lvalue -> ID .)
-    BREAK           reduce using rule 44 (lvalue -> ID .)
-    FOR             reduce using rule 44 (lvalue -> ID .)
-    WHILE           reduce using rule 44 (lvalue -> ID .)
-    IF              reduce using rule 44 (lvalue -> ID .)
-    {               reduce using rule 44 (lvalue -> ID .)
-    ID              reduce using rule 44 (lvalue -> ID .)
-    STRING          reduce using rule 44 (lvalue -> ID .)
-    FLOATNUM        reduce using rule 44 (lvalue -> ID .)
-    INTNUM          reduce using rule 44 (lvalue -> ID .)
-    EYE             reduce using rule 44 (lvalue -> ID .)
-    ONES            reduce using rule 44 (lvalue -> ID .)
-    ZEROS           reduce using rule 44 (lvalue -> ID .)
+    (45) lvalue -> ID .
+    DIVASSIGN       reduce using rule 45 (lvalue -> ID .)
+    MULASSIGN       reduce using rule 45 (lvalue -> ID .)
+    SUBASSIGN       reduce using rule 45 (lvalue -> ID .)
+    ADDASSIGN       reduce using rule 45 (lvalue -> ID .)
+    =               reduce using rule 45 (lvalue -> ID .)
+    [               reduce using rule 45 (lvalue -> ID .)
+    NEQ             reduce using rule 45 (lvalue -> ID .)
+    EQU             reduce using rule 45 (lvalue -> ID .)
+    GEQ             reduce using rule 45 (lvalue -> ID .)
+    LEQ             reduce using rule 45 (lvalue -> ID .)
+    >               reduce using rule 45 (lvalue -> ID .)
+    <               reduce using rule 45 (lvalue -> ID .)
+    '               reduce using rule 45 (lvalue -> ID .)
+    @               reduce using rule 45 (lvalue -> ID .)
+    /               reduce using rule 45 (lvalue -> ID .)
+    *               reduce using rule 45 (lvalue -> ID .)
+    -               reduce using rule 45 (lvalue -> ID .)
+    +               reduce using rule 45 (lvalue -> ID .)
+    ;               reduce using rule 45 (lvalue -> ID .)
+    ,               reduce using rule 45 (lvalue -> ID .)
+    ]               reduce using rule 45 (lvalue -> ID .)
+    )               reduce using rule 45 (lvalue -> ID .)
+    :               reduce using rule 45 (lvalue -> ID .)
+    RETURN          reduce using rule 45 (lvalue -> ID .)
+    PRINT           reduce using rule 45 (lvalue -> ID .)
+    CONTINUE        reduce using rule 45 (lvalue -> ID .)
+    BREAK           reduce using rule 45 (lvalue -> ID .)
+    FOR             reduce using rule 45 (lvalue -> ID .)
+    WHILE           reduce using rule 45 (lvalue -> ID .)
+    IF              reduce using rule 45 (lvalue -> ID .)
+    {               reduce using rule 45 (lvalue -> ID .)
+    ID              reduce using rule 45 (lvalue -> ID .)
+    STRING          reduce using rule 45 (lvalue -> ID .)
+    FLOATNUM        reduce using rule 45 (lvalue -> ID .)
+    INTNUM          reduce using rule 45 (lvalue -> ID .)
+    EYE             reduce using rule 45 (lvalue -> ID .)
+    ONES            reduce using rule 45 (lvalue -> ID .)
+    ZEROS           reduce using rule 45 (lvalue -> ID .)
 
 
 state 11
@@ -436,15 +441,15 @@ state 13
     (15) stmt -> . IF ( expr ) stmt
     (16) stmt -> . IF ( expr ) stmt ELSE stmt
     (17) stmt -> . { stmt_set }
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
     RETURN          shift and go to state 4
     PRINT           shift and go to state 5
     CONTINUE        shift and go to state 6
@@ -468,136 +473,139 @@ state 13
 
 state 14
 
-    (45) lvalue -> term . [ vector ]
+    (46) lvalue -> term . [ vector ]
     [               shift and go to state 42
 
 
 state 15
 
-    (37) term -> STRING .
-    [               reduce using rule 37 (term -> STRING .)
-    NEQ             reduce using rule 37 (term -> STRING .)
-    EQU             reduce using rule 37 (term -> STRING .)
-    GEQ             reduce using rule 37 (term -> STRING .)
-    LEQ             reduce using rule 37 (term -> STRING .)
-    >               reduce using rule 37 (term -> STRING .)
-    <               reduce using rule 37 (term -> STRING .)
-    '               reduce using rule 37 (term -> STRING .)
-    /               reduce using rule 37 (term -> STRING .)
-    *               reduce using rule 37 (term -> STRING .)
-    -               reduce using rule 37 (term -> STRING .)
-    +               reduce using rule 37 (term -> STRING .)
-    ;               reduce using rule 37 (term -> STRING .)
-    ,               reduce using rule 37 (term -> STRING .)
-    ]               reduce using rule 37 (term -> STRING .)
-    )               reduce using rule 37 (term -> STRING .)
-    :               reduce using rule 37 (term -> STRING .)
-    RETURN          reduce using rule 37 (term -> STRING .)
-    PRINT           reduce using rule 37 (term -> STRING .)
-    CONTINUE        reduce using rule 37 (term -> STRING .)
-    BREAK           reduce using rule 37 (term -> STRING .)
-    FOR             reduce using rule 37 (term -> STRING .)
-    WHILE           reduce using rule 37 (term -> STRING .)
-    IF              reduce using rule 37 (term -> STRING .)
-    {               reduce using rule 37 (term -> STRING .)
-    ID              reduce using rule 37 (term -> STRING .)
-    STRING          reduce using rule 37 (term -> STRING .)
-    FLOATNUM        reduce using rule 37 (term -> STRING .)
-    INTNUM          reduce using rule 37 (term -> STRING .)
-    EYE             reduce using rule 37 (term -> STRING .)
-    ONES            reduce using rule 37 (term -> STRING .)
-    ZEROS           reduce using rule 37 (term -> STRING .)
+    (38) term -> STRING .
+    [               reduce using rule 38 (term -> STRING .)
+    NEQ             reduce using rule 38 (term -> STRING .)
+    EQU             reduce using rule 38 (term -> STRING .)
+    GEQ             reduce using rule 38 (term -> STRING .)
+    LEQ             reduce using rule 38 (term -> STRING .)
+    >               reduce using rule 38 (term -> STRING .)
+    <               reduce using rule 38 (term -> STRING .)
+    '               reduce using rule 38 (term -> STRING .)
+    @               reduce using rule 38 (term -> STRING .)
+    /               reduce using rule 38 (term -> STRING .)
+    *               reduce using rule 38 (term -> STRING .)
+    -               reduce using rule 38 (term -> STRING .)
+    +               reduce using rule 38 (term -> STRING .)
+    ;               reduce using rule 38 (term -> STRING .)
+    ,               reduce using rule 38 (term -> STRING .)
+    ]               reduce using rule 38 (term -> STRING .)
+    )               reduce using rule 38 (term -> STRING .)
+    :               reduce using rule 38 (term -> STRING .)
+    RETURN          reduce using rule 38 (term -> STRING .)
+    PRINT           reduce using rule 38 (term -> STRING .)
+    CONTINUE        reduce using rule 38 (term -> STRING .)
+    BREAK           reduce using rule 38 (term -> STRING .)
+    FOR             reduce using rule 38 (term -> STRING .)
+    WHILE           reduce using rule 38 (term -> STRING .)
+    IF              reduce using rule 38 (term -> STRING .)
+    {               reduce using rule 38 (term -> STRING .)
+    ID              reduce using rule 38 (term -> STRING .)
+    STRING          reduce using rule 38 (term -> STRING .)
+    FLOATNUM        reduce using rule 38 (term -> STRING .)
+    INTNUM          reduce using rule 38 (term -> STRING .)
+    EYE             reduce using rule 38 (term -> STRING .)
+    ONES            reduce using rule 38 (term -> STRING .)
+    ZEROS           reduce using rule 38 (term -> STRING .)
 
 
 state 16
 
-    (38) term -> FLOATNUM .
-    [               reduce using rule 38 (term -> FLOATNUM .)
-    NEQ             reduce using rule 38 (term -> FLOATNUM .)
-    EQU             reduce using rule 38 (term -> FLOATNUM .)
-    GEQ             reduce using rule 38 (term -> FLOATNUM .)
-    LEQ             reduce using rule 38 (term -> FLOATNUM .)
-    >               reduce using rule 38 (term -> FLOATNUM .)
-    <               reduce using rule 38 (term -> FLOATNUM .)
-    '               reduce using rule 38 (term -> FLOATNUM .)
-    /               reduce using rule 38 (term -> FLOATNUM .)
-    *               reduce using rule 38 (term -> FLOATNUM .)
-    -               reduce using rule 38 (term -> FLOATNUM .)
-    +               reduce using rule 38 (term -> FLOATNUM .)
-    ;               reduce using rule 38 (term -> FLOATNUM .)
-    ,               reduce using rule 38 (term -> FLOATNUM .)
-    ]               reduce using rule 38 (term -> FLOATNUM .)
-    )               reduce using rule 38 (term -> FLOATNUM .)
-    :               reduce using rule 38 (term -> FLOATNUM .)
-    RETURN          reduce using rule 38 (term -> FLOATNUM .)
-    PRINT           reduce using rule 38 (term -> FLOATNUM .)
-    CONTINUE        reduce using rule 38 (term -> FLOATNUM .)
-    BREAK           reduce using rule 38 (term -> FLOATNUM .)
-    FOR             reduce using rule 38 (term -> FLOATNUM .)
-    WHILE           reduce using rule 38 (term -> FLOATNUM .)
-    IF              reduce using rule 38 (term -> FLOATNUM .)
-    {               reduce using rule 38 (term -> FLOATNUM .)
-    ID              reduce using rule 38 (term -> FLOATNUM .)
-    STRING          reduce using rule 38 (term -> FLOATNUM .)
-    FLOATNUM        reduce using rule 38 (term -> FLOATNUM .)
-    INTNUM          reduce using rule 38 (term -> FLOATNUM .)
-    EYE             reduce using rule 38 (term -> FLOATNUM .)
-    ONES            reduce using rule 38 (term -> FLOATNUM .)
-    ZEROS           reduce using rule 38 (term -> FLOATNUM .)
+    (39) term -> FLOATNUM .
+    [               reduce using rule 39 (term -> FLOATNUM .)
+    NEQ             reduce using rule 39 (term -> FLOATNUM .)
+    EQU             reduce using rule 39 (term -> FLOATNUM .)
+    GEQ             reduce using rule 39 (term -> FLOATNUM .)
+    LEQ             reduce using rule 39 (term -> FLOATNUM .)
+    >               reduce using rule 39 (term -> FLOATNUM .)
+    <               reduce using rule 39 (term -> FLOATNUM .)
+    '               reduce using rule 39 (term -> FLOATNUM .)
+    @               reduce using rule 39 (term -> FLOATNUM .)
+    /               reduce using rule 39 (term -> FLOATNUM .)
+    *               reduce using rule 39 (term -> FLOATNUM .)
+    -               reduce using rule 39 (term -> FLOATNUM .)
+    +               reduce using rule 39 (term -> FLOATNUM .)
+    ;               reduce using rule 39 (term -> FLOATNUM .)
+    ,               reduce using rule 39 (term -> FLOATNUM .)
+    ]               reduce using rule 39 (term -> FLOATNUM .)
+    )               reduce using rule 39 (term -> FLOATNUM .)
+    :               reduce using rule 39 (term -> FLOATNUM .)
+    RETURN          reduce using rule 39 (term -> FLOATNUM .)
+    PRINT           reduce using rule 39 (term -> FLOATNUM .)
+    CONTINUE        reduce using rule 39 (term -> FLOATNUM .)
+    BREAK           reduce using rule 39 (term -> FLOATNUM .)
+    FOR             reduce using rule 39 (term -> FLOATNUM .)
+    WHILE           reduce using rule 39 (term -> FLOATNUM .)
+    IF              reduce using rule 39 (term -> FLOATNUM .)
+    {               reduce using rule 39 (term -> FLOATNUM .)
+    ID              reduce using rule 39 (term -> FLOATNUM .)
+    STRING          reduce using rule 39 (term -> FLOATNUM .)
+    FLOATNUM        reduce using rule 39 (term -> FLOATNUM .)
+    INTNUM          reduce using rule 39 (term -> FLOATNUM .)
+    EYE             reduce using rule 39 (term -> FLOATNUM .)
+    ONES            reduce using rule 39 (term -> FLOATNUM .)
+    ZEROS           reduce using rule 39 (term -> FLOATNUM .)
 
 
 state 17
 
-    (39) term -> INTNUM .
-    [               reduce using rule 39 (term -> INTNUM .)
-    NEQ             reduce using rule 39 (term -> INTNUM .)
-    EQU             reduce using rule 39 (term -> INTNUM .)
-    GEQ             reduce using rule 39 (term -> INTNUM .)
-    LEQ             reduce using rule 39 (term -> INTNUM .)
-    >               reduce using rule 39 (term -> INTNUM .)
-    <               reduce using rule 39 (term -> INTNUM .)
-    '               reduce using rule 39 (term -> INTNUM .)
-    /               reduce using rule 39 (term -> INTNUM .)
-    *               reduce using rule 39 (term -> INTNUM .)
-    -               reduce using rule 39 (term -> INTNUM .)
-    +               reduce using rule 39 (term -> INTNUM .)
-    ;               reduce using rule 39 (term -> INTNUM .)
-    ,               reduce using rule 39 (term -> INTNUM .)
-    ]               reduce using rule 39 (term -> INTNUM .)
-    )               reduce using rule 39 (term -> INTNUM .)
-    :               reduce using rule 39 (term -> INTNUM .)
-    RETURN          reduce using rule 39 (term -> INTNUM .)
-    PRINT           reduce using rule 39 (term -> INTNUM .)
-    CONTINUE        reduce using rule 39 (term -> INTNUM .)
-    BREAK           reduce using rule 39 (term -> INTNUM .)
-    FOR             reduce using rule 39 (term -> INTNUM .)
-    WHILE           reduce using rule 39 (term -> INTNUM .)
-    IF              reduce using rule 39 (term -> INTNUM .)
-    {               reduce using rule 39 (term -> INTNUM .)
-    ID              reduce using rule 39 (term -> INTNUM .)
-    STRING          reduce using rule 39 (term -> INTNUM .)
-    FLOATNUM        reduce using rule 39 (term -> INTNUM .)
-    INTNUM          reduce using rule 39 (term -> INTNUM .)
-    EYE             reduce using rule 39 (term -> INTNUM .)
-    ONES            reduce using rule 39 (term -> INTNUM .)
-    ZEROS           reduce using rule 39 (term -> INTNUM .)
+    (40) term -> INTNUM .
+    [               reduce using rule 40 (term -> INTNUM .)
+    NEQ             reduce using rule 40 (term -> INTNUM .)
+    EQU             reduce using rule 40 (term -> INTNUM .)
+    GEQ             reduce using rule 40 (term -> INTNUM .)
+    LEQ             reduce using rule 40 (term -> INTNUM .)
+    >               reduce using rule 40 (term -> INTNUM .)
+    <               reduce using rule 40 (term -> INTNUM .)
+    '               reduce using rule 40 (term -> INTNUM .)
+    @               reduce using rule 40 (term -> INTNUM .)
+    /               reduce using rule 40 (term -> INTNUM .)
+    *               reduce using rule 40 (term -> INTNUM .)
+    -               reduce using rule 40 (term -> INTNUM .)
+    +               reduce using rule 40 (term -> INTNUM .)
+    ;               reduce using rule 40 (term -> INTNUM .)
+    ,               reduce using rule 40 (term -> INTNUM .)
+    ]               reduce using rule 40 (term -> INTNUM .)
+    )               reduce using rule 40 (term -> INTNUM .)
+    :               reduce using rule 40 (term -> INTNUM .)
+    RETURN          reduce using rule 40 (term -> INTNUM .)
+    PRINT           reduce using rule 40 (term -> INTNUM .)
+    CONTINUE        reduce using rule 40 (term -> INTNUM .)
+    BREAK           reduce using rule 40 (term -> INTNUM .)
+    FOR             reduce using rule 40 (term -> INTNUM .)
+    WHILE           reduce using rule 40 (term -> INTNUM .)
+    IF              reduce using rule 40 (term -> INTNUM .)
+    {               reduce using rule 40 (term -> INTNUM .)
+    ID              reduce using rule 40 (term -> INTNUM .)
+    STRING          reduce using rule 40 (term -> INTNUM .)
+    FLOATNUM        reduce using rule 40 (term -> INTNUM .)
+    INTNUM          reduce using rule 40 (term -> INTNUM .)
+    EYE             reduce using rule 40 (term -> INTNUM .)
+    ONES            reduce using rule 40 (term -> INTNUM .)
+    ZEROS           reduce using rule 40 (term -> INTNUM .)
 
 
 state 18
 
-    (40) term -> EYE . ( expr )
+    (41) term -> EYE . ( expr )
     (               shift and go to state 43
 
 
 state 19
 
-    (41) term -> ONES . ( vector )
+    (42) term -> ONES . ( vector )
     (               shift and go to state 44
 
 
 state 20
 
-    (42) term -> ZEROS . ( vector )
+    (43) term -> ZEROS . ( vector )
     (               shift and go to state 45
 
 
@@ -626,14 +634,14 @@ state 21
 state 22
 
     (4) stmt -> RETURN vector . ;
-    (36) vector -> vector . , expr
+    (37) vector -> vector . , expr
     ;               shift and go to state 46
     ,               shift and go to state 47
 
 
 state 23
 
-    (35) vector -> expr .
+    (36) vector -> expr .
     (20) expr -> expr . NEQ expr
     (21) expr -> expr . EQU expr
     (22) expr -> expr . GEQ expr
@@ -641,14 +649,15 @@ state 23
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
-    ;               reduce using rule 35 (vector -> expr .)
-    ,               reduce using rule 35 (vector -> expr .)
-    ]               reduce using rule 35 (vector -> expr .)
-    )               reduce using rule 35 (vector -> expr .)
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
+    ;               reduce using rule 36 (vector -> expr .)
+    ,               reduce using rule 36 (vector -> expr .)
+    ]               reduce using rule 36 (vector -> expr .)
+    )               reduce using rule 36 (vector -> expr .)
     NEQ             shift and go to state 48
     EQU             shift and go to state 49
     GEQ             shift and go to state 50
@@ -656,18 +665,19 @@ state 23
     >               shift and go to state 52
     <               shift and go to state 53
     '               shift and go to state 54
-    /               shift and go to state 55
-    *               shift and go to state 56
-    -               shift and go to state 57
-    +               shift and go to state 58
+    @               shift and go to state 55
+    /               shift and go to state 56
+    *               shift and go to state 57
+    -               shift and go to state 58
+    +               shift and go to state 59
 
 
 state 24
 
     (18) expr -> [ . vector ]
-    (34) vector -> .
-    (35) vector -> . expr
-    (36) vector -> . vector , expr
+    (35) vector -> .
+    (36) vector -> . expr
+    (37) vector -> . vector , expr
     (18) expr -> . [ vector ]
     (19) expr -> . term
     (20) expr -> . expr NEQ expr
@@ -680,21 +690,22 @@ state 24
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
-    ]               reduce using rule 34 (vector -> .)
-    ,               reduce using rule 34 (vector -> .)
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
+    ]               reduce using rule 35 (vector -> .)
+    ,               reduce using rule 35 (vector -> .)
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -707,7 +718,7 @@ state 24
     ZEROS           shift and go to state 20
     ID              shift and go to state 10
 
-    vector                         shift and go to state 59
+    vector                         shift and go to state 60
     expr                           shift and go to state 23
     term                           shift and go to state 25
     lvalue                         shift and go to state 29
@@ -715,7 +726,7 @@ state 24
 state 25
 
     (19) expr -> term .
-    (45) lvalue -> term . [ vector ]
+    (46) lvalue -> term . [ vector ]
     NEQ             reduce using rule 19 (expr -> term .)
     EQU             reduce using rule 19 (expr -> term .)
     GEQ             reduce using rule 19 (expr -> term .)
@@ -723,6 +734,7 @@ state 25
     >               reduce using rule 19 (expr -> term .)
     <               reduce using rule 19 (expr -> term .)
     '               reduce using rule 19 (expr -> term .)
+    @               reduce using rule 19 (expr -> term .)
     /               reduce using rule 19 (expr -> term .)
     *               reduce using rule 19 (expr -> term .)
     -               reduce using rule 19 (expr -> term .)
@@ -765,19 +777,20 @@ state 26
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -790,7 +803,7 @@ state 26
     ZEROS           shift and go to state 20
     ID              shift and go to state 10
 
-    expr                           shift and go to state 60
+    expr                           shift and go to state 61
     term                           shift and go to state 25
     lvalue                         shift and go to state 29
 
@@ -809,19 +822,20 @@ state 27
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -834,7 +848,7 @@ state 27
     ZEROS           shift and go to state 20
     ID              shift and go to state 10
 
-    expr                           shift and go to state 61
+    expr                           shift and go to state 62
     term                           shift and go to state 25
     lvalue                         shift and go to state 29
 
@@ -853,19 +867,20 @@ state 28
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -878,52 +893,53 @@ state 28
     ZEROS           shift and go to state 20
     ID              shift and go to state 10
 
-    expr                           shift and go to state 62
+    expr                           shift and go to state 63
     term                           shift and go to state 25
     lvalue                         shift and go to state 29
 
 state 29
 
-    (43) term -> lvalue .
-    [               reduce using rule 43 (term -> lvalue .)
-    NEQ             reduce using rule 43 (term -> lvalue .)
-    EQU             reduce using rule 43 (term -> lvalue .)
-    GEQ             reduce using rule 43 (term -> lvalue .)
-    LEQ             reduce using rule 43 (term -> lvalue .)
-    >               reduce using rule 43 (term -> lvalue .)
-    <               reduce using rule 43 (term -> lvalue .)
-    '               reduce using rule 43 (term -> lvalue .)
-    /               reduce using rule 43 (term -> lvalue .)
-    *               reduce using rule 43 (term -> lvalue .)
-    -               reduce using rule 43 (term -> lvalue .)
-    +               reduce using rule 43 (term -> lvalue .)
-    ;               reduce using rule 43 (term -> lvalue .)
-    ,               reduce using rule 43 (term -> lvalue .)
-    ]               reduce using rule 43 (term -> lvalue .)
-    )               reduce using rule 43 (term -> lvalue .)
-    :               reduce using rule 43 (term -> lvalue .)
-    RETURN          reduce using rule 43 (term -> lvalue .)
-    PRINT           reduce using rule 43 (term -> lvalue .)
-    CONTINUE        reduce using rule 43 (term -> lvalue .)
-    BREAK           reduce using rule 43 (term -> lvalue .)
-    FOR             reduce using rule 43 (term -> lvalue .)
-    WHILE           reduce using rule 43 (term -> lvalue .)
-    IF              reduce using rule 43 (term -> lvalue .)
-    {               reduce using rule 43 (term -> lvalue .)
-    ID              reduce using rule 43 (term -> lvalue .)
-    STRING          reduce using rule 43 (term -> lvalue .)
-    FLOATNUM        reduce using rule 43 (term -> lvalue .)
-    INTNUM          reduce using rule 43 (term -> lvalue .)
-    EYE             reduce using rule 43 (term -> lvalue .)
-    ONES            reduce using rule 43 (term -> lvalue .)
-    ZEROS           reduce using rule 43 (term -> lvalue .)
+    (44) term -> lvalue .
+    [               reduce using rule 44 (term -> lvalue .)
+    NEQ             reduce using rule 44 (term -> lvalue .)
+    EQU             reduce using rule 44 (term -> lvalue .)
+    GEQ             reduce using rule 44 (term -> lvalue .)
+    LEQ             reduce using rule 44 (term -> lvalue .)
+    >               reduce using rule 44 (term -> lvalue .)
+    <               reduce using rule 44 (term -> lvalue .)
+    '               reduce using rule 44 (term -> lvalue .)
+    @               reduce using rule 44 (term -> lvalue .)
+    /               reduce using rule 44 (term -> lvalue .)
+    *               reduce using rule 44 (term -> lvalue .)
+    -               reduce using rule 44 (term -> lvalue .)
+    +               reduce using rule 44 (term -> lvalue .)
+    ;               reduce using rule 44 (term -> lvalue .)
+    ,               reduce using rule 44 (term -> lvalue .)
+    ]               reduce using rule 44 (term -> lvalue .)
+    )               reduce using rule 44 (term -> lvalue .)
+    :               reduce using rule 44 (term -> lvalue .)
+    RETURN          reduce using rule 44 (term -> lvalue .)
+    PRINT           reduce using rule 44 (term -> lvalue .)
+    CONTINUE        reduce using rule 44 (term -> lvalue .)
+    BREAK           reduce using rule 44 (term -> lvalue .)
+    FOR             reduce using rule 44 (term -> lvalue .)
+    WHILE           reduce using rule 44 (term -> lvalue .)
+    IF              reduce using rule 44 (term -> lvalue .)
+    {               reduce using rule 44 (term -> lvalue .)
+    ID              reduce using rule 44 (term -> lvalue .)
+    STRING          reduce using rule 44 (term -> lvalue .)
+    FLOATNUM        reduce using rule 44 (term -> lvalue .)
+    INTNUM          reduce using rule 44 (term -> lvalue .)
+    EYE             reduce using rule 44 (term -> lvalue .)
+    ONES            reduce using rule 44 (term -> lvalue .)
+    ZEROS           reduce using rule 44 (term -> lvalue .)
 
 
 state 30
 
     (5) stmt -> PRINT vector . ;
-    (36) vector -> vector . , expr
-    ;               shift and go to state 63
+    (37) vector -> vector . , expr
+    ;               shift and go to state 64
     ,               shift and go to state 47
 
 
@@ -988,19 +1004,20 @@ state 33
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -1014,7 +1031,7 @@ state 33
     ID              shift and go to state 10
 
     lvalue                         shift and go to state 29
-    expr                           shift and go to state 64
+    expr                           shift and go to state 65
     term                           shift and go to state 25
 
 state 34
@@ -1032,19 +1049,20 @@ state 34
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -1058,7 +1076,7 @@ state 34
     ID              shift and go to state 10
 
     lvalue                         shift and go to state 29
-    expr                           shift and go to state 65
+    expr                           shift and go to state 66
     term                           shift and go to state 25
 
 state 35
@@ -1076,19 +1094,20 @@ state 35
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -1102,7 +1121,7 @@ state 35
     ID              shift and go to state 10
 
     lvalue                         shift and go to state 29
-    expr                           shift and go to state 66
+    expr                           shift and go to state 67
     term                           shift and go to state 25
 
 state 36
@@ -1120,19 +1139,20 @@ state 36
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -1146,7 +1166,7 @@ state 36
     ID              shift and go to state 10
 
     lvalue                         shift and go to state 29
-    expr                           shift and go to state 67
+    expr                           shift and go to state 68
     term                           shift and go to state 25
 
 state 37
@@ -1164,19 +1184,20 @@ state 37
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -1190,13 +1211,13 @@ state 37
     ID              shift and go to state 10
 
     lvalue                         shift and go to state 29
-    expr                           shift and go to state 68
+    expr                           shift and go to state 69
     term                           shift and go to state 25
 
 state 38
 
     (13) stmt -> FOR ID . = expr : expr stmt
-    =               shift and go to state 69
+    =               shift and go to state 70
 
 
 state 39
@@ -1214,19 +1235,20 @@ state 39
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -1239,7 +1261,7 @@ state 39
     ZEROS           shift and go to state 20
     ID              shift and go to state 10
 
-    expr                           shift and go to state 70
+    expr                           shift and go to state 71
     term                           shift and go to state 25
     lvalue                         shift and go to state 29
 
@@ -1259,19 +1281,20 @@ state 40
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -1284,7 +1307,7 @@ state 40
     ZEROS           shift and go to state 20
     ID              shift and go to state 10
 
-    expr                           shift and go to state 71
+    expr                           shift and go to state 72
     term                           shift and go to state 25
     lvalue                         shift and go to state 29
 
@@ -1306,16 +1329,16 @@ state 41
     (15) stmt -> . IF ( expr ) stmt
     (16) stmt -> . IF ( expr ) stmt ELSE stmt
     (17) stmt -> . { stmt_set }
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    }               shift and go to state 72
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    }               shift and go to state 73
     RETURN          shift and go to state 4
     PRINT           shift and go to state 5
     CONTINUE        shift and go to state 6
@@ -1338,10 +1361,10 @@ state 41
 
 state 42
 
-    (45) lvalue -> term [ . vector ]
-    (34) vector -> .
-    (35) vector -> . expr
-    (36) vector -> . vector , expr
+    (46) lvalue -> term [ . vector ]
+    (35) vector -> .
+    (36) vector -> . expr
+    (37) vector -> . vector , expr
     (18) expr -> . [ vector ]
     (19) expr -> . term
     (20) expr -> . expr NEQ expr
@@ -1354,21 +1377,22 @@ state 42
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
-    ]               reduce using rule 34 (vector -> .)
-    ,               reduce using rule 34 (vector -> .)
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
+    ]               reduce using rule 35 (vector -> .)
+    ,               reduce using rule 35 (vector -> .)
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -1382,13 +1406,13 @@ state 42
     ID              shift and go to state 10
 
     term                           shift and go to state 25
-    vector                         shift and go to state 73
+    vector                         shift and go to state 74
     expr                           shift and go to state 23
     lvalue                         shift and go to state 29
 
 state 43
 
-    (40) term -> EYE ( . expr )
+    (41) term -> EYE ( . expr )
     (18) expr -> . [ vector ]
     (19) expr -> . term
     (20) expr -> . expr NEQ expr
@@ -1401,19 +1425,20 @@ state 43
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -1426,16 +1451,16 @@ state 43
     ZEROS           shift and go to state 20
     ID              shift and go to state 10
 
-    expr                           shift and go to state 74
+    expr                           shift and go to state 75
     term                           shift and go to state 25
     lvalue                         shift and go to state 29
 
 state 44
 
-    (41) term -> ONES ( . vector )
-    (34) vector -> .
-    (35) vector -> . expr
-    (36) vector -> . vector , expr
+    (42) term -> ONES ( . vector )
+    (35) vector -> .
+    (36) vector -> . expr
+    (37) vector -> . vector , expr
     (18) expr -> . [ vector ]
     (19) expr -> . term
     (20) expr -> . expr NEQ expr
@@ -1448,71 +1473,22 @@ state 44
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
-    )               reduce using rule 34 (vector -> .)
-    ,               reduce using rule 34 (vector -> .)
-    [               shift and go to state 24
-    (               shift and go to state 26
-    -               shift and go to state 27
-    +               shift and go to state 28
-    STRING          shift and go to state 15
-    FLOATNUM        shift and go to state 16
-    INTNUM          shift and go to state 17
-    EYE             shift and go to state 18
-    ONES            shift and go to state 19
-    ZEROS           shift and go to state 20
-    ID              shift and go to state 10
-
-    vector                         shift and go to state 75
-    expr                           shift and go to state 23
-    term                           shift and go to state 25
-    lvalue                         shift and go to state 29
-
-state 45
-
-    (42) term -> ZEROS ( . vector )
-    (34) vector -> .
-    (35) vector -> . expr
-    (36) vector -> . vector , expr
-    (18) expr -> . [ vector ]
-    (19) expr -> . term
-    (20) expr -> . expr NEQ expr
-    (21) expr -> . expr EQU expr
-    (22) expr -> . expr GEQ expr
-    (23) expr -> . expr LEQ expr
-    (24) expr -> . expr > expr
-    (25) expr -> . expr < expr
-    (26) expr -> . ( expr )
-    (27) expr -> . expr '
-    (28) expr -> . - expr
-    (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
-    )               reduce using rule 34 (vector -> .)
-    ,               reduce using rule 34 (vector -> .)
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
+    )               reduce using rule 35 (vector -> .)
+    ,               reduce using rule 35 (vector -> .)
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -1526,6 +1502,57 @@ state 45
     ID              shift and go to state 10
 
     vector                         shift and go to state 76
+    expr                           shift and go to state 23
+    term                           shift and go to state 25
+    lvalue                         shift and go to state 29
+
+state 45
+
+    (43) term -> ZEROS ( . vector )
+    (35) vector -> .
+    (36) vector -> . expr
+    (37) vector -> . vector , expr
+    (18) expr -> . [ vector ]
+    (19) expr -> . term
+    (20) expr -> . expr NEQ expr
+    (21) expr -> . expr EQU expr
+    (22) expr -> . expr GEQ expr
+    (23) expr -> . expr LEQ expr
+    (24) expr -> . expr > expr
+    (25) expr -> . expr < expr
+    (26) expr -> . ( expr )
+    (27) expr -> . expr '
+    (28) expr -> . - expr
+    (29) expr -> . + expr
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
+    )               reduce using rule 35 (vector -> .)
+    ,               reduce using rule 35 (vector -> .)
+    [               shift and go to state 24
+    (               shift and go to state 26
+    -               shift and go to state 27
+    +               shift and go to state 28
+    STRING          shift and go to state 15
+    FLOATNUM        shift and go to state 16
+    INTNUM          shift and go to state 17
+    EYE             shift and go to state 18
+    ONES            shift and go to state 19
+    ZEROS           shift and go to state 20
+    ID              shift and go to state 10
+
+    vector                         shift and go to state 77
     expr                           shift and go to state 23
     term                           shift and go to state 25
     lvalue                         shift and go to state 29
@@ -1555,7 +1582,7 @@ state 46
 
 state 47
 
-    (36) vector -> vector , . expr
+    (37) vector -> vector , . expr
     (18) expr -> . [ vector ]
     (19) expr -> . term
     (20) expr -> . expr NEQ expr
@@ -1568,19 +1595,20 @@ state 47
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -1593,7 +1621,7 @@ state 47
     ZEROS           shift and go to state 20
     ID              shift and go to state 10
 
-    expr                           shift and go to state 77
+    expr                           shift and go to state 78
     term                           shift and go to state 25
     lvalue                         shift and go to state 29
 
@@ -1612,19 +1640,20 @@ state 48
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -1637,7 +1666,7 @@ state 48
     ZEROS           shift and go to state 20
     ID              shift and go to state 10
 
-    expr                           shift and go to state 78
+    expr                           shift and go to state 79
     term                           shift and go to state 25
     lvalue                         shift and go to state 29
 
@@ -1656,19 +1685,20 @@ state 49
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -1681,7 +1711,7 @@ state 49
     ZEROS           shift and go to state 20
     ID              shift and go to state 10
 
-    expr                           shift and go to state 79
+    expr                           shift and go to state 80
     term                           shift and go to state 25
     lvalue                         shift and go to state 29
 
@@ -1700,19 +1730,20 @@ state 50
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -1725,7 +1756,7 @@ state 50
     ZEROS           shift and go to state 20
     ID              shift and go to state 10
 
-    expr                           shift and go to state 80
+    expr                           shift and go to state 81
     term                           shift and go to state 25
     lvalue                         shift and go to state 29
 
@@ -1744,19 +1775,20 @@ state 51
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -1769,7 +1801,7 @@ state 51
     ZEROS           shift and go to state 20
     ID              shift and go to state 10
 
-    expr                           shift and go to state 81
+    expr                           shift and go to state 82
     term                           shift and go to state 25
     lvalue                         shift and go to state 29
 
@@ -1788,19 +1820,20 @@ state 52
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -1813,7 +1846,7 @@ state 52
     ZEROS           shift and go to state 20
     ID              shift and go to state 10
 
-    expr                           shift and go to state 82
+    expr                           shift and go to state 83
     term                           shift and go to state 25
     lvalue                         shift and go to state 29
 
@@ -1832,19 +1865,20 @@ state 53
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -1857,7 +1891,7 @@ state 53
     ZEROS           shift and go to state 20
     ID              shift and go to state 10
 
-    expr                           shift and go to state 83
+    expr                           shift and go to state 84
     term                           shift and go to state 25
     lvalue                         shift and go to state 29
 
@@ -1871,6 +1905,7 @@ state 54
     >               reduce using rule 27 (expr -> expr ' .)
     <               reduce using rule 27 (expr -> expr ' .)
     '               reduce using rule 27 (expr -> expr ' .)
+    @               reduce using rule 27 (expr -> expr ' .)
     /               reduce using rule 27 (expr -> expr ' .)
     *               reduce using rule 27 (expr -> expr ' .)
     -               reduce using rule 27 (expr -> expr ' .)
@@ -1899,7 +1934,7 @@ state 54
 
 state 55
 
-    (30) expr -> expr / . expr
+    (30) expr -> expr @ . expr
     (18) expr -> . [ vector ]
     (19) expr -> . term
     (20) expr -> . expr NEQ expr
@@ -1912,63 +1947,20 @@ state 55
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
-    [               shift and go to state 24
-    (               shift and go to state 26
-    -               shift and go to state 27
-    +               shift and go to state 28
-    STRING          shift and go to state 15
-    FLOATNUM        shift and go to state 16
-    INTNUM          shift and go to state 17
-    EYE             shift and go to state 18
-    ONES            shift and go to state 19
-    ZEROS           shift and go to state 20
-    ID              shift and go to state 10
-
-    expr                           shift and go to state 84
-    term                           shift and go to state 25
-    lvalue                         shift and go to state 29
-
-state 56
-
-    (31) expr -> expr * . expr
-    (18) expr -> . [ vector ]
-    (19) expr -> . term
-    (20) expr -> . expr NEQ expr
-    (21) expr -> . expr EQU expr
-    (22) expr -> . expr GEQ expr
-    (23) expr -> . expr LEQ expr
-    (24) expr -> . expr > expr
-    (25) expr -> . expr < expr
-    (26) expr -> . ( expr )
-    (27) expr -> . expr '
-    (28) expr -> . - expr
-    (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -1985,9 +1977,9 @@ state 56
     term                           shift and go to state 25
     lvalue                         shift and go to state 29
 
-state 57
+state 56
 
-    (32) expr -> expr - . expr
+    (31) expr -> expr / . expr
     (18) expr -> . [ vector ]
     (19) expr -> . term
     (20) expr -> . expr NEQ expr
@@ -2000,19 +1992,20 @@ state 57
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -2029,9 +2022,9 @@ state 57
     term                           shift and go to state 25
     lvalue                         shift and go to state 29
 
-state 58
+state 57
 
-    (33) expr -> expr + . expr
+    (32) expr -> expr * . expr
     (18) expr -> . [ vector ]
     (19) expr -> . term
     (20) expr -> . expr NEQ expr
@@ -2044,19 +2037,20 @@ state 58
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -2073,15 +2067,105 @@ state 58
     term                           shift and go to state 25
     lvalue                         shift and go to state 29
 
+state 58
+
+    (33) expr -> expr - . expr
+    (18) expr -> . [ vector ]
+    (19) expr -> . term
+    (20) expr -> . expr NEQ expr
+    (21) expr -> . expr EQU expr
+    (22) expr -> . expr GEQ expr
+    (23) expr -> . expr LEQ expr
+    (24) expr -> . expr > expr
+    (25) expr -> . expr < expr
+    (26) expr -> . ( expr )
+    (27) expr -> . expr '
+    (28) expr -> . - expr
+    (29) expr -> . + expr
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
+    [               shift and go to state 24
+    (               shift and go to state 26
+    -               shift and go to state 27
+    +               shift and go to state 28
+    STRING          shift and go to state 15
+    FLOATNUM        shift and go to state 16
+    INTNUM          shift and go to state 17
+    EYE             shift and go to state 18
+    ONES            shift and go to state 19
+    ZEROS           shift and go to state 20
+    ID              shift and go to state 10
+
+    expr                           shift and go to state 88
+    term                           shift and go to state 25
+    lvalue                         shift and go to state 29
+
 state 59
 
+    (34) expr -> expr + . expr
+    (18) expr -> . [ vector ]
+    (19) expr -> . term
+    (20) expr -> . expr NEQ expr
+    (21) expr -> . expr EQU expr
+    (22) expr -> . expr GEQ expr
+    (23) expr -> . expr LEQ expr
+    (24) expr -> . expr > expr
+    (25) expr -> . expr < expr
+    (26) expr -> . ( expr )
+    (27) expr -> . expr '
+    (28) expr -> . - expr
+    (29) expr -> . + expr
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
+    [               shift and go to state 24
+    (               shift and go to state 26
+    -               shift and go to state 27
+    +               shift and go to state 28
+    STRING          shift and go to state 15
+    FLOATNUM        shift and go to state 16
+    INTNUM          shift and go to state 17
+    EYE             shift and go to state 18
+    ONES            shift and go to state 19
+    ZEROS           shift and go to state 20
+    ID              shift and go to state 10
+
+    expr                           shift and go to state 89
+    term                           shift and go to state 25
+    lvalue                         shift and go to state 29
+
+state 60
+
     (18) expr -> [ vector . ]
-    (36) vector -> vector . , expr
-    ]               shift and go to state 88
+    (37) vector -> vector . , expr
+    ]               shift and go to state 90
     ,               shift and go to state 47
 
 
-state 60
+state 61
 
     (26) expr -> ( expr . )
     (20) expr -> expr . NEQ expr
@@ -2091,11 +2175,12 @@ state 60
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
-    )               shift and go to state 89
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
+    )               shift and go to state 91
     NEQ             shift and go to state 48
     EQU             shift and go to state 49
     GEQ             shift and go to state 50
@@ -2103,13 +2188,14 @@ state 60
     >               shift and go to state 52
     <               shift and go to state 53
     '               shift and go to state 54
-    /               shift and go to state 55
-    *               shift and go to state 56
-    -               shift and go to state 57
-    +               shift and go to state 58
+    @               shift and go to state 55
+    /               shift and go to state 56
+    *               shift and go to state 57
+    -               shift and go to state 58
+    +               shift and go to state 59
 
 
-state 61
+state 62
 
     (28) expr -> - expr .
     (20) expr -> expr . NEQ expr
@@ -2119,16 +2205,18 @@ state 61
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
     NEQ             reduce using rule 28 (expr -> - expr .)
     EQU             reduce using rule 28 (expr -> - expr .)
     GEQ             reduce using rule 28 (expr -> - expr .)
     LEQ             reduce using rule 28 (expr -> - expr .)
     >               reduce using rule 28 (expr -> - expr .)
     <               reduce using rule 28 (expr -> - expr .)
+    @               reduce using rule 28 (expr -> - expr .)
     /               reduce using rule 28 (expr -> - expr .)
     *               reduce using rule 28 (expr -> - expr .)
     -               reduce using rule 28 (expr -> - expr .)
@@ -2156,7 +2244,7 @@ state 61
     '               shift and go to state 54
 
 
-state 62
+state 63
 
     (29) expr -> + expr .
     (20) expr -> expr . NEQ expr
@@ -2166,16 +2254,18 @@ state 62
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
     NEQ             reduce using rule 29 (expr -> + expr .)
     EQU             reduce using rule 29 (expr -> + expr .)
     GEQ             reduce using rule 29 (expr -> + expr .)
     LEQ             reduce using rule 29 (expr -> + expr .)
     >               reduce using rule 29 (expr -> + expr .)
     <               reduce using rule 29 (expr -> + expr .)
+    @               reduce using rule 29 (expr -> + expr .)
     /               reduce using rule 29 (expr -> + expr .)
     *               reduce using rule 29 (expr -> + expr .)
     -               reduce using rule 29 (expr -> + expr .)
@@ -2203,7 +2293,7 @@ state 62
     '               shift and go to state 54
 
 
-state 63
+state 64
 
     (5) stmt -> PRINT vector ; .
     RETURN          reduce using rule 5 (stmt -> PRINT vector ; .)
@@ -2226,7 +2316,7 @@ state 63
     ELSE            reduce using rule 5 (stmt -> PRINT vector ; .)
 
 
-state 64
+state 65
 
     (8) stmt -> lvalue DIVASSIGN expr . ;
     (20) expr -> expr . NEQ expr
@@ -2236,11 +2326,12 @@ state 64
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
-    ;               shift and go to state 90
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
+    ;               shift and go to state 92
     NEQ             shift and go to state 48
     EQU             shift and go to state 49
     GEQ             shift and go to state 50
@@ -2248,13 +2339,14 @@ state 64
     >               shift and go to state 52
     <               shift and go to state 53
     '               shift and go to state 54
-    /               shift and go to state 55
-    *               shift and go to state 56
-    -               shift and go to state 57
-    +               shift and go to state 58
+    @               shift and go to state 55
+    /               shift and go to state 56
+    *               shift and go to state 57
+    -               shift and go to state 58
+    +               shift and go to state 59
 
 
-state 65
+state 66
 
     (9) stmt -> lvalue MULASSIGN expr . ;
     (20) expr -> expr . NEQ expr
@@ -2264,11 +2356,12 @@ state 65
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
-    ;               shift and go to state 91
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
+    ;               shift and go to state 93
     NEQ             shift and go to state 48
     EQU             shift and go to state 49
     GEQ             shift and go to state 50
@@ -2276,13 +2369,14 @@ state 65
     >               shift and go to state 52
     <               shift and go to state 53
     '               shift and go to state 54
-    /               shift and go to state 55
-    *               shift and go to state 56
-    -               shift and go to state 57
-    +               shift and go to state 58
+    @               shift and go to state 55
+    /               shift and go to state 56
+    *               shift and go to state 57
+    -               shift and go to state 58
+    +               shift and go to state 59
 
 
-state 66
+state 67
 
     (10) stmt -> lvalue SUBASSIGN expr . ;
     (20) expr -> expr . NEQ expr
@@ -2292,11 +2386,12 @@ state 66
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
-    ;               shift and go to state 92
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
+    ;               shift and go to state 94
     NEQ             shift and go to state 48
     EQU             shift and go to state 49
     GEQ             shift and go to state 50
@@ -2304,13 +2399,14 @@ state 66
     >               shift and go to state 52
     <               shift and go to state 53
     '               shift and go to state 54
-    /               shift and go to state 55
-    *               shift and go to state 56
-    -               shift and go to state 57
-    +               shift and go to state 58
+    @               shift and go to state 55
+    /               shift and go to state 56
+    *               shift and go to state 57
+    -               shift and go to state 58
+    +               shift and go to state 59
 
 
-state 67
+state 68
 
     (11) stmt -> lvalue ADDASSIGN expr . ;
     (20) expr -> expr . NEQ expr
@@ -2320,11 +2416,12 @@ state 67
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
-    ;               shift and go to state 93
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
+    ;               shift and go to state 95
     NEQ             shift and go to state 48
     EQU             shift and go to state 49
     GEQ             shift and go to state 50
@@ -2332,13 +2429,14 @@ state 67
     >               shift and go to state 52
     <               shift and go to state 53
     '               shift and go to state 54
-    /               shift and go to state 55
-    *               shift and go to state 56
-    -               shift and go to state 57
-    +               shift and go to state 58
+    @               shift and go to state 55
+    /               shift and go to state 56
+    *               shift and go to state 57
+    -               shift and go to state 58
+    +               shift and go to state 59
 
 
-state 68
+state 69
 
     (12) stmt -> lvalue = expr . ;
     (20) expr -> expr . NEQ expr
@@ -2348,11 +2446,12 @@ state 68
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
-    ;               shift and go to state 94
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
+    ;               shift and go to state 96
     NEQ             shift and go to state 48
     EQU             shift and go to state 49
     GEQ             shift and go to state 50
@@ -2360,13 +2459,14 @@ state 68
     >               shift and go to state 52
     <               shift and go to state 53
     '               shift and go to state 54
-    /               shift and go to state 55
-    *               shift and go to state 56
-    -               shift and go to state 57
-    +               shift and go to state 58
+    @               shift and go to state 55
+    /               shift and go to state 56
+    *               shift and go to state 57
+    -               shift and go to state 58
+    +               shift and go to state 59
 
 
-state 69
+state 70
 
     (13) stmt -> FOR ID = . expr : expr stmt
     (18) expr -> . [ vector ]
@@ -2381,19 +2481,20 @@ state 69
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -2406,11 +2507,11 @@ state 69
     ZEROS           shift and go to state 20
     ID              shift and go to state 10
 
-    expr                           shift and go to state 95
+    expr                           shift and go to state 97
     term                           shift and go to state 25
     lvalue                         shift and go to state 29
 
-state 70
+state 71
 
     (14) stmt -> WHILE ( expr . ) stmt
     (20) expr -> expr . NEQ expr
@@ -2420,11 +2521,12 @@ state 70
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
-    )               shift and go to state 96
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
+    )               shift and go to state 98
     NEQ             shift and go to state 48
     EQU             shift and go to state 49
     GEQ             shift and go to state 50
@@ -2432,13 +2534,14 @@ state 70
     >               shift and go to state 52
     <               shift and go to state 53
     '               shift and go to state 54
-    /               shift and go to state 55
-    *               shift and go to state 56
-    -               shift and go to state 57
-    +               shift and go to state 58
+    @               shift and go to state 55
+    /               shift and go to state 56
+    *               shift and go to state 57
+    -               shift and go to state 58
+    +               shift and go to state 59
 
 
-state 71
+state 72
 
     (15) stmt -> IF ( expr . ) stmt
     (16) stmt -> IF ( expr . ) stmt ELSE stmt
@@ -2449,11 +2552,12 @@ state 71
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
-    )               shift and go to state 97
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
+    )               shift and go to state 99
     NEQ             shift and go to state 48
     EQU             shift and go to state 49
     GEQ             shift and go to state 50
@@ -2461,13 +2565,14 @@ state 71
     >               shift and go to state 52
     <               shift and go to state 53
     '               shift and go to state 54
-    /               shift and go to state 55
-    *               shift and go to state 56
-    -               shift and go to state 57
-    +               shift and go to state 58
+    @               shift and go to state 55
+    /               shift and go to state 56
+    *               shift and go to state 57
+    -               shift and go to state 58
+    +               shift and go to state 59
 
 
-state 72
+state 73
 
     (17) stmt -> { stmt_set } .
     RETURN          reduce using rule 17 (stmt -> { stmt_set } .)
@@ -2490,17 +2595,17 @@ state 72
     ELSE            reduce using rule 17 (stmt -> { stmt_set } .)
 
 
-state 73
+state 74
 
-    (45) lvalue -> term [ vector . ]
-    (36) vector -> vector . , expr
-    ]               shift and go to state 98
+    (46) lvalue -> term [ vector . ]
+    (37) vector -> vector . , expr
+    ]               shift and go to state 100
     ,               shift and go to state 47
 
 
-state 74
+state 75
 
-    (40) term -> EYE ( expr . )
+    (41) term -> EYE ( expr . )
     (20) expr -> expr . NEQ expr
     (21) expr -> expr . EQU expr
     (22) expr -> expr . GEQ expr
@@ -2508,11 +2613,12 @@ state 74
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
-    )               shift and go to state 99
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
+    )               shift and go to state 101
     NEQ             shift and go to state 48
     EQU             shift and go to state 49
     GEQ             shift and go to state 50
@@ -2520,31 +2626,32 @@ state 74
     >               shift and go to state 52
     <               shift and go to state 53
     '               shift and go to state 54
-    /               shift and go to state 55
-    *               shift and go to state 56
-    -               shift and go to state 57
-    +               shift and go to state 58
-
-
-state 75
-
-    (41) term -> ONES ( vector . )
-    (36) vector -> vector . , expr
-    )               shift and go to state 100
-    ,               shift and go to state 47
+    @               shift and go to state 55
+    /               shift and go to state 56
+    *               shift and go to state 57
+    -               shift and go to state 58
+    +               shift and go to state 59
 
 
 state 76
 
-    (42) term -> ZEROS ( vector . )
-    (36) vector -> vector . , expr
-    )               shift and go to state 101
+    (42) term -> ONES ( vector . )
+    (37) vector -> vector . , expr
+    )               shift and go to state 102
     ,               shift and go to state 47
 
 
 state 77
 
-    (36) vector -> vector , expr .
+    (43) term -> ZEROS ( vector . )
+    (37) vector -> vector . , expr
+    )               shift and go to state 103
+    ,               shift and go to state 47
+
+
+state 78
+
+    (37) vector -> vector , expr .
     (20) expr -> expr . NEQ expr
     (21) expr -> expr . EQU expr
     (22) expr -> expr . GEQ expr
@@ -2552,14 +2659,15 @@ state 77
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
-    ;               reduce using rule 36 (vector -> vector , expr .)
-    ,               reduce using rule 36 (vector -> vector , expr .)
-    ]               reduce using rule 36 (vector -> vector , expr .)
-    )               reduce using rule 36 (vector -> vector , expr .)
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
+    ;               reduce using rule 37 (vector -> vector , expr .)
+    ,               reduce using rule 37 (vector -> vector , expr .)
+    ]               reduce using rule 37 (vector -> vector , expr .)
+    )               reduce using rule 37 (vector -> vector , expr .)
     NEQ             shift and go to state 48
     EQU             shift and go to state 49
     GEQ             shift and go to state 50
@@ -2567,13 +2675,14 @@ state 77
     >               shift and go to state 52
     <               shift and go to state 53
     '               shift and go to state 54
-    /               shift and go to state 55
-    *               shift and go to state 56
-    -               shift and go to state 57
-    +               shift and go to state 58
+    @               shift and go to state 55
+    /               shift and go to state 56
+    *               shift and go to state 57
+    -               shift and go to state 58
+    +               shift and go to state 59
 
 
-state 78
+state 79
 
     (20) expr -> expr NEQ expr .
     (20) expr -> expr . NEQ expr
@@ -2583,10 +2692,11 @@ state 78
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
     NEQ             reduce using rule 20 (expr -> expr NEQ expr .)
     EQU             reduce using rule 20 (expr -> expr NEQ expr .)
     ;               reduce using rule 20 (expr -> expr NEQ expr .)
@@ -2614,13 +2724,14 @@ state 78
     >               shift and go to state 52
     <               shift and go to state 53
     '               shift and go to state 54
-    /               shift and go to state 55
-    *               shift and go to state 56
-    -               shift and go to state 57
-    +               shift and go to state 58
+    @               shift and go to state 55
+    /               shift and go to state 56
+    *               shift and go to state 57
+    -               shift and go to state 58
+    +               shift and go to state 59
 
 
-state 79
+state 80
 
     (21) expr -> expr EQU expr .
     (20) expr -> expr . NEQ expr
@@ -2630,10 +2741,11 @@ state 79
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
     NEQ             reduce using rule 21 (expr -> expr EQU expr .)
     EQU             reduce using rule 21 (expr -> expr EQU expr .)
     ;               reduce using rule 21 (expr -> expr EQU expr .)
@@ -2661,13 +2773,14 @@ state 79
     >               shift and go to state 52
     <               shift and go to state 53
     '               shift and go to state 54
-    /               shift and go to state 55
-    *               shift and go to state 56
-    -               shift and go to state 57
-    +               shift and go to state 58
+    @               shift and go to state 55
+    /               shift and go to state 56
+    *               shift and go to state 57
+    -               shift and go to state 58
+    +               shift and go to state 59
 
 
-state 80
+state 81
 
     (22) expr -> expr GEQ expr .
     (20) expr -> expr . NEQ expr
@@ -2677,10 +2790,11 @@ state 80
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
     NEQ             reduce using rule 22 (expr -> expr GEQ expr .)
     EQU             reduce using rule 22 (expr -> expr GEQ expr .)
     GEQ             reduce using rule 22 (expr -> expr GEQ expr .)
@@ -2708,13 +2822,14 @@ state 80
     ONES            reduce using rule 22 (expr -> expr GEQ expr .)
     ZEROS           reduce using rule 22 (expr -> expr GEQ expr .)
     '               shift and go to state 54
-    /               shift and go to state 55
-    *               shift and go to state 56
-    -               shift and go to state 57
-    +               shift and go to state 58
+    @               shift and go to state 55
+    /               shift and go to state 56
+    *               shift and go to state 57
+    -               shift and go to state 58
+    +               shift and go to state 59
 
 
-state 81
+state 82
 
     (23) expr -> expr LEQ expr .
     (20) expr -> expr . NEQ expr
@@ -2724,10 +2839,11 @@ state 81
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
     NEQ             reduce using rule 23 (expr -> expr LEQ expr .)
     EQU             reduce using rule 23 (expr -> expr LEQ expr .)
     GEQ             reduce using rule 23 (expr -> expr LEQ expr .)
@@ -2755,13 +2871,14 @@ state 81
     ONES            reduce using rule 23 (expr -> expr LEQ expr .)
     ZEROS           reduce using rule 23 (expr -> expr LEQ expr .)
     '               shift and go to state 54
-    /               shift and go to state 55
-    *               shift and go to state 56
-    -               shift and go to state 57
-    +               shift and go to state 58
+    @               shift and go to state 55
+    /               shift and go to state 56
+    *               shift and go to state 57
+    -               shift and go to state 58
+    +               shift and go to state 59
 
 
-state 82
+state 83
 
     (24) expr -> expr > expr .
     (20) expr -> expr . NEQ expr
@@ -2771,10 +2888,11 @@ state 82
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
     NEQ             reduce using rule 24 (expr -> expr > expr .)
     EQU             reduce using rule 24 (expr -> expr > expr .)
     GEQ             reduce using rule 24 (expr -> expr > expr .)
@@ -2802,13 +2920,14 @@ state 82
     ONES            reduce using rule 24 (expr -> expr > expr .)
     ZEROS           reduce using rule 24 (expr -> expr > expr .)
     '               shift and go to state 54
-    /               shift and go to state 55
-    *               shift and go to state 56
-    -               shift and go to state 57
-    +               shift and go to state 58
+    @               shift and go to state 55
+    /               shift and go to state 56
+    *               shift and go to state 57
+    -               shift and go to state 58
+    +               shift and go to state 59
 
 
-state 83
+state 84
 
     (25) expr -> expr < expr .
     (20) expr -> expr . NEQ expr
@@ -2818,10 +2937,11 @@ state 83
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
     NEQ             reduce using rule 25 (expr -> expr < expr .)
     EQU             reduce using rule 25 (expr -> expr < expr .)
     GEQ             reduce using rule 25 (expr -> expr < expr .)
@@ -2849,62 +2969,16 @@ state 83
     ONES            reduce using rule 25 (expr -> expr < expr .)
     ZEROS           reduce using rule 25 (expr -> expr < expr .)
     '               shift and go to state 54
-    /               shift and go to state 55
-    *               shift and go to state 56
-    -               shift and go to state 57
-    +               shift and go to state 58
-
-
-state 84
-
-    (30) expr -> expr / expr .
-    (20) expr -> expr . NEQ expr
-    (21) expr -> expr . EQU expr
-    (22) expr -> expr . GEQ expr
-    (23) expr -> expr . LEQ expr
-    (24) expr -> expr . > expr
-    (25) expr -> expr . < expr
-    (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
-    NEQ             reduce using rule 30 (expr -> expr / expr .)
-    EQU             reduce using rule 30 (expr -> expr / expr .)
-    GEQ             reduce using rule 30 (expr -> expr / expr .)
-    LEQ             reduce using rule 30 (expr -> expr / expr .)
-    >               reduce using rule 30 (expr -> expr / expr .)
-    <               reduce using rule 30 (expr -> expr / expr .)
-    /               reduce using rule 30 (expr -> expr / expr .)
-    *               reduce using rule 30 (expr -> expr / expr .)
-    -               reduce using rule 30 (expr -> expr / expr .)
-    +               reduce using rule 30 (expr -> expr / expr .)
-    ;               reduce using rule 30 (expr -> expr / expr .)
-    ,               reduce using rule 30 (expr -> expr / expr .)
-    ]               reduce using rule 30 (expr -> expr / expr .)
-    )               reduce using rule 30 (expr -> expr / expr .)
-    :               reduce using rule 30 (expr -> expr / expr .)
-    RETURN          reduce using rule 30 (expr -> expr / expr .)
-    PRINT           reduce using rule 30 (expr -> expr / expr .)
-    CONTINUE        reduce using rule 30 (expr -> expr / expr .)
-    BREAK           reduce using rule 30 (expr -> expr / expr .)
-    FOR             reduce using rule 30 (expr -> expr / expr .)
-    WHILE           reduce using rule 30 (expr -> expr / expr .)
-    IF              reduce using rule 30 (expr -> expr / expr .)
-    {               reduce using rule 30 (expr -> expr / expr .)
-    ID              reduce using rule 30 (expr -> expr / expr .)
-    STRING          reduce using rule 30 (expr -> expr / expr .)
-    FLOATNUM        reduce using rule 30 (expr -> expr / expr .)
-    INTNUM          reduce using rule 30 (expr -> expr / expr .)
-    EYE             reduce using rule 30 (expr -> expr / expr .)
-    ONES            reduce using rule 30 (expr -> expr / expr .)
-    ZEROS           reduce using rule 30 (expr -> expr / expr .)
-    '               shift and go to state 54
+    @               shift and go to state 55
+    /               shift and go to state 56
+    *               shift and go to state 57
+    -               shift and go to state 58
+    +               shift and go to state 59
 
 
 state 85
 
-    (31) expr -> expr * expr .
+    (30) expr -> expr @ expr .
     (20) expr -> expr . NEQ expr
     (21) expr -> expr . EQU expr
     (22) expr -> expr . GEQ expr
@@ -2912,46 +2986,48 @@ state 85
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
-    NEQ             reduce using rule 31 (expr -> expr * expr .)
-    EQU             reduce using rule 31 (expr -> expr * expr .)
-    GEQ             reduce using rule 31 (expr -> expr * expr .)
-    LEQ             reduce using rule 31 (expr -> expr * expr .)
-    >               reduce using rule 31 (expr -> expr * expr .)
-    <               reduce using rule 31 (expr -> expr * expr .)
-    /               reduce using rule 31 (expr -> expr * expr .)
-    *               reduce using rule 31 (expr -> expr * expr .)
-    -               reduce using rule 31 (expr -> expr * expr .)
-    +               reduce using rule 31 (expr -> expr * expr .)
-    ;               reduce using rule 31 (expr -> expr * expr .)
-    ,               reduce using rule 31 (expr -> expr * expr .)
-    ]               reduce using rule 31 (expr -> expr * expr .)
-    )               reduce using rule 31 (expr -> expr * expr .)
-    :               reduce using rule 31 (expr -> expr * expr .)
-    RETURN          reduce using rule 31 (expr -> expr * expr .)
-    PRINT           reduce using rule 31 (expr -> expr * expr .)
-    CONTINUE        reduce using rule 31 (expr -> expr * expr .)
-    BREAK           reduce using rule 31 (expr -> expr * expr .)
-    FOR             reduce using rule 31 (expr -> expr * expr .)
-    WHILE           reduce using rule 31 (expr -> expr * expr .)
-    IF              reduce using rule 31 (expr -> expr * expr .)
-    {               reduce using rule 31 (expr -> expr * expr .)
-    ID              reduce using rule 31 (expr -> expr * expr .)
-    STRING          reduce using rule 31 (expr -> expr * expr .)
-    FLOATNUM        reduce using rule 31 (expr -> expr * expr .)
-    INTNUM          reduce using rule 31 (expr -> expr * expr .)
-    EYE             reduce using rule 31 (expr -> expr * expr .)
-    ONES            reduce using rule 31 (expr -> expr * expr .)
-    ZEROS           reduce using rule 31 (expr -> expr * expr .)
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
+    NEQ             reduce using rule 30 (expr -> expr @ expr .)
+    EQU             reduce using rule 30 (expr -> expr @ expr .)
+    GEQ             reduce using rule 30 (expr -> expr @ expr .)
+    LEQ             reduce using rule 30 (expr -> expr @ expr .)
+    >               reduce using rule 30 (expr -> expr @ expr .)
+    <               reduce using rule 30 (expr -> expr @ expr .)
+    @               reduce using rule 30 (expr -> expr @ expr .)
+    /               reduce using rule 30 (expr -> expr @ expr .)
+    *               reduce using rule 30 (expr -> expr @ expr .)
+    -               reduce using rule 30 (expr -> expr @ expr .)
+    +               reduce using rule 30 (expr -> expr @ expr .)
+    ;               reduce using rule 30 (expr -> expr @ expr .)
+    ,               reduce using rule 30 (expr -> expr @ expr .)
+    ]               reduce using rule 30 (expr -> expr @ expr .)
+    )               reduce using rule 30 (expr -> expr @ expr .)
+    :               reduce using rule 30 (expr -> expr @ expr .)
+    RETURN          reduce using rule 30 (expr -> expr @ expr .)
+    PRINT           reduce using rule 30 (expr -> expr @ expr .)
+    CONTINUE        reduce using rule 30 (expr -> expr @ expr .)
+    BREAK           reduce using rule 30 (expr -> expr @ expr .)
+    FOR             reduce using rule 30 (expr -> expr @ expr .)
+    WHILE           reduce using rule 30 (expr -> expr @ expr .)
+    IF              reduce using rule 30 (expr -> expr @ expr .)
+    {               reduce using rule 30 (expr -> expr @ expr .)
+    ID              reduce using rule 30 (expr -> expr @ expr .)
+    STRING          reduce using rule 30 (expr -> expr @ expr .)
+    FLOATNUM        reduce using rule 30 (expr -> expr @ expr .)
+    INTNUM          reduce using rule 30 (expr -> expr @ expr .)
+    EYE             reduce using rule 30 (expr -> expr @ expr .)
+    ONES            reduce using rule 30 (expr -> expr @ expr .)
+    ZEROS           reduce using rule 30 (expr -> expr @ expr .)
     '               shift and go to state 54
 
 
 state 86
 
-    (32) expr -> expr - expr .
+    (31) expr -> expr / expr .
     (20) expr -> expr . NEQ expr
     (21) expr -> expr . EQU expr
     (22) expr -> expr . GEQ expr
@@ -2959,46 +3035,48 @@ state 86
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
-    NEQ             reduce using rule 32 (expr -> expr - expr .)
-    EQU             reduce using rule 32 (expr -> expr - expr .)
-    GEQ             reduce using rule 32 (expr -> expr - expr .)
-    LEQ             reduce using rule 32 (expr -> expr - expr .)
-    >               reduce using rule 32 (expr -> expr - expr .)
-    <               reduce using rule 32 (expr -> expr - expr .)
-    -               reduce using rule 32 (expr -> expr - expr .)
-    +               reduce using rule 32 (expr -> expr - expr .)
-    ;               reduce using rule 32 (expr -> expr - expr .)
-    ,               reduce using rule 32 (expr -> expr - expr .)
-    ]               reduce using rule 32 (expr -> expr - expr .)
-    )               reduce using rule 32 (expr -> expr - expr .)
-    :               reduce using rule 32 (expr -> expr - expr .)
-    RETURN          reduce using rule 32 (expr -> expr - expr .)
-    PRINT           reduce using rule 32 (expr -> expr - expr .)
-    CONTINUE        reduce using rule 32 (expr -> expr - expr .)
-    BREAK           reduce using rule 32 (expr -> expr - expr .)
-    FOR             reduce using rule 32 (expr -> expr - expr .)
-    WHILE           reduce using rule 32 (expr -> expr - expr .)
-    IF              reduce using rule 32 (expr -> expr - expr .)
-    {               reduce using rule 32 (expr -> expr - expr .)
-    ID              reduce using rule 32 (expr -> expr - expr .)
-    STRING          reduce using rule 32 (expr -> expr - expr .)
-    FLOATNUM        reduce using rule 32 (expr -> expr - expr .)
-    INTNUM          reduce using rule 32 (expr -> expr - expr .)
-    EYE             reduce using rule 32 (expr -> expr - expr .)
-    ONES            reduce using rule 32 (expr -> expr - expr .)
-    ZEROS           reduce using rule 32 (expr -> expr - expr .)
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
+    NEQ             reduce using rule 31 (expr -> expr / expr .)
+    EQU             reduce using rule 31 (expr -> expr / expr .)
+    GEQ             reduce using rule 31 (expr -> expr / expr .)
+    LEQ             reduce using rule 31 (expr -> expr / expr .)
+    >               reduce using rule 31 (expr -> expr / expr .)
+    <               reduce using rule 31 (expr -> expr / expr .)
+    @               reduce using rule 31 (expr -> expr / expr .)
+    /               reduce using rule 31 (expr -> expr / expr .)
+    *               reduce using rule 31 (expr -> expr / expr .)
+    -               reduce using rule 31 (expr -> expr / expr .)
+    +               reduce using rule 31 (expr -> expr / expr .)
+    ;               reduce using rule 31 (expr -> expr / expr .)
+    ,               reduce using rule 31 (expr -> expr / expr .)
+    ]               reduce using rule 31 (expr -> expr / expr .)
+    )               reduce using rule 31 (expr -> expr / expr .)
+    :               reduce using rule 31 (expr -> expr / expr .)
+    RETURN          reduce using rule 31 (expr -> expr / expr .)
+    PRINT           reduce using rule 31 (expr -> expr / expr .)
+    CONTINUE        reduce using rule 31 (expr -> expr / expr .)
+    BREAK           reduce using rule 31 (expr -> expr / expr .)
+    FOR             reduce using rule 31 (expr -> expr / expr .)
+    WHILE           reduce using rule 31 (expr -> expr / expr .)
+    IF              reduce using rule 31 (expr -> expr / expr .)
+    {               reduce using rule 31 (expr -> expr / expr .)
+    ID              reduce using rule 31 (expr -> expr / expr .)
+    STRING          reduce using rule 31 (expr -> expr / expr .)
+    FLOATNUM        reduce using rule 31 (expr -> expr / expr .)
+    INTNUM          reduce using rule 31 (expr -> expr / expr .)
+    EYE             reduce using rule 31 (expr -> expr / expr .)
+    ONES            reduce using rule 31 (expr -> expr / expr .)
+    ZEROS           reduce using rule 31 (expr -> expr / expr .)
     '               shift and go to state 54
-    /               shift and go to state 55
-    *               shift and go to state 56
 
 
 state 87
 
-    (33) expr -> expr + expr .
+    (32) expr -> expr * expr .
     (20) expr -> expr . NEQ expr
     (21) expr -> expr . EQU expr
     (22) expr -> expr . GEQ expr
@@ -3006,44 +3084,144 @@ state 87
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
-    NEQ             reduce using rule 33 (expr -> expr + expr .)
-    EQU             reduce using rule 33 (expr -> expr + expr .)
-    GEQ             reduce using rule 33 (expr -> expr + expr .)
-    LEQ             reduce using rule 33 (expr -> expr + expr .)
-    >               reduce using rule 33 (expr -> expr + expr .)
-    <               reduce using rule 33 (expr -> expr + expr .)
-    -               reduce using rule 33 (expr -> expr + expr .)
-    +               reduce using rule 33 (expr -> expr + expr .)
-    ;               reduce using rule 33 (expr -> expr + expr .)
-    ,               reduce using rule 33 (expr -> expr + expr .)
-    ]               reduce using rule 33 (expr -> expr + expr .)
-    )               reduce using rule 33 (expr -> expr + expr .)
-    :               reduce using rule 33 (expr -> expr + expr .)
-    RETURN          reduce using rule 33 (expr -> expr + expr .)
-    PRINT           reduce using rule 33 (expr -> expr + expr .)
-    CONTINUE        reduce using rule 33 (expr -> expr + expr .)
-    BREAK           reduce using rule 33 (expr -> expr + expr .)
-    FOR             reduce using rule 33 (expr -> expr + expr .)
-    WHILE           reduce using rule 33 (expr -> expr + expr .)
-    IF              reduce using rule 33 (expr -> expr + expr .)
-    {               reduce using rule 33 (expr -> expr + expr .)
-    ID              reduce using rule 33 (expr -> expr + expr .)
-    STRING          reduce using rule 33 (expr -> expr + expr .)
-    FLOATNUM        reduce using rule 33 (expr -> expr + expr .)
-    INTNUM          reduce using rule 33 (expr -> expr + expr .)
-    EYE             reduce using rule 33 (expr -> expr + expr .)
-    ONES            reduce using rule 33 (expr -> expr + expr .)
-    ZEROS           reduce using rule 33 (expr -> expr + expr .)
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
+    NEQ             reduce using rule 32 (expr -> expr * expr .)
+    EQU             reduce using rule 32 (expr -> expr * expr .)
+    GEQ             reduce using rule 32 (expr -> expr * expr .)
+    LEQ             reduce using rule 32 (expr -> expr * expr .)
+    >               reduce using rule 32 (expr -> expr * expr .)
+    <               reduce using rule 32 (expr -> expr * expr .)
+    @               reduce using rule 32 (expr -> expr * expr .)
+    /               reduce using rule 32 (expr -> expr * expr .)
+    *               reduce using rule 32 (expr -> expr * expr .)
+    -               reduce using rule 32 (expr -> expr * expr .)
+    +               reduce using rule 32 (expr -> expr * expr .)
+    ;               reduce using rule 32 (expr -> expr * expr .)
+    ,               reduce using rule 32 (expr -> expr * expr .)
+    ]               reduce using rule 32 (expr -> expr * expr .)
+    )               reduce using rule 32 (expr -> expr * expr .)
+    :               reduce using rule 32 (expr -> expr * expr .)
+    RETURN          reduce using rule 32 (expr -> expr * expr .)
+    PRINT           reduce using rule 32 (expr -> expr * expr .)
+    CONTINUE        reduce using rule 32 (expr -> expr * expr .)
+    BREAK           reduce using rule 32 (expr -> expr * expr .)
+    FOR             reduce using rule 32 (expr -> expr * expr .)
+    WHILE           reduce using rule 32 (expr -> expr * expr .)
+    IF              reduce using rule 32 (expr -> expr * expr .)
+    {               reduce using rule 32 (expr -> expr * expr .)
+    ID              reduce using rule 32 (expr -> expr * expr .)
+    STRING          reduce using rule 32 (expr -> expr * expr .)
+    FLOATNUM        reduce using rule 32 (expr -> expr * expr .)
+    INTNUM          reduce using rule 32 (expr -> expr * expr .)
+    EYE             reduce using rule 32 (expr -> expr * expr .)
+    ONES            reduce using rule 32 (expr -> expr * expr .)
+    ZEROS           reduce using rule 32 (expr -> expr * expr .)
     '               shift and go to state 54
-    /               shift and go to state 55
-    *               shift and go to state 56
 
 
 state 88
+
+    (33) expr -> expr - expr .
+    (20) expr -> expr . NEQ expr
+    (21) expr -> expr . EQU expr
+    (22) expr -> expr . GEQ expr
+    (23) expr -> expr . LEQ expr
+    (24) expr -> expr . > expr
+    (25) expr -> expr . < expr
+    (27) expr -> expr . '
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
+    NEQ             reduce using rule 33 (expr -> expr - expr .)
+    EQU             reduce using rule 33 (expr -> expr - expr .)
+    GEQ             reduce using rule 33 (expr -> expr - expr .)
+    LEQ             reduce using rule 33 (expr -> expr - expr .)
+    >               reduce using rule 33 (expr -> expr - expr .)
+    <               reduce using rule 33 (expr -> expr - expr .)
+    -               reduce using rule 33 (expr -> expr - expr .)
+    +               reduce using rule 33 (expr -> expr - expr .)
+    ;               reduce using rule 33 (expr -> expr - expr .)
+    ,               reduce using rule 33 (expr -> expr - expr .)
+    ]               reduce using rule 33 (expr -> expr - expr .)
+    )               reduce using rule 33 (expr -> expr - expr .)
+    :               reduce using rule 33 (expr -> expr - expr .)
+    RETURN          reduce using rule 33 (expr -> expr - expr .)
+    PRINT           reduce using rule 33 (expr -> expr - expr .)
+    CONTINUE        reduce using rule 33 (expr -> expr - expr .)
+    BREAK           reduce using rule 33 (expr -> expr - expr .)
+    FOR             reduce using rule 33 (expr -> expr - expr .)
+    WHILE           reduce using rule 33 (expr -> expr - expr .)
+    IF              reduce using rule 33 (expr -> expr - expr .)
+    {               reduce using rule 33 (expr -> expr - expr .)
+    ID              reduce using rule 33 (expr -> expr - expr .)
+    STRING          reduce using rule 33 (expr -> expr - expr .)
+    FLOATNUM        reduce using rule 33 (expr -> expr - expr .)
+    INTNUM          reduce using rule 33 (expr -> expr - expr .)
+    EYE             reduce using rule 33 (expr -> expr - expr .)
+    ONES            reduce using rule 33 (expr -> expr - expr .)
+    ZEROS           reduce using rule 33 (expr -> expr - expr .)
+    '               shift and go to state 54
+    @               shift and go to state 55
+    /               shift and go to state 56
+    *               shift and go to state 57
+
+
+state 89
+
+    (34) expr -> expr + expr .
+    (20) expr -> expr . NEQ expr
+    (21) expr -> expr . EQU expr
+    (22) expr -> expr . GEQ expr
+    (23) expr -> expr . LEQ expr
+    (24) expr -> expr . > expr
+    (25) expr -> expr . < expr
+    (27) expr -> expr . '
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
+    NEQ             reduce using rule 34 (expr -> expr + expr .)
+    EQU             reduce using rule 34 (expr -> expr + expr .)
+    GEQ             reduce using rule 34 (expr -> expr + expr .)
+    LEQ             reduce using rule 34 (expr -> expr + expr .)
+    >               reduce using rule 34 (expr -> expr + expr .)
+    <               reduce using rule 34 (expr -> expr + expr .)
+    -               reduce using rule 34 (expr -> expr + expr .)
+    +               reduce using rule 34 (expr -> expr + expr .)
+    ;               reduce using rule 34 (expr -> expr + expr .)
+    ,               reduce using rule 34 (expr -> expr + expr .)
+    ]               reduce using rule 34 (expr -> expr + expr .)
+    )               reduce using rule 34 (expr -> expr + expr .)
+    :               reduce using rule 34 (expr -> expr + expr .)
+    RETURN          reduce using rule 34 (expr -> expr + expr .)
+    PRINT           reduce using rule 34 (expr -> expr + expr .)
+    CONTINUE        reduce using rule 34 (expr -> expr + expr .)
+    BREAK           reduce using rule 34 (expr -> expr + expr .)
+    FOR             reduce using rule 34 (expr -> expr + expr .)
+    WHILE           reduce using rule 34 (expr -> expr + expr .)
+    IF              reduce using rule 34 (expr -> expr + expr .)
+    {               reduce using rule 34 (expr -> expr + expr .)
+    ID              reduce using rule 34 (expr -> expr + expr .)
+    STRING          reduce using rule 34 (expr -> expr + expr .)
+    FLOATNUM        reduce using rule 34 (expr -> expr + expr .)
+    INTNUM          reduce using rule 34 (expr -> expr + expr .)
+    EYE             reduce using rule 34 (expr -> expr + expr .)
+    ONES            reduce using rule 34 (expr -> expr + expr .)
+    ZEROS           reduce using rule 34 (expr -> expr + expr .)
+    '               shift and go to state 54
+    @               shift and go to state 55
+    /               shift and go to state 56
+    *               shift and go to state 57
+
+
+state 90
 
     (18) expr -> [ vector ] .
     NEQ             reduce using rule 18 (expr -> [ vector ] .)
@@ -3053,6 +3231,7 @@ state 88
     >               reduce using rule 18 (expr -> [ vector ] .)
     <               reduce using rule 18 (expr -> [ vector ] .)
     '               reduce using rule 18 (expr -> [ vector ] .)
+    @               reduce using rule 18 (expr -> [ vector ] .)
     /               reduce using rule 18 (expr -> [ vector ] .)
     *               reduce using rule 18 (expr -> [ vector ] .)
     -               reduce using rule 18 (expr -> [ vector ] .)
@@ -3079,7 +3258,7 @@ state 88
     ZEROS           reduce using rule 18 (expr -> [ vector ] .)
 
 
-state 89
+state 91
 
     (26) expr -> ( expr ) .
     NEQ             reduce using rule 26 (expr -> ( expr ) .)
@@ -3089,6 +3268,7 @@ state 89
     >               reduce using rule 26 (expr -> ( expr ) .)
     <               reduce using rule 26 (expr -> ( expr ) .)
     '               reduce using rule 26 (expr -> ( expr ) .)
+    @               reduce using rule 26 (expr -> ( expr ) .)
     /               reduce using rule 26 (expr -> ( expr ) .)
     *               reduce using rule 26 (expr -> ( expr ) .)
     -               reduce using rule 26 (expr -> ( expr ) .)
@@ -3115,7 +3295,7 @@ state 89
     ZEROS           reduce using rule 26 (expr -> ( expr ) .)
 
 
-state 90
+state 92
 
     (8) stmt -> lvalue DIVASSIGN expr ; .
     RETURN          reduce using rule 8 (stmt -> lvalue DIVASSIGN expr ; .)
@@ -3138,7 +3318,7 @@ state 90
     ELSE            reduce using rule 8 (stmt -> lvalue DIVASSIGN expr ; .)
 
 
-state 91
+state 93
 
     (9) stmt -> lvalue MULASSIGN expr ; .
     RETURN          reduce using rule 9 (stmt -> lvalue MULASSIGN expr ; .)
@@ -3161,7 +3341,7 @@ state 91
     ELSE            reduce using rule 9 (stmt -> lvalue MULASSIGN expr ; .)
 
 
-state 92
+state 94
 
     (10) stmt -> lvalue SUBASSIGN expr ; .
     RETURN          reduce using rule 10 (stmt -> lvalue SUBASSIGN expr ; .)
@@ -3184,7 +3364,7 @@ state 92
     ELSE            reduce using rule 10 (stmt -> lvalue SUBASSIGN expr ; .)
 
 
-state 93
+state 95
 
     (11) stmt -> lvalue ADDASSIGN expr ; .
     RETURN          reduce using rule 11 (stmt -> lvalue ADDASSIGN expr ; .)
@@ -3207,7 +3387,7 @@ state 93
     ELSE            reduce using rule 11 (stmt -> lvalue ADDASSIGN expr ; .)
 
 
-state 94
+state 96
 
     (12) stmt -> lvalue = expr ; .
     RETURN          reduce using rule 12 (stmt -> lvalue = expr ; .)
@@ -3230,7 +3410,7 @@ state 94
     ELSE            reduce using rule 12 (stmt -> lvalue = expr ; .)
 
 
-state 95
+state 97
 
     (13) stmt -> FOR ID = expr . : expr stmt
     (20) expr -> expr . NEQ expr
@@ -3240,11 +3420,12 @@ state 95
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
-    :               shift and go to state 102
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
+    :               shift and go to state 104
     NEQ             shift and go to state 48
     EQU             shift and go to state 49
     GEQ             shift and go to state 50
@@ -3252,13 +3433,14 @@ state 95
     >               shift and go to state 52
     <               shift and go to state 53
     '               shift and go to state 54
-    /               shift and go to state 55
-    *               shift and go to state 56
-    -               shift and go to state 57
-    +               shift and go to state 58
+    @               shift and go to state 55
+    /               shift and go to state 56
+    *               shift and go to state 57
+    -               shift and go to state 58
+    +               shift and go to state 59
 
 
-state 96
+state 98
 
     (14) stmt -> WHILE ( expr ) . stmt
     (4) stmt -> . RETURN vector ;
@@ -3275,15 +3457,15 @@ state 96
     (15) stmt -> . IF ( expr ) stmt
     (16) stmt -> . IF ( expr ) stmt ELSE stmt
     (17) stmt -> . { stmt_set }
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
     RETURN          shift and go to state 4
     PRINT           shift and go to state 5
     CONTINUE        shift and go to state 6
@@ -3300,11 +3482,11 @@ state 96
     ONES            shift and go to state 19
     ZEROS           shift and go to state 20
 
-    stmt                           shift and go to state 103
+    stmt                           shift and go to state 105
     lvalue                         shift and go to state 8
     term                           shift and go to state 14
 
-state 97
+state 99
 
     (15) stmt -> IF ( expr ) . stmt
     (16) stmt -> IF ( expr ) . stmt ELSE stmt
@@ -3322,15 +3504,15 @@ state 97
     (15) stmt -> . IF ( expr ) stmt
     (16) stmt -> . IF ( expr ) stmt ELSE stmt
     (17) stmt -> . { stmt_set }
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
     RETURN          shift and go to state 4
     PRINT           shift and go to state 5
     CONTINUE        shift and go to state 6
@@ -3347,164 +3529,168 @@ state 97
     ONES            shift and go to state 19
     ZEROS           shift and go to state 20
 
-    stmt                           shift and go to state 104
+    stmt                           shift and go to state 106
     lvalue                         shift and go to state 8
     term                           shift and go to state 14
 
-state 98
-
-    (45) lvalue -> term [ vector ] .
-    DIVASSIGN       reduce using rule 45 (lvalue -> term [ vector ] .)
-    MULASSIGN       reduce using rule 45 (lvalue -> term [ vector ] .)
-    SUBASSIGN       reduce using rule 45 (lvalue -> term [ vector ] .)
-    ADDASSIGN       reduce using rule 45 (lvalue -> term [ vector ] .)
-    =               reduce using rule 45 (lvalue -> term [ vector ] .)
-    [               reduce using rule 45 (lvalue -> term [ vector ] .)
-    NEQ             reduce using rule 45 (lvalue -> term [ vector ] .)
-    EQU             reduce using rule 45 (lvalue -> term [ vector ] .)
-    GEQ             reduce using rule 45 (lvalue -> term [ vector ] .)
-    LEQ             reduce using rule 45 (lvalue -> term [ vector ] .)
-    >               reduce using rule 45 (lvalue -> term [ vector ] .)
-    <               reduce using rule 45 (lvalue -> term [ vector ] .)
-    '               reduce using rule 45 (lvalue -> term [ vector ] .)
-    /               reduce using rule 45 (lvalue -> term [ vector ] .)
-    *               reduce using rule 45 (lvalue -> term [ vector ] .)
-    -               reduce using rule 45 (lvalue -> term [ vector ] .)
-    +               reduce using rule 45 (lvalue -> term [ vector ] .)
-    ;               reduce using rule 45 (lvalue -> term [ vector ] .)
-    ,               reduce using rule 45 (lvalue -> term [ vector ] .)
-    ]               reduce using rule 45 (lvalue -> term [ vector ] .)
-    )               reduce using rule 45 (lvalue -> term [ vector ] .)
-    :               reduce using rule 45 (lvalue -> term [ vector ] .)
-    RETURN          reduce using rule 45 (lvalue -> term [ vector ] .)
-    PRINT           reduce using rule 45 (lvalue -> term [ vector ] .)
-    CONTINUE        reduce using rule 45 (lvalue -> term [ vector ] .)
-    BREAK           reduce using rule 45 (lvalue -> term [ vector ] .)
-    FOR             reduce using rule 45 (lvalue -> term [ vector ] .)
-    WHILE           reduce using rule 45 (lvalue -> term [ vector ] .)
-    IF              reduce using rule 45 (lvalue -> term [ vector ] .)
-    {               reduce using rule 45 (lvalue -> term [ vector ] .)
-    ID              reduce using rule 45 (lvalue -> term [ vector ] .)
-    STRING          reduce using rule 45 (lvalue -> term [ vector ] .)
-    FLOATNUM        reduce using rule 45 (lvalue -> term [ vector ] .)
-    INTNUM          reduce using rule 45 (lvalue -> term [ vector ] .)
-    EYE             reduce using rule 45 (lvalue -> term [ vector ] .)
-    ONES            reduce using rule 45 (lvalue -> term [ vector ] .)
-    ZEROS           reduce using rule 45 (lvalue -> term [ vector ] .)
-
-
-state 99
-
-    (40) term -> EYE ( expr ) .
-    [               reduce using rule 40 (term -> EYE ( expr ) .)
-    NEQ             reduce using rule 40 (term -> EYE ( expr ) .)
-    EQU             reduce using rule 40 (term -> EYE ( expr ) .)
-    GEQ             reduce using rule 40 (term -> EYE ( expr ) .)
-    LEQ             reduce using rule 40 (term -> EYE ( expr ) .)
-    >               reduce using rule 40 (term -> EYE ( expr ) .)
-    <               reduce using rule 40 (term -> EYE ( expr ) .)
-    '               reduce using rule 40 (term -> EYE ( expr ) .)
-    /               reduce using rule 40 (term -> EYE ( expr ) .)
-    *               reduce using rule 40 (term -> EYE ( expr ) .)
-    -               reduce using rule 40 (term -> EYE ( expr ) .)
-    +               reduce using rule 40 (term -> EYE ( expr ) .)
-    ;               reduce using rule 40 (term -> EYE ( expr ) .)
-    ,               reduce using rule 40 (term -> EYE ( expr ) .)
-    ]               reduce using rule 40 (term -> EYE ( expr ) .)
-    )               reduce using rule 40 (term -> EYE ( expr ) .)
-    :               reduce using rule 40 (term -> EYE ( expr ) .)
-    RETURN          reduce using rule 40 (term -> EYE ( expr ) .)
-    PRINT           reduce using rule 40 (term -> EYE ( expr ) .)
-    CONTINUE        reduce using rule 40 (term -> EYE ( expr ) .)
-    BREAK           reduce using rule 40 (term -> EYE ( expr ) .)
-    FOR             reduce using rule 40 (term -> EYE ( expr ) .)
-    WHILE           reduce using rule 40 (term -> EYE ( expr ) .)
-    IF              reduce using rule 40 (term -> EYE ( expr ) .)
-    {               reduce using rule 40 (term -> EYE ( expr ) .)
-    ID              reduce using rule 40 (term -> EYE ( expr ) .)
-    STRING          reduce using rule 40 (term -> EYE ( expr ) .)
-    FLOATNUM        reduce using rule 40 (term -> EYE ( expr ) .)
-    INTNUM          reduce using rule 40 (term -> EYE ( expr ) .)
-    EYE             reduce using rule 40 (term -> EYE ( expr ) .)
-    ONES            reduce using rule 40 (term -> EYE ( expr ) .)
-    ZEROS           reduce using rule 40 (term -> EYE ( expr ) .)
-
-
 state 100
 
-    (41) term -> ONES ( vector ) .
-    [               reduce using rule 41 (term -> ONES ( vector ) .)
-    NEQ             reduce using rule 41 (term -> ONES ( vector ) .)
-    EQU             reduce using rule 41 (term -> ONES ( vector ) .)
-    GEQ             reduce using rule 41 (term -> ONES ( vector ) .)
-    LEQ             reduce using rule 41 (term -> ONES ( vector ) .)
-    >               reduce using rule 41 (term -> ONES ( vector ) .)
-    <               reduce using rule 41 (term -> ONES ( vector ) .)
-    '               reduce using rule 41 (term -> ONES ( vector ) .)
-    /               reduce using rule 41 (term -> ONES ( vector ) .)
-    *               reduce using rule 41 (term -> ONES ( vector ) .)
-    -               reduce using rule 41 (term -> ONES ( vector ) .)
-    +               reduce using rule 41 (term -> ONES ( vector ) .)
-    ;               reduce using rule 41 (term -> ONES ( vector ) .)
-    ,               reduce using rule 41 (term -> ONES ( vector ) .)
-    ]               reduce using rule 41 (term -> ONES ( vector ) .)
-    )               reduce using rule 41 (term -> ONES ( vector ) .)
-    :               reduce using rule 41 (term -> ONES ( vector ) .)
-    RETURN          reduce using rule 41 (term -> ONES ( vector ) .)
-    PRINT           reduce using rule 41 (term -> ONES ( vector ) .)
-    CONTINUE        reduce using rule 41 (term -> ONES ( vector ) .)
-    BREAK           reduce using rule 41 (term -> ONES ( vector ) .)
-    FOR             reduce using rule 41 (term -> ONES ( vector ) .)
-    WHILE           reduce using rule 41 (term -> ONES ( vector ) .)
-    IF              reduce using rule 41 (term -> ONES ( vector ) .)
-    {               reduce using rule 41 (term -> ONES ( vector ) .)
-    ID              reduce using rule 41 (term -> ONES ( vector ) .)
-    STRING          reduce using rule 41 (term -> ONES ( vector ) .)
-    FLOATNUM        reduce using rule 41 (term -> ONES ( vector ) .)
-    INTNUM          reduce using rule 41 (term -> ONES ( vector ) .)
-    EYE             reduce using rule 41 (term -> ONES ( vector ) .)
-    ONES            reduce using rule 41 (term -> ONES ( vector ) .)
-    ZEROS           reduce using rule 41 (term -> ONES ( vector ) .)
+    (46) lvalue -> term [ vector ] .
+    DIVASSIGN       reduce using rule 46 (lvalue -> term [ vector ] .)
+    MULASSIGN       reduce using rule 46 (lvalue -> term [ vector ] .)
+    SUBASSIGN       reduce using rule 46 (lvalue -> term [ vector ] .)
+    ADDASSIGN       reduce using rule 46 (lvalue -> term [ vector ] .)
+    =               reduce using rule 46 (lvalue -> term [ vector ] .)
+    [               reduce using rule 46 (lvalue -> term [ vector ] .)
+    NEQ             reduce using rule 46 (lvalue -> term [ vector ] .)
+    EQU             reduce using rule 46 (lvalue -> term [ vector ] .)
+    GEQ             reduce using rule 46 (lvalue -> term [ vector ] .)
+    LEQ             reduce using rule 46 (lvalue -> term [ vector ] .)
+    >               reduce using rule 46 (lvalue -> term [ vector ] .)
+    <               reduce using rule 46 (lvalue -> term [ vector ] .)
+    '               reduce using rule 46 (lvalue -> term [ vector ] .)
+    @               reduce using rule 46 (lvalue -> term [ vector ] .)
+    /               reduce using rule 46 (lvalue -> term [ vector ] .)
+    *               reduce using rule 46 (lvalue -> term [ vector ] .)
+    -               reduce using rule 46 (lvalue -> term [ vector ] .)
+    +               reduce using rule 46 (lvalue -> term [ vector ] .)
+    ;               reduce using rule 46 (lvalue -> term [ vector ] .)
+    ,               reduce using rule 46 (lvalue -> term [ vector ] .)
+    ]               reduce using rule 46 (lvalue -> term [ vector ] .)
+    )               reduce using rule 46 (lvalue -> term [ vector ] .)
+    :               reduce using rule 46 (lvalue -> term [ vector ] .)
+    RETURN          reduce using rule 46 (lvalue -> term [ vector ] .)
+    PRINT           reduce using rule 46 (lvalue -> term [ vector ] .)
+    CONTINUE        reduce using rule 46 (lvalue -> term [ vector ] .)
+    BREAK           reduce using rule 46 (lvalue -> term [ vector ] .)
+    FOR             reduce using rule 46 (lvalue -> term [ vector ] .)
+    WHILE           reduce using rule 46 (lvalue -> term [ vector ] .)
+    IF              reduce using rule 46 (lvalue -> term [ vector ] .)
+    {               reduce using rule 46 (lvalue -> term [ vector ] .)
+    ID              reduce using rule 46 (lvalue -> term [ vector ] .)
+    STRING          reduce using rule 46 (lvalue -> term [ vector ] .)
+    FLOATNUM        reduce using rule 46 (lvalue -> term [ vector ] .)
+    INTNUM          reduce using rule 46 (lvalue -> term [ vector ] .)
+    EYE             reduce using rule 46 (lvalue -> term [ vector ] .)
+    ONES            reduce using rule 46 (lvalue -> term [ vector ] .)
+    ZEROS           reduce using rule 46 (lvalue -> term [ vector ] .)
 
 
 state 101
 
-    (42) term -> ZEROS ( vector ) .
-    [               reduce using rule 42 (term -> ZEROS ( vector ) .)
-    NEQ             reduce using rule 42 (term -> ZEROS ( vector ) .)
-    EQU             reduce using rule 42 (term -> ZEROS ( vector ) .)
-    GEQ             reduce using rule 42 (term -> ZEROS ( vector ) .)
-    LEQ             reduce using rule 42 (term -> ZEROS ( vector ) .)
-    >               reduce using rule 42 (term -> ZEROS ( vector ) .)
-    <               reduce using rule 42 (term -> ZEROS ( vector ) .)
-    '               reduce using rule 42 (term -> ZEROS ( vector ) .)
-    /               reduce using rule 42 (term -> ZEROS ( vector ) .)
-    *               reduce using rule 42 (term -> ZEROS ( vector ) .)
-    -               reduce using rule 42 (term -> ZEROS ( vector ) .)
-    +               reduce using rule 42 (term -> ZEROS ( vector ) .)
-    ;               reduce using rule 42 (term -> ZEROS ( vector ) .)
-    ,               reduce using rule 42 (term -> ZEROS ( vector ) .)
-    ]               reduce using rule 42 (term -> ZEROS ( vector ) .)
-    )               reduce using rule 42 (term -> ZEROS ( vector ) .)
-    :               reduce using rule 42 (term -> ZEROS ( vector ) .)
-    RETURN          reduce using rule 42 (term -> ZEROS ( vector ) .)
-    PRINT           reduce using rule 42 (term -> ZEROS ( vector ) .)
-    CONTINUE        reduce using rule 42 (term -> ZEROS ( vector ) .)
-    BREAK           reduce using rule 42 (term -> ZEROS ( vector ) .)
-    FOR             reduce using rule 42 (term -> ZEROS ( vector ) .)
-    WHILE           reduce using rule 42 (term -> ZEROS ( vector ) .)
-    IF              reduce using rule 42 (term -> ZEROS ( vector ) .)
-    {               reduce using rule 42 (term -> ZEROS ( vector ) .)
-    ID              reduce using rule 42 (term -> ZEROS ( vector ) .)
-    STRING          reduce using rule 42 (term -> ZEROS ( vector ) .)
-    FLOATNUM        reduce using rule 42 (term -> ZEROS ( vector ) .)
-    INTNUM          reduce using rule 42 (term -> ZEROS ( vector ) .)
-    EYE             reduce using rule 42 (term -> ZEROS ( vector ) .)
-    ONES            reduce using rule 42 (term -> ZEROS ( vector ) .)
-    ZEROS           reduce using rule 42 (term -> ZEROS ( vector ) .)
+    (41) term -> EYE ( expr ) .
+    [               reduce using rule 41 (term -> EYE ( expr ) .)
+    NEQ             reduce using rule 41 (term -> EYE ( expr ) .)
+    EQU             reduce using rule 41 (term -> EYE ( expr ) .)
+    GEQ             reduce using rule 41 (term -> EYE ( expr ) .)
+    LEQ             reduce using rule 41 (term -> EYE ( expr ) .)
+    >               reduce using rule 41 (term -> EYE ( expr ) .)
+    <               reduce using rule 41 (term -> EYE ( expr ) .)
+    '               reduce using rule 41 (term -> EYE ( expr ) .)
+    @               reduce using rule 41 (term -> EYE ( expr ) .)
+    /               reduce using rule 41 (term -> EYE ( expr ) .)
+    *               reduce using rule 41 (term -> EYE ( expr ) .)
+    -               reduce using rule 41 (term -> EYE ( expr ) .)
+    +               reduce using rule 41 (term -> EYE ( expr ) .)
+    ;               reduce using rule 41 (term -> EYE ( expr ) .)
+    ,               reduce using rule 41 (term -> EYE ( expr ) .)
+    ]               reduce using rule 41 (term -> EYE ( expr ) .)
+    )               reduce using rule 41 (term -> EYE ( expr ) .)
+    :               reduce using rule 41 (term -> EYE ( expr ) .)
+    RETURN          reduce using rule 41 (term -> EYE ( expr ) .)
+    PRINT           reduce using rule 41 (term -> EYE ( expr ) .)
+    CONTINUE        reduce using rule 41 (term -> EYE ( expr ) .)
+    BREAK           reduce using rule 41 (term -> EYE ( expr ) .)
+    FOR             reduce using rule 41 (term -> EYE ( expr ) .)
+    WHILE           reduce using rule 41 (term -> EYE ( expr ) .)
+    IF              reduce using rule 41 (term -> EYE ( expr ) .)
+    {               reduce using rule 41 (term -> EYE ( expr ) .)
+    ID              reduce using rule 41 (term -> EYE ( expr ) .)
+    STRING          reduce using rule 41 (term -> EYE ( expr ) .)
+    FLOATNUM        reduce using rule 41 (term -> EYE ( expr ) .)
+    INTNUM          reduce using rule 41 (term -> EYE ( expr ) .)
+    EYE             reduce using rule 41 (term -> EYE ( expr ) .)
+    ONES            reduce using rule 41 (term -> EYE ( expr ) .)
+    ZEROS           reduce using rule 41 (term -> EYE ( expr ) .)
 
 
 state 102
+
+    (42) term -> ONES ( vector ) .
+    [               reduce using rule 42 (term -> ONES ( vector ) .)
+    NEQ             reduce using rule 42 (term -> ONES ( vector ) .)
+    EQU             reduce using rule 42 (term -> ONES ( vector ) .)
+    GEQ             reduce using rule 42 (term -> ONES ( vector ) .)
+    LEQ             reduce using rule 42 (term -> ONES ( vector ) .)
+    >               reduce using rule 42 (term -> ONES ( vector ) .)
+    <               reduce using rule 42 (term -> ONES ( vector ) .)
+    '               reduce using rule 42 (term -> ONES ( vector ) .)
+    @               reduce using rule 42 (term -> ONES ( vector ) .)
+    /               reduce using rule 42 (term -> ONES ( vector ) .)
+    *               reduce using rule 42 (term -> ONES ( vector ) .)
+    -               reduce using rule 42 (term -> ONES ( vector ) .)
+    +               reduce using rule 42 (term -> ONES ( vector ) .)
+    ;               reduce using rule 42 (term -> ONES ( vector ) .)
+    ,               reduce using rule 42 (term -> ONES ( vector ) .)
+    ]               reduce using rule 42 (term -> ONES ( vector ) .)
+    )               reduce using rule 42 (term -> ONES ( vector ) .)
+    :               reduce using rule 42 (term -> ONES ( vector ) .)
+    RETURN          reduce using rule 42 (term -> ONES ( vector ) .)
+    PRINT           reduce using rule 42 (term -> ONES ( vector ) .)
+    CONTINUE        reduce using rule 42 (term -> ONES ( vector ) .)
+    BREAK           reduce using rule 42 (term -> ONES ( vector ) .)
+    FOR             reduce using rule 42 (term -> ONES ( vector ) .)
+    WHILE           reduce using rule 42 (term -> ONES ( vector ) .)
+    IF              reduce using rule 42 (term -> ONES ( vector ) .)
+    {               reduce using rule 42 (term -> ONES ( vector ) .)
+    ID              reduce using rule 42 (term -> ONES ( vector ) .)
+    STRING          reduce using rule 42 (term -> ONES ( vector ) .)
+    FLOATNUM        reduce using rule 42 (term -> ONES ( vector ) .)
+    INTNUM          reduce using rule 42 (term -> ONES ( vector ) .)
+    EYE             reduce using rule 42 (term -> ONES ( vector ) .)
+    ONES            reduce using rule 42 (term -> ONES ( vector ) .)
+    ZEROS           reduce using rule 42 (term -> ONES ( vector ) .)
+
+
+state 103
+
+    (43) term -> ZEROS ( vector ) .
+    [               reduce using rule 43 (term -> ZEROS ( vector ) .)
+    NEQ             reduce using rule 43 (term -> ZEROS ( vector ) .)
+    EQU             reduce using rule 43 (term -> ZEROS ( vector ) .)
+    GEQ             reduce using rule 43 (term -> ZEROS ( vector ) .)
+    LEQ             reduce using rule 43 (term -> ZEROS ( vector ) .)
+    >               reduce using rule 43 (term -> ZEROS ( vector ) .)
+    <               reduce using rule 43 (term -> ZEROS ( vector ) .)
+    '               reduce using rule 43 (term -> ZEROS ( vector ) .)
+    @               reduce using rule 43 (term -> ZEROS ( vector ) .)
+    /               reduce using rule 43 (term -> ZEROS ( vector ) .)
+    *               reduce using rule 43 (term -> ZEROS ( vector ) .)
+    -               reduce using rule 43 (term -> ZEROS ( vector ) .)
+    +               reduce using rule 43 (term -> ZEROS ( vector ) .)
+    ;               reduce using rule 43 (term -> ZEROS ( vector ) .)
+    ,               reduce using rule 43 (term -> ZEROS ( vector ) .)
+    ]               reduce using rule 43 (term -> ZEROS ( vector ) .)
+    )               reduce using rule 43 (term -> ZEROS ( vector ) .)
+    :               reduce using rule 43 (term -> ZEROS ( vector ) .)
+    RETURN          reduce using rule 43 (term -> ZEROS ( vector ) .)
+    PRINT           reduce using rule 43 (term -> ZEROS ( vector ) .)
+    CONTINUE        reduce using rule 43 (term -> ZEROS ( vector ) .)
+    BREAK           reduce using rule 43 (term -> ZEROS ( vector ) .)
+    FOR             reduce using rule 43 (term -> ZEROS ( vector ) .)
+    WHILE           reduce using rule 43 (term -> ZEROS ( vector ) .)
+    IF              reduce using rule 43 (term -> ZEROS ( vector ) .)
+    {               reduce using rule 43 (term -> ZEROS ( vector ) .)
+    ID              reduce using rule 43 (term -> ZEROS ( vector ) .)
+    STRING          reduce using rule 43 (term -> ZEROS ( vector ) .)
+    FLOATNUM        reduce using rule 43 (term -> ZEROS ( vector ) .)
+    INTNUM          reduce using rule 43 (term -> ZEROS ( vector ) .)
+    EYE             reduce using rule 43 (term -> ZEROS ( vector ) .)
+    ONES            reduce using rule 43 (term -> ZEROS ( vector ) .)
+    ZEROS           reduce using rule 43 (term -> ZEROS ( vector ) .)
+
+
+state 104
 
     (13) stmt -> FOR ID = expr : . expr stmt
     (18) expr -> . [ vector ]
@@ -3519,19 +3705,20 @@ state 102
     (27) expr -> . expr '
     (28) expr -> . - expr
     (29) expr -> . + expr
-    (30) expr -> . expr / expr
-    (31) expr -> . expr * expr
-    (32) expr -> . expr - expr
-    (33) expr -> . expr + expr
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
+    (30) expr -> . expr @ expr
+    (31) expr -> . expr / expr
+    (32) expr -> . expr * expr
+    (33) expr -> . expr - expr
+    (34) expr -> . expr + expr
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
     [               shift and go to state 24
     (               shift and go to state 26
     -               shift and go to state 27
@@ -3544,11 +3731,11 @@ state 102
     ZEROS           shift and go to state 20
     ID              shift and go to state 10
 
-    expr                           shift and go to state 105
+    expr                           shift and go to state 107
     term                           shift and go to state 25
     lvalue                         shift and go to state 29
 
-state 103
+state 105
 
     (14) stmt -> WHILE ( expr ) stmt .
     RETURN          reduce using rule 14 (stmt -> WHILE ( expr ) stmt .)
@@ -3571,7 +3758,7 @@ state 103
     ELSE            reduce using rule 14 (stmt -> WHILE ( expr ) stmt .)
 
 
-state 104
+state 106
 
     (15) stmt -> IF ( expr ) stmt .
     (16) stmt -> IF ( expr ) stmt . ELSE stmt
@@ -3592,10 +3779,10 @@ state 104
     ZEROS           reduce using rule 15 (stmt -> IF ( expr ) stmt .)
     $end            reduce using rule 15 (stmt -> IF ( expr ) stmt .)
     }               reduce using rule 15 (stmt -> IF ( expr ) stmt .)
-    ELSE            shift and go to state 106
+    ELSE            shift and go to state 108
 
 
-state 105
+state 107
 
     (13) stmt -> FOR ID = expr : expr . stmt
     (20) expr -> expr . NEQ expr
@@ -3605,10 +3792,11 @@ state 105
     (24) expr -> expr . > expr
     (25) expr -> expr . < expr
     (27) expr -> expr . '
-    (30) expr -> expr . / expr
-    (31) expr -> expr . * expr
-    (32) expr -> expr . - expr
-    (33) expr -> expr . + expr
+    (30) expr -> expr . @ expr
+    (31) expr -> expr . / expr
+    (32) expr -> expr . * expr
+    (33) expr -> expr . - expr
+    (34) expr -> expr . + expr
     (4) stmt -> . RETURN vector ;
     (5) stmt -> . PRINT vector ;
     (6) stmt -> . CONTINUE ;
@@ -3623,15 +3811,15 @@ state 105
     (15) stmt -> . IF ( expr ) stmt
     (16) stmt -> . IF ( expr ) stmt ELSE stmt
     (17) stmt -> . { stmt_set }
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
     NEQ             shift and go to state 48
     EQU             shift and go to state 49
     GEQ             shift and go to state 50
@@ -3639,10 +3827,11 @@ state 105
     >               shift and go to state 52
     <               shift and go to state 53
     '               shift and go to state 54
-    /               shift and go to state 55
-    *               shift and go to state 56
-    -               shift and go to state 57
-    +               shift and go to state 58
+    @               shift and go to state 55
+    /               shift and go to state 56
+    *               shift and go to state 57
+    -               shift and go to state 58
+    +               shift and go to state 59
     RETURN          shift and go to state 4
     PRINT           shift and go to state 5
     CONTINUE        shift and go to state 6
@@ -3659,11 +3848,11 @@ state 105
     ONES            shift and go to state 19
     ZEROS           shift and go to state 20
 
-    stmt                           shift and go to state 107
+    stmt                           shift and go to state 109
     lvalue                         shift and go to state 8
     term                           shift and go to state 14
 
-state 106
+state 108
 
     (16) stmt -> IF ( expr ) stmt ELSE . stmt
     (4) stmt -> . RETURN vector ;
@@ -3680,15 +3869,15 @@ state 106
     (15) stmt -> . IF ( expr ) stmt
     (16) stmt -> . IF ( expr ) stmt ELSE stmt
     (17) stmt -> . { stmt_set }
-    (44) lvalue -> . ID
-    (45) lvalue -> . term [ vector ]
-    (37) term -> . STRING
-    (38) term -> . FLOATNUM
-    (39) term -> . INTNUM
-    (40) term -> . EYE ( expr )
-    (41) term -> . ONES ( vector )
-    (42) term -> . ZEROS ( vector )
-    (43) term -> . lvalue
+    (45) lvalue -> . ID
+    (46) lvalue -> . term [ vector ]
+    (38) term -> . STRING
+    (39) term -> . FLOATNUM
+    (40) term -> . INTNUM
+    (41) term -> . EYE ( expr )
+    (42) term -> . ONES ( vector )
+    (43) term -> . ZEROS ( vector )
+    (44) term -> . lvalue
     RETURN          shift and go to state 4
     PRINT           shift and go to state 5
     CONTINUE        shift and go to state 6
@@ -3705,11 +3894,11 @@ state 106
     ONES            shift and go to state 19
     ZEROS           shift and go to state 20
 
-    stmt                           shift and go to state 108
+    stmt                           shift and go to state 110
     lvalue                         shift and go to state 8
     term                           shift and go to state 14
 
-state 107
+state 109
 
     (13) stmt -> FOR ID = expr : expr stmt .
     RETURN          reduce using rule 13 (stmt -> FOR ID = expr : expr stmt .)
@@ -3732,7 +3921,7 @@ state 107
     ELSE            reduce using rule 13 (stmt -> FOR ID = expr : expr stmt .)
 
 
-state 108
+state 110
 
     (16) stmt -> IF ( expr ) stmt ELSE stmt .
     RETURN          reduce using rule 16 (stmt -> IF ( expr ) stmt ELSE stmt .)

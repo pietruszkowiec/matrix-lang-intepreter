@@ -45,6 +45,18 @@ def test_BinExpr(test_input, expected):
     assert parser.parse(scanner.tokenize(test_input)).stmt_set[0].expr == expected
 
 @pytest.mark.parametrize('test_input, expected', [
+    ('x = A @ B;', MatMulBinExpr('@', Id('A'), Id('B'))),
+    ('x = (A @ B) @ C;', MatMulBinExpr('@', MatMulBinExpr('@', Id('A'), Id('B')), Id('C'))),
+    ('x = A @ (B @ C);', MatMulBinExpr('@', Id('A'), MatMulBinExpr('@', Id('B'), Id('C')))),
+    ('x = A @ B @ C;', MatMulBinExpr('@', MatMulBinExpr('@', Id('A'), Id('B')), Id('C'))),
+])
+def test_MatMulBinExpr(test_input, expected):
+    scanner = Scanner()
+    parser = Parser()
+    assert parser.parse(scanner.tokenize(test_input)).stmt_set[0].expr == expected
+
+
+@pytest.mark.parametrize('test_input, expected', [
     ('x = -1;', UnExpr('-', 1)),
     ('x = +(3 + -1);', UnExpr('+', BinExpr('+', 3, UnExpr('-', 1)))),
     ("x = a';", UnExpr("'", Id('a'))),
@@ -82,7 +94,7 @@ def test_Precedence(test_input, expected):
 def test_Vector(test_input, expected):
     scanner = Scanner()
     parser = Parser()
-    assert parser.parse(scanner.tokenize(test_input)).stmt_set[0].expr == expected 
+    assert parser.parse(scanner.tokenize(test_input)).stmt_set[0].expr == expected
 
 @pytest.mark.parametrize('test_input, expected', [
     ('x = zeros(2);', Zeros(Vector([2]))),
@@ -139,7 +151,7 @@ def test_RelationExpr(test_input, expected):
             {
               a = 1;
             }
-        }''', 
+        }''',
         [Block([
             Block([
                 AssignStmt(Id('a'), 1)
@@ -150,7 +162,7 @@ def test_RelationExpr(test_input, expected):
             {
               a = 1;
             }
-        }''', 
+        }''',
         [Block([
             AssignStmt(Id('b'), 1),
             Block([

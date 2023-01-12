@@ -16,7 +16,7 @@ class NodeVisitor:
 
 class Types:
     ttype = defaultdict(lambda: defaultdict(lambda: defaultdict(None)))
-    for op in ['+', '-', '*', '/']:
+    for op in ['+', '-', '*', '/', '@']:
         ttype[op]['int']['int'] = 'int'
         ttype[op]['int']['float'] = 'float'
         ttype[op]['float']['int'] = 'float'
@@ -35,8 +35,6 @@ class Types:
     for op in ['==', '!=']:
         ttype[op]['bool']['bool'] = 'bool'
         ttype[op]['string']['string'] = 'bool'
-
-    vectorop = set(['.+', '.-', '.*', './'])
 
 
 class TypeChecker(NodeVisitor):
@@ -263,6 +261,46 @@ class TypeChecker(NodeVisitor):
                 Symbol(Types.ttype[op][s1.type][s2.type], s1.size, lineno),
                 f'Line {lineno:3}: TypeChecker: check_two_symbol_op({op}, {s1}, {s2})' if self.debug else ''
             )
+        op = node.op
+        m_left = self.visit(node.left)
+        m_right = self.visit(node.right)
+
+        m_right = bind2(m_left, m_right, partial(check_two_symbols_op, op))
+        return m_right
+
+    def visit_MatMulBinExpr(self, node: AST.MatMulBinExpr) -> WriterMaybe[Symbol]:
+        def check_two_symbols_op(op, s1: Symbol, s2: Symbol) -> WriterMaybe[Symbol]:
+            lineno = s1.lineno or s2.lineno
+            if s1.type not in Types.ttype[op] or s2.type not in Types.ttype[op][s1.type]:
+                return WriterNothing(
+                    f'Line {lineno:3}: TypeChecker: BinExpr: wrong operator {op} for ' +
+                    f'{s1.type} and {s2.type}'
+                )
+            if len(s1.size) == 0 or len(s1.size) > 2 or len(s2.size) == 0 or len(s2.size) > 2:
+                return WriterNothing(
+                    f'Line {lineno:3}: TypeChecker: MatMulBinExpr: can multiply only ' +
+                    f'vectors and matrices: {s1.size} and {s2.size}'
+                )
+            if s1.size[-1] != s2.size[0]:
+                return WriterNothing(
+                    f'Line {lineno:3}: TypeChecker: MatMulBinExpr: incompatible sizes: ' +
+                    f'{s1.size} and {s2.size}'
+                )
+
+            if len(s1.size) == 1 and len(s2.size) == 1:
+                size = ()
+            elif len(s1.size) == 2 and len(s2.size) == 1:
+                size = (s1.size[0],)
+            elif len(s1.size) == 1 and len(s2.size) == 2:
+                size = (s2.size[1],)
+            else:
+                size = (s1.size[0], s2.size[1])
+
+            return WriterJust(
+                Symbol(Types.ttype[op][s1.type][s2.type], size, lineno),
+                f'Line {lineno:3}: TypeChecker: check_two_symbol_op({op}, {s1}, {s2})' if self.debug else ''
+            )
+
         op = node.op
         m_left = self.visit(node.left)
         m_right = self.visit(node.right)

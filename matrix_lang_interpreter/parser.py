@@ -14,7 +14,7 @@ class Parser(SlyParser):
         ('nonassoc', EQU, NEQ),
         ('nonassoc', '<', '>', LEQ, GEQ),
         ('left', '+', '-'),
-        ('left', '*', '/'),
+        ('left', '*', '/', '@'),
         ('right', UPLUS, UMINUS),
         ('left', '\''),
     )
@@ -86,6 +86,10 @@ class Parser(SlyParser):
        'expr "/" expr')
     def expr(self, p):
         return AST.BinExpr(p[1], p.expr0, p.expr1)
+
+    @_('expr "@" expr')
+    def expr(self, p):
+        return AST.MatMulBinExpr(p[1], p.expr0, p.expr1)
 
     @_('"+" expr %prec UPLUS',
        '"-" expr %prec UMINUS')

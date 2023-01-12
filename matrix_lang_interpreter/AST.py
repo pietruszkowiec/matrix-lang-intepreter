@@ -70,6 +70,10 @@ class BinExpr(Expr):
     right: Expr
 
 @dataclass
+class MatMulBinExpr(BinExpr):
+    pass
+
+@dataclass
 class UnExpr(Expr):
     op: str
     child: Expr

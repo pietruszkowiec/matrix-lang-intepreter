@@ -4,9 +4,9 @@ from matrix_lang_interpreter.scanner import Scanner
 
 def test_literals():
     scanner = Scanner()
-    text = "= + - * / ( ) [ ] { } : ' , ; < >"
+    text = "= + - * / @ ( ) [ ] { } : ' , ; < >"
     expected_tokens = [
-        '=', '+', '-', '*', '/', '(', ')', '[', ']',
+        '=', '+', '-', '*', '/', '@', '(', ')', '[', ']',
         '{', '}', ':', '\'', ',', ';', '<', '>'
     ]
     for token, expected_token in zip(scanner.tokenize(text), expected_tokens):
