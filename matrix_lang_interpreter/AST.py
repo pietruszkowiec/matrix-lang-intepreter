@@ -45,11 +45,11 @@ class ForLoop(Stmt):
 
 @dataclass
 class Break(Stmt):
-    lineno: int = None
+    lineno: int = 0
 
 @dataclass
 class Continue(Stmt):
-    lineno: int = None
+    lineno: int = 0
 
 @dataclass
 class Print(Stmt):
@@ -120,7 +120,7 @@ class Ref(LValue):
 @dataclass
 class Id(LValue):
     id: str
-    lineno: int = None
+    lineno: int = 0
 
 class Num(Term):
     pass
@@ -128,14 +128,14 @@ class Num(Term):
 @dataclass
 class IntNum(Num):
     n: int
-    lineno: int = None
+    lineno: int = 0
 
 @dataclass
 class FloatNum(Num):
     n: float
-    lineno: int = None
+    lineno: int = 0
 
 @dataclass
 class String(Term):
     s: str
-    lineno: int = None
+    lineno: int = 0

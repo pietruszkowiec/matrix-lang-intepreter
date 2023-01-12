@@ -47,7 +47,7 @@ class TypeChecker(NodeVisitor):
         self.assignmentState = False
         self.loopState = False
 
-    def visit_AST(self, node: AST.AST) -> bool:
+    def visit_AST(self, node: AST.AST) -> WriterMaybe[Symbol]:
         return concat(
             [self.visit(stmt) for stmt in node.stmt_set],
             default0=WriterJust(Symbol(None, None))

@@ -1,31 +1,31 @@
 from dataclasses import dataclass
-from typing import Tuple
+from typing import Tuple, Optional
 
 
 @dataclass
 class Symbol:
-    type: str
-    size: Tuple[int]
-    lineno: int = None
+    type: Optional[str]
+    size: Optional[Tuple[int, ...]]
+    lineno: int = 0
 
 @dataclass
 class VariableSymbol(Symbol):
-    name: str = None
+    name: str = ''
 
 class SymbolTable:
-    def __init__(self, parent):
+    def __init__(self, parent: Optional['SymbolTable'] = None):
         self.parent: SymbolTable = parent
         self.table = {}
         self.children = []
         self.child: SymbolTable = None
 
-    def getCurrentScope(self):
+    def getCurrentScope(self) -> 'SymbolTable':
         ptr = self
         while ptr.child is not None:
             ptr = ptr.child
         return ptr
 
-    def printScopeRecursive(self, indent=0):
+    def printScopeRecursive(self, indent: int = 0):
         print(indent * '    ', end='')
         print('{')
         for symbol in self.table.values():
@@ -38,11 +38,11 @@ class SymbolTable:
         print(indent * '    ', end='')
         print('}')
 
-    def put(self, name, symbol):
+    def put(self, name: str, symbol: VariableSymbol):
         ptr = self.getCurrentScope()
         ptr.table[name] = symbol
 
-    def get(self, name):
+    def get(self, name: str) -> Optional[VariableSymbol]:
         ptr = self.getCurrentScope()
         symbol = ptr.table.get(name, None)
         ptr = ptr.parent
