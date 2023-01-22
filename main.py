@@ -17,6 +17,7 @@ if __name__ == '__main__':
             "examples/interpreter/primes.m",
             "examples/interpreter/sqrt.m",
             "examples/interpreter/triangle.m",
+            "examples/interpreter/matrix_multiply.m",
         ]
     for filename in argv:
         try:
