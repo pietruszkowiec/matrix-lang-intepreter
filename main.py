@@ -1,19 +1,22 @@
-if __name__ == '__main__':
-    import sys
-    import os
-    from matrix_lang_interpreter.scanner import Scanner
-    from matrix_lang_interpreter.parser import Parser
-    from matrix_lang_interpreter.print_tree import TreePrinter
-    from matrix_lang_interpreter.type_checker import TypeChecker
+import sys
+from matrix_lang_interpreter.scanner import Scanner
+from matrix_lang_interpreter.parser import Parser
+from matrix_lang_interpreter.print_tree import TreePrinter
+from matrix_lang_interpreter.type_checker import TypeChecker
+from matrix_lang_interpreter.interpreter import Interpreter
+
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         argv = sys.argv[1:]
     else:
         argv = [
-            "tests/example_type_checker1.txt", 
-            "tests/example_type_checker2.txt", 
-            "tests/example_type_checker3.txt"
+            "examples/interpreter/fibonacci.m",
+            "examples/interpreter/matrix.m",
+            "examples/interpreter/pi.m",
+            "examples/interpreter/primes.m",
+            "examples/interpreter/sqrt.m",
+            "examples/interpreter/triangle.m",
         ]
     for filename in argv:
         try:
@@ -21,14 +24,18 @@ if __name__ == '__main__':
         except IOError:
             print("Cannot open {0} file".format(filename))
             continue
-        
-        text = file.read()
-        ast = Parser().parse(Scanner().tokenize(text))
 
         print(filename)
 
+        text = file.read()
+        tokens = Scanner().tokenize(text)
+        ast = Parser().parse(tokens)
+
+
         typeChecker = TypeChecker(debug=False)
-        typeCheckingRes = typeChecker.visit(ast)
-        print(typeCheckingRes.log)
-        print(typeCheckingRes)
-        print()
+        if (res := typeChecker.visit(ast)).is_nothing():
+            print(res.log)
+            continue
+
+        interpreter = Interpreter()
+        interpreter.visit(ast)
