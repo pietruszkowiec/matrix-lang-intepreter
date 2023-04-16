@@ -49,4 +49,17 @@ Interpreter for simple python-like language.
 ## How to run?
 
     pip3 install -r requirements.txt
-    python3 main.py [source_file]
+    python3 main.py [-h] [-s] [filename ...]
+
+### Help message
+
+    usage: python3 main.py [-h] [-s] [filename ...]
+
+    Interpreter of your newest favorite language.
+
+    positional arguments:
+    filename    source code filename
+
+    optional arguments:
+    -h, --help  show this help message and exit
+    -s, --show  show AST tree

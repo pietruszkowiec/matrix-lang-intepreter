@@ -4,7 +4,7 @@ from matrix_lang_interpreter.scanner import Scanner
 
 
 class Parser(SlyParser):
-    debugfile = 'parser.out'
+    # debugfile = 'parser.out'
     tokens = Scanner.tokens
 
     precedence = (
