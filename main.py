@@ -1,4 +1,6 @@
 import sys
+import os
+import glob
 from matrix_lang_interpreter.scanner import Scanner
 from matrix_lang_interpreter.parser import Parser
 from matrix_lang_interpreter.print_tree import TreePrinter
@@ -10,15 +12,8 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         argv = sys.argv[1:]
     else:
-        argv = [
-            "examples/interpreter/fibonacci.m",
-            "examples/interpreter/matrix.m",
-            "examples/interpreter/pi.m",
-            "examples/interpreter/primes.m",
-            "examples/interpreter/sqrt.m",
-            "examples/interpreter/triangle.m",
-            "examples/interpreter/matrix_multiply.m",
-        ]
+        argv = glob.glob(os.path.join("examples", "*.m"))
+
     for filename in argv:
         try:
             file = open(filename, "r")
@@ -31,7 +26,6 @@ if __name__ == '__main__':
         text = file.read()
         tokens = Scanner().tokenize(text)
         ast = Parser().parse(tokens)
-
 
         typeChecker = TypeChecker(debug=False)
         if (res := typeChecker.visit(ast)).is_nothing():

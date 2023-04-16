@@ -66,21 +66,3 @@ class Scanner(Lexer):
     def error(self, t):
         print(f"Line {t.lineno:3}: Scanner: Bad character: {t.value[0]}")
         self.index += 1
-
-
-if __name__ == "__main__":
-    import sys
-    import os
-
-    try:
-        filename = sys.argv[1] if len(sys.argv) > 1 else os.path.join("tests", "example_scanner.txt")
-        file = open(filename, "r")
-    except IOError:
-        print("Cannot open {0} file".format(filename))
-        sys.exit(0)
-
-    text = file.read()
-    lexer = Scanner()
-
-    for token in lexer.tokenize(text):
-        print(f"({token.lineno}): {token.type}({token.value})")
